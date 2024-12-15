@@ -9,9 +9,12 @@ export default {
       backgroundImage: {
         'hero-back': "url('./src/assets/images/background.webp')",
       },
+      fontFamily: {
+        bodyFont: ["Poppins", "sans-serif"],
+      },
       colors: {
         accentColor: "#2746fa",
-        primaryColor: "FFFFFF",
+        primaryColor: "#FFFFFF",
         secondaryColor: "#0054a5",
 
       }
