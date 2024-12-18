@@ -25,7 +25,7 @@ export default function Login() {
   return (
     <section className="w-full h-full">
       <Navbar />
-      <div className="w-full min-h-screen flex flex-col justify-center items-center bg-hero-back bg-accentColor bg-cover font-bodyFont mt-[-72px] pt-32 pb-5">
+      <div className="w-full min-h-screen flex flex-col justify-center items-center bg-hero-back bg-cover font-bodyFont mt-[-72px] pt-32 pb-5">
         <div className="w-[80%] h-full shadow-2xl">
           <Outlet />
         </div>
