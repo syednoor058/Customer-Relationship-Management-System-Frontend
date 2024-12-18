@@ -1,6 +1,10 @@
 /* eslint-disable react/prop-types */
 // import React from 'react'
-import { Link } from "react-router-dom";
+import axios from "axios";
+
+import { useState } from "react";
+import { HiOutlineLogout } from "react-icons/hi";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import lightLogo from "../../assets/images/logo_light.png";
 import {
   DASHBOARD_SIDEBAR_BOTTOM_LINKS,
@@ -8,32 +12,69 @@ import {
 } from "../constant/SideBarLinksConstant";
 
 function SidebarLink({ item }) {
+  const { pathname } = useLocation();
   return (
-    <Link
+    <NavLink
       to={item.path}
-      className="flex items-center gap-2 font-light px-5 py-2 hover:bg-[#1b1b1b] hover:no-underline"
+      className={`${
+        pathname === item.path ? "bg-[#121212]" : "hover:bg-[#1b1b1b]"
+      } flex items-center gap-2 font-light px-5 py-2 hover:no-underline`}
     >
       <span className="text-xl">{item.icon}</span>
       {item.label}
-    </Link>
+    </NavLink>
   );
 }
 
 export default function Sidebar() {
+  const [loggingOut, setLoggingOut] = useState(false);
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLoggingOut(true);
+      await axios.post(
+        "/api/logout",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      localStorage.removeItem("token");
+    }
+    navigate("/");
+  };
+
+  if (loggingOut) {
+    return (
+      <div className="w-screen h-screen fixed top-0 bg-primaryColor">
+        Logging out...
+      </div>
+    );
+  }
   return (
     <div className="w-60 h-screen bg-accentColor text-primaryColor py-5 flex flex-col justify-between">
       <div className="flex justify-center items-center overflow-hidden">
         <img className="w-[60%] h-auto" src={lightLogo} alt="light_logo" />
       </div>
-      <div className="flex-1 mt-10">
+      <div className="flex-1 pt-8">
         {DASHBOARD_SIDEBAR_TOP_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))}
       </div>
-      <div>
+      <div className="border-t border-gray-400 pt-2 border-opacity-50">
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))}
+        <div
+          className="flex items-center gap-2 font-light px-5 py-2 hover:bg-[#1b1b1b] cursor-pointer"
+          onClick={handleLogout}
+        >
+          <span className="text-xl">
+            <HiOutlineLogout />
+          </span>
+          Logout
+        </div>
       </div>
     </div>
   );

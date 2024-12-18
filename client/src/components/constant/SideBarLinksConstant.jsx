@@ -12,31 +12,31 @@ export const DASHBOARD_SIDEBAR_TOP_LINKS = [
   {
     key: "dashboard",
     label: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: <HiOutlineViewGrid />,
   },
   {
     key: "categories",
     label: "Categories",
-    path: "/categories",
+    path: "/dashboard/categories",
     icon: <HiOutlineFolderOpen />,
   },
   {
     key: "products",
     label: "Products",
-    path: "/products",
+    path: "/dashboard/products",
     icon: <HiOutlineArchive />,
   },
   {
     key: "vendors",
     label: "Vendors",
-    path: "/vendors",
+    path: "/dashboard/vendors",
     icon: <HiOutlineUserGroup />,
   },
   {
     key: "accounts",
     label: "Accounts",
-    path: "/accounts",
+    path: "/dashboard/accounts",
     icon: <HiOutlineLibrary />,
   },
 ];
@@ -45,13 +45,13 @@ export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
   {
     key: "setting",
     label: "Setting",
-    path: "/setting",
+    path: "/dashboard/setting",
     icon: <HiOutlineCog />,
   },
   {
     key: "support",
     label: "Support",
-    path: "/support",
+    path: "/dashboard/support",
     icon: <HiOutlineQuestionMarkCircle />,
   },
 ];
