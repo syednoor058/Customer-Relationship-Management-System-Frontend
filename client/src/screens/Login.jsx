@@ -1,6 +1,7 @@
 // import React from "react";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import background from "../assets/images/background.webp";
 import Navbar from "../components/navBar/Navbar";
 
 export default function Login() {
@@ -23,9 +24,12 @@ export default function Login() {
     alreadyLoggedinCheck();
   }, [navigate]);
   return (
-    <section className="w-full h-full">
+    <section className="w-full h-full relative">
+      <div className="w-full h-full absolute top-0 z-[2]">
+        <img className="w-full h-full" src={background} alt="background" />
+      </div>
       <Navbar />
-      <div className="w-full min-h-screen flex flex-col justify-center items-center bg-hero-back bg-cover font-bodyFont mt-[-72px] pt-32 pb-5">
+      <div className="w-full min-h-screen flex flex-col justify-center items-center font-bodyFont mt-[-72px] pt-32 pb-5 relative z-[5]">
         <div className="w-[80%] h-full shadow-2xl">
           <Outlet />
         </div>
