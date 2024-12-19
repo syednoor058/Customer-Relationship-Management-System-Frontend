@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import AddProduct from "./components/addProduct/AddProduct";
 import ForgotPassword from "./components/forgotPassword/ForgotPassword";
 import LoginComponent from "./components/loginComponent/LoginComponent";
 import Overview from "./components/overview/Overview";
@@ -22,6 +23,7 @@ function App() {
           <Route index element={<Overview />} />
           <Route exact path="categories" element={<Categories />} />
           <Route exact path="products" element={<Products />} />
+          <Route exact path="add-product" element={<AddProduct />} />
           <Route exact path="vendors" element={<Vendors />} />
           <Route exact path="accounts" element={<Accounts />} />
         </Route>

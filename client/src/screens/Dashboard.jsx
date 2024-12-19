@@ -35,7 +35,7 @@ export default function Dashboard() {
 
   if (!user) {
     return (
-      <div className="w-screen h-screen fixed top-0 bg-primaryColor">
+      <div className="w-screen h-screen fixed top-0 bg-primaryColor z-[20]">
         Signing in...
       </div>
     );
@@ -44,12 +44,12 @@ export default function Dashboard() {
   return (
     <div className="w-full min-h-screen flex flex-col justify-center items-center  bg-primaryColor text-[#121212] bg-cover font-bodyFont">
       <div className="w-full h-screen flex flex-row">
-        <div className="h-screen">
+        <div className="h-screen fixed left-0 top-0 z-[1000]">
           <Sidebar />
         </div>
-        <div className="w-full flex flex-col">
+        <div className="ml-60 w-full flex flex-col overflow-y-scroll px-5 pt-2">
           <DashboardHeader />
-          <div className="mt-10 px-10">
+          <div className="mt-5">
             <Outlet />
           </div>
         </div>

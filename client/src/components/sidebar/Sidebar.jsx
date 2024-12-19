@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { HiOutlineLogout } from "react-icons/hi";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import lightLogo from "../../assets/images/logo_light.png";
+import lightLogo from "../../assets/images/logo_dark.png";
 import {
   DASHBOARD_SIDEBAR_BOTTOM_LINKS,
   DASHBOARD_SIDEBAR_TOP_LINKS,
@@ -17,8 +17,10 @@ function SidebarLink({ item }) {
     <NavLink
       to={item.path}
       className={`${
-        pathname === item.path ? "bg-[#121212]" : "hover:bg-[#1b1b1b]"
-      } flex items-center gap-2 font-light px-5 py-2 hover:no-underline`}
+        pathname === item.path
+          ? " bg-accentColor text-primaryColor"
+          : "hover:bg-gray-200 "
+      } flex items-center gap-5 font-light px-5 py-2 hover:no-underline rounded-md`}
     >
       <span className="text-xl">{item.icon}</span>
       {item.label}
@@ -47,17 +49,17 @@ export default function Sidebar() {
 
   if (loggingOut) {
     return (
-      <div className="w-screen h-screen fixed top-0 bg-primaryColor">
+      <div className="w-screen h-screen fixed top-0 bg-primaryColor z-[20]">
         Logging out...
       </div>
     );
   }
   return (
-    <div className="w-60 h-screen bg-accentColor text-primaryColor py-5 flex flex-col justify-between">
+    <div className="w-60 h-screen bg-gray-100 text-[#121212] pt-2 pb-5 flex flex-col justify-between px-3">
       <div className="flex justify-center items-center overflow-hidden">
-        <img className="w-[60%] h-auto" src={lightLogo} alt="light_logo" />
+        <img className="w-[35%] h-auto" src={lightLogo} alt="light_logo" />
       </div>
-      <div className="flex-1 pt-8">
+      <div className="flex-1 pt-5">
         {DASHBOARD_SIDEBAR_TOP_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))}
@@ -67,7 +69,7 @@ export default function Sidebar() {
           <SidebarLink key={item.key} item={item} />
         ))}
         <div
-          className="flex items-center gap-2 font-light px-5 py-2 hover:bg-[#1b1b1b] cursor-pointer"
+          className="flex items-center gap-5 font-light px-5 py-2 hover:bg-gray-200 cursor-pointer text-red-600"
           onClick={handleLogout}
         >
           <span className="text-xl">
