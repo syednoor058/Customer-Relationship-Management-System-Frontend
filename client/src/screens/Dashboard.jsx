@@ -44,7 +44,7 @@ export default function Dashboard() {
   return (
     <div className="w-full min-h-screen flex flex-col justify-center items-center  bg-primaryColor text-[#121212] bg-cover font-bodyFont">
       <div className="w-full h-screen flex flex-row">
-        <div className="h-screen fixed left-0 top-0 z-[1000]">
+        <div className="h-screen fixed left-0 top-0 z-[1000] overflow-y-scroll no-scrollbar">
           <Sidebar />
         </div>
         <div className="ml-60 w-full flex flex-col overflow-y-scroll px-5 pt-2">

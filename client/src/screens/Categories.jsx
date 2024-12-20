@@ -5,13 +5,18 @@ import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
 import Select from "@mui/material/Select";
 import { useState } from "react";
+import { FcOpenedFolder, FcPlus } from "react-icons/fc";
 import {
   HiOutlineEye,
-  HiOutlineFolderOpen,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
   HiOutlineTrash,
 } from "react-icons/hi";
+import {
+  MdAccountTree,
+  MdBusinessCenter,
+  MdDashboardCustomize,
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
 
@@ -24,31 +29,43 @@ export default function Categories() {
 
   // const [error, setError] = useState("")
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex flex-wrap gap-5">
+    <div className="flex flex-col gap-10 font-light">
+      <div className="grid grid-cols-3 gap-5">
+        <DashboardCards
+          title="Total Leads"
+          number="19"
+          desc="Last Month"
+          icon={<MdAccountTree />}
+          fromColor="from-[#1b9b46]"
+          toColor="to-[#98d8a4] "
+        />
         <DashboardCards
           title="Total Categories"
           number="4"
           desc="Last Month"
-          icon={<HiOutlineFolderOpen />}
+          icon={<MdDashboardCustomize />}
+          fromColor="from-[#2746fa]"
+          toColor="to-[#a2b4fc]"
         />
+
         <DashboardCards
-          title="Tripol"
-          number="19"
-          desc="Most Product in a Category"
-          icon={<HiOutlineFolderOpen />}
-        />
-        <DashboardCards
-          title="Total Produvts"
+          title="Total Products"
           number="52"
           desc="Last Month"
-          icon={<HiOutlineFolderOpen />}
+          icon={<MdBusinessCenter />}
+          fromColor="from-[#6a0dad]"
+          toColor="to-[#d8b4ef] "
         />
       </div>
-      <div className="flex flex-row-reverse gap-3">
+      <div className="flex flex-row-reverse gap-3 pb-10">
         <div className="w-[40%]">
           <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded-md drop-shadow-xl">
-            <div className="text-2xl font-semibold">Add A New Category</div>
+            <div className="text-2xl font-semibold flex flex-row gap-3 items-center">
+              <span className="text-4xl">
+                <FcPlus />
+              </span>
+              Add New Category
+            </div>
             <form className="">
               <div className="flex flex-col gap-1">
                 <div>Category Name</div>
@@ -58,15 +75,25 @@ export default function Categories() {
                   placeholder="Enter category name"
                 />
               </div>
-              <div className="w-[60%] mt-3 px-5 py-2 bg-accentColor text-primaryColor rounded text-center">
-                Add Category
+              <div className="mt-3 flex">
+                <div className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center">
+                  <span className="text-xl">
+                    <HiOutlinePlusCircle />
+                  </span>
+                  Add Category
+                </div>
               </div>
             </form>
           </div>
         </div>
         <div className="w-[60%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-md drop-shadow-xl">
           <div className="flex flex-row justify-between">
-            <div className="text-2xl font-semibold flex-1">All Categories</div>
+            <div className="text-2xl font-semibold flex flex-row gap-3 items-center">
+              <span className="text-4xl">
+                <FcOpenedFolder />
+              </span>
+              All Categories
+            </div>
             <Link
               to="/dashboard/add-product"
               className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
@@ -133,7 +160,7 @@ export default function Categories() {
               </tbody>
             </table>
             <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row gap-3 items-center">
+              <div className="flex flex-row gap-1 items-center">
                 <div>Rows per page:</div>
                 <FormControl sx={{ m: 1, minWidth: 80 }} size="small">
                   <Select id="rows-select" value={page} onChange={handleChange}>

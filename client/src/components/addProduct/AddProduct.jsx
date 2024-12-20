@@ -1,18 +1,26 @@
 // import React from 'react'
 
 import { useState } from "react";
-import { HiOutlinePlusCircle } from "react-icons/hi";
+import { FcOpenedFolder, FcPlus } from "react-icons/fc";
+import {
+  HiOutlineArrowSmLeft,
+  HiOutlineClipboardList,
+  HiOutlinePlusCircle,
+} from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 export default function AddProduct() {
   const [productName, setProductName] = useState("");
   return (
-    <div className="w-full h-full flex flex-row gap-5 justify-between pb-10">
+    <div className="w-full h-full flex flex-row gap-5 justify-between pb-10 font-light">
       <div className="w-[70%] flex flex-col gap-7 rounded-md drop-shadow-xl bg-primaryColor p-5">
         <div className="flex flex-row justify-between items-center">
-          <Link className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 items-center justify-center">
-            <span>
-              <HiOutlinePlusCircle />
+          <Link
+            to="/dashboard"
+            className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 items-center justify-center"
+          >
+            <span className="text-xl">
+              <HiOutlineArrowSmLeft />
             </span>
             Dashboard
           </Link>
@@ -20,13 +28,18 @@ export default function AddProduct() {
             to="/dashboard/products"
             className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 items-center justify-center"
           >
-            <span>
-              <HiOutlinePlusCircle />
+            <span className="text-xl">
+              <HiOutlineClipboardList />
             </span>
             All Products
           </Link>
         </div>
-        <div className="font-semibold text-2xl">Add A New Product</div>
+        <div className="font-semibold text-2xl flex flex-row gap-3 items-center">
+          <span className="text-4xl">
+            <FcPlus />
+          </span>
+          Add New Product
+        </div>
         <div className="flex flex-row gap-5 justify-between">
           <form className="w-full flex flex-col gap-5">
             <div className="text-lg font-semibold">General Information</div>
@@ -99,7 +112,12 @@ export default function AddProduct() {
       </div>
       <div className="w-[30%]">
         <div className="flex flex-col rounded-md drop-shadow-xl gap-3 bg-primaryColor p-5">
-          <div className="text-xl font-semibold">Categories</div>
+          <div className="text-xl font-semibold flex flex-row gap-2 items-center">
+            <span className="text-2xl">
+              <FcOpenedFolder />
+            </span>
+            Categories
+          </div>
           <div className="flex flex-col gap-2">
             <div className="font-light">Tripol (19)</div>
             <div className="font-light">House Materials (7)</div>
