@@ -42,7 +42,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center items-center  bg-primaryColor text-[#121212] bg-cover font-bodyFont">
+    <div className="w-full min-h-screen flex flex-col justify-center items-center  bg-primaryColor text-[#121212] bg-cover font-bodyFont bg-opacity-30 text-sm">
       <div className="w-full h-screen flex flex-row">
         <div className="h-screen fixed left-0 top-0 z-[1000] overflow-y-scroll no-scrollbar">
           <Sidebar />

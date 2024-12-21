@@ -29,23 +29,23 @@ export default function Categories() {
 
   // const [error, setError] = useState("")
   return (
-    <div className="flex flex-col gap-10 font-light">
+    <div className="flex flex-col gap-5 font-light text-sm text-gray-600">
       <div className="grid grid-cols-3 gap-5">
         <DashboardCards
           title="Total Leads"
           number="19"
           desc="Last Month"
           icon={<MdAccountTree />}
-          fromColor="from-[#1b9b46]"
-          toColor="to-[#98d8a4] "
+          fromColor="from-[#2746fa]/80"
+          toColor="to-[#0ea5e9]/80"
         />
         <DashboardCards
           title="Total Categories"
           number="4"
           desc="Last Month"
           icon={<MdDashboardCustomize />}
-          fromColor="from-[#2746fa]"
-          toColor="to-[#a2b4fc]"
+          fromColor="from-[#2746fa]/80"
+          toColor="to-[#6a0dad]/80"
         />
 
         <DashboardCards
@@ -53,15 +53,15 @@ export default function Categories() {
           number="52"
           desc="Last Month"
           icon={<MdBusinessCenter />}
-          fromColor="from-[#6a0dad]"
-          toColor="to-[#d8b4ef] "
+          fromColor="from-[#2746fa]/80"
+          toColor="to-[#0ea5e9]/80"
         />
       </div>
-      <div className="flex flex-row-reverse gap-3 pb-10">
-        <div className="w-[40%]">
-          <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded-md drop-shadow-xl">
-            <div className="text-2xl font-semibold flex flex-row gap-3 items-center">
-              <span className="text-4xl">
+      <div className="flex flex-row-reverse gap-5 pb-10">
+        <div className="w-[35%]">
+          <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl text-[#1b1b1b]">
+            <div className="text-xl font-semibold flex flex-row gap-3 items-center text-gray-900">
+              <span className="text-4xl ">
                 <FcPlus />
               </span>
               Add New Category
@@ -70,7 +70,7 @@ export default function Categories() {
               <div className="flex flex-col gap-1">
                 <div>Category Name</div>
                 <input
-                  className="px-2 py-2 rounded bg-gray-200 outline-none"
+                  className="px-2 py-2 bg-transparent rounded-md border border-gray-300 outline-none"
                   type="text"
                   placeholder="Enter category name"
                 />
@@ -86,9 +86,9 @@ export default function Categories() {
             </form>
           </div>
         </div>
-        <div className="w-[60%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-md drop-shadow-xl">
+        <div className="w-[65%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-md drop-shadow-xl">
           <div className="flex flex-row justify-between">
-            <div className="text-2xl font-semibold flex flex-row gap-3 items-center">
+            <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
               <span className="text-4xl">
                 <FcOpenedFolder />
               </span>
@@ -96,7 +96,7 @@ export default function Categories() {
             </div>
             <Link
               to="/dashboard/add-product"
-              className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
+              className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
             >
               <span className="text-xl">
                 <HiOutlinePlusCircle />
@@ -108,16 +108,12 @@ export default function Categories() {
             {/* {error && <p className="text-red-500">{error}</p>} */}
             <table className="w-full">
               <thead className="w-full">
-                <tr className="text-sm font-light uppercase bg-accentColor text-primaryColor rounded-md">
-                  <th className="w-[10%] font-light text-center py-3 px-2">
-                    ID
-                  </th>
-                  <th className="w-[75%] font-light text-start py-3 px-2">
+                <tr className="text-sm uppercase text--gray-700 rounded-md border-b border-gray-300">
+                  <th className="w-[10%] text-center py-3 px-2">ID</th>
+                  <th className="w-[75%] text-start py-3 px-2">
                     Category Name
                   </th>
-                  <th className="w-[15%] font-light text-center py-3 px-2">
-                    Actions
-                  </th>
+                  <th className="w-[15%] text-center py-3 px-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +126,7 @@ export default function Categories() {
                     <HiOutlineTrash className="text-red-500" />
                   </td>
                 </tr>
-                <tr className="text-sm font-light rounded-md bg-gray-200">
+                <tr className="text-sm font-light rounded-md bg-gray-100">
                   <td className="py-4 px-2 text-center">2</td>
                   <td className="py-4 px-2">Raw Materials</td>
                   <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
@@ -148,7 +144,7 @@ export default function Categories() {
                     <HiOutlineTrash className="text-red-500" />
                   </td>
                 </tr>
-                <tr className="text-sm font-light rounded-md bg-gray-200">
+                <tr className="text-sm font-light rounded-md bg-gray-100">
                   <td className="py-4 px-2 text-center">4</td>
                   <td className="py-4 px-2">Rosi</td>
                   <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">

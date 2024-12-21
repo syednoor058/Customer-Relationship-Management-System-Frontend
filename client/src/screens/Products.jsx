@@ -65,23 +65,23 @@ export default function Products() {
   }
 
   return (
-    <div className="flex flex-col gap-10 pb-10 font-light">
+    <div className="flex flex-col gap-10 pb-10 font-light text-sm text-gray-600">
       <div className="grid grid-cols-3 gap-5">
         <DashboardCards
           title="Total Leads"
           number="19"
           desc="Last Month"
           icon={<MdAccountTree />}
-          fromColor="from-[#1b9b46]"
-          toColor="to-[#98d8a4] "
+          fromColor="from-[#2746fa]/80"
+          toColor="to-[#0ea5e9]/80"
         />
         <DashboardCards
           title="Total Categories"
           number="4"
           desc="Last Month"
           icon={<MdDashboardCustomize />}
-          fromColor="from-[#2746fa]"
-          toColor="to-[#a2b4fc]"
+          fromColor="from-[#2746fa]/80"
+          toColor="to-[#6a0dad]/80"
         />
 
         <DashboardCards
@@ -89,13 +89,13 @@ export default function Products() {
           number="52"
           desc="Last Month"
           icon={<MdBusinessCenter />}
-          fromColor="from-[#6a0dad]"
-          toColor="to-[#d8b4ef] "
+          fromColor="from-[#2746fa]/80"
+          toColor="to-[#0ea5e9]/80"
         />
       </div>
       <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-md drop-shadow-xl">
         <div className="flex flex-row justify-between">
-          <div className="text-2xl font-semibold flex flex-row gap-3 items-center">
+          <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
             <span className="text-4xl">
               <FcBriefcase />
             </span>
@@ -103,7 +103,7 @@ export default function Products() {
           </div>
           <Link
             to="/dashboard/add-product"
-            className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
+            className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
           >
             <span className="text-xl">
               <HiOutlinePlusCircle />
@@ -115,23 +115,13 @@ export default function Products() {
           {error && <p className="text-red-500">{error}</p>}
           <table className="w-full">
             <thead className="w-full">
-              <tr className="text-sm font-light uppercase bg-accentColor text-primaryColor rounded-md">
-                <th className="w-[5%] font-light text-center py-3 px-2">ID</th>
-                <th className="w-[20%] font-light text-start py-3 px-2">
-                  Name
-                </th>
-                <th className="w-[40%] font-light text-start py-3 px-2">
-                  Description
-                </th>
-                <th className="w-[10%] font-light text-center py-3 px-2">
-                  Quantity
-                </th>
-                <th className="w-[10%] font-light text-center py-3 px-2">
-                  Price
-                </th>
-                <th className="w-[15%] font-light text-center py-3 px-2">
-                  Actions
-                </th>
+              <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
+                <th className="w-[5%] text-center py-3 px-2">ID</th>
+                <th className="w-[20%] text-start py-3 px-2">Name</th>
+                <th className="w-[40%] text-start py-3 px-2">Description</th>
+                <th className="w-[10%] text-center py-3 px-2">Quantity</th>
+                <th className="w-[10%] text-center py-3 px-2">Price</th>
+                <th className="w-[15%] text-center py-3 px-2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -141,7 +131,7 @@ export default function Products() {
                     <tr
                       key={index}
                       className={`text-sm font-light rounded-md ${
-                        (index + 1) % 2 === 0 && "bg-gray-200"
+                        (index + 1) % 2 === 0 && "bg-gray-100"
                       }`}
                     >
                       <td className="py-4 px-2 text-center">{index + 1}</td>

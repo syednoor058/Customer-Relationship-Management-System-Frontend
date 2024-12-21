@@ -30,7 +30,7 @@ function SidebarLink({ item }) {
       to={item.path}
       className={`${
         pathname === item.path
-          ? " bg-gray-300 border-r-[5px] border-accentColor"
+          ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
           : "hover:bg-gray-200 "
       } flex items-center gap-5 font-light px-5 py-2 hover:no-underline text-sm`}
     >
@@ -79,7 +79,7 @@ export default function Sidebar() {
           to="/dashboard"
           className={`${
             pathname === "/dashboard"
-              ? " bg-gray-300 border-r-[5px] border-accentColor"
+              ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
               : "hover:bg-gray-200 "
           } flex items-center gap-2 font-[500] ps-5 py-[10px] hover:no-underline text-sm`}
         >
@@ -147,7 +147,7 @@ export default function Sidebar() {
                   to="/dashboard/categories"
                   className={`${
                     pathname === "/dashboard/categories"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
@@ -160,7 +160,7 @@ export default function Sidebar() {
                   to="/dashboard/products"
                   className={`${
                     pathname === "/dashboard/products"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
@@ -173,7 +173,7 @@ export default function Sidebar() {
                   to="/dashboard/add-product"
                   className={`${
                     pathname === "/dashboard/add-product"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
@@ -243,7 +243,7 @@ export default function Sidebar() {
                   to=""
                   className={`${
                     pathname === "/dashboard/vendors"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
@@ -256,7 +256,7 @@ export default function Sidebar() {
                   to=""
                   className={`${
                     pathname === "/dashboard/add-vendors"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
@@ -326,7 +326,7 @@ export default function Sidebar() {
                   to=""
                   className={`${
                     pathname === "/dashboard/accounts"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
@@ -339,7 +339,7 @@ export default function Sidebar() {
                   to=""
                   className={`${
                     pathname === "/dashboard/add-accounts"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
@@ -352,7 +352,7 @@ export default function Sidebar() {
                   to=""
                   className={`${
                     pathname === "/dashboard/transactions"
-                      ? " bg-gray-300 border-r-[5px] border-accentColor"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
                       : "hover:bg-gray-200 "
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
