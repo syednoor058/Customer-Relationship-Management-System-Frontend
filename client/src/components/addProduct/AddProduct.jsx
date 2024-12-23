@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FcBusinessman, FcOpenedFolder, FcPlus } from "react-icons/fc";
-import { HiOutlineArrowSmLeft, HiOutlineClipboardList } from "react-icons/hi";
+import { HiOutlineArchive, HiOutlineArrowSmLeft } from "react-icons/hi";
 import { MdDeleteOutline, MdOutlineDone } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -26,7 +26,7 @@ export default function AddProduct() {
             className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 items-center justify-center"
           >
             <span className="text-xl">
-              <HiOutlineClipboardList />
+              <HiOutlineArchive />
             </span>
             All Products
           </Link>

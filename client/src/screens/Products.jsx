@@ -7,16 +7,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
 import {
+  HiArchive,
   HiOutlineEye,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
   HiOutlineTrash,
+  HiSearch,
 } from "react-icons/hi";
-import {
-  MdAccountTree,
-  MdBusinessCenter,
-  MdDashboardCustomize,
-} from "react-icons/md";
+import { MdAccountTree, MdDashboardCustomize } from "react-icons/md";
 import { Link } from "react-router-dom";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
 
@@ -26,9 +24,13 @@ export default function Products() {
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const token = localStorage.getItem("token");
   const [page, setPage] = useState(10);
+  const [cat, setCat] = useState("all");
 
   const handleChange = (event) => {
     setPage(event.target.value);
+  };
+  const handleChangeCat = (event) => {
+    setCat(event.target.value);
   };
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export default function Products() {
           title="Total Products"
           number="52"
           desc="Last Month"
-          icon={<MdBusinessCenter />}
+          icon={<HiArchive />}
           fromColor="from-[#2746fa]/80"
           toColor="to-[#0ea5e9]/80"
         />
@@ -111,7 +113,35 @@ export default function Products() {
             Add Products
           </Link>
         </div>
-        <div className="pt-5 flex flex-col gap-7">
+        <div className="mt-5 flex flex-row justify-between gap-5">
+          <div>
+            <div className="w-[350px] relative">
+              <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
+              <input
+                className="w-full ps-9 pe-2 py-2 rounded-md outline-none bg-transparent border-gray-300 border"
+                type="text"
+                placeholder="Search product"
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex flex-row gap-1 items-center">
+              <div>Category:</div>
+              <FormControl sx={{ m: 1, width: 120 }} size="small">
+                <Select
+                  id="rows-select2"
+                  value={cat}
+                  onChange={handleChangeCat}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="tripol">Tripol</MenuItem>
+                  <MenuItem value="selellute">Selellute</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-7">
           {error && <p className="text-red-500">{error}</p>}
           <table className="w-full">
             <thead className="w-full">

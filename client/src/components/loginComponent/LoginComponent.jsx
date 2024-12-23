@@ -27,9 +27,9 @@ export default function LoginComponent() {
   };
 
   return (
-    <div className="w-full bg-white rounded-xl overflow-hidden text-[#121212] flex justify-center items-center">
-      <div className="w-full h-full flex flex-row">
-        <div className="w-[30%] bg-accentColor h-auto p-5 flex flex-col gap-5 items-center">
+    <div className="w-full bg-white rounded-xl overflow-hidden flex justify-center items-center">
+      <div className="w-full h-full flex flex-row bg-primaryColor">
+        <div className="w-[30%] bg-gradient-to-tr from-accentColor/90 to-[#0ea5e9]/80 h-auto p-5 flex flex-col gap-5 items-center">
           <div className="w-[85%] aspect-[9/16] overflow-hidden">
             <img
               className="w-full h-full object-contain"
@@ -38,13 +38,13 @@ export default function LoginComponent() {
             />
           </div>
         </div>
-        <div className="w-[70%] flex flex-col gap-10 py-10 items-center">
+        <div className="w-[70%] flex flex-col gap-10 py-10 items-center bg-primaryColor">
           <div className="w-[55%] flex flex-col gap-5">
             <div className="flex flex-col gap-1">
-              <div className="uppercase text-4xl font-bold text-center">
+              <div className="uppercase text-4xl font-bold text-center text-gray-900">
                 Login Account
               </div>
-              <div className="text-gray-500 text-center">
+              <div className="text-gray-600 text-center">
                 Sign in with your registered login credentials.
               </div>
             </div>
@@ -57,7 +57,7 @@ export default function LoginComponent() {
               <div className="flex flex-col gap-1">
                 <div>Email/Username</div>
                 <input
-                  className="px-2 py-2 rounded-md bg-gray-100 outline-none"
+                  className="py-2 border-b border-gray-300 bg-primaryColor outline-none"
                   type="text"
                   placeholder="example@email.com"
                   value={email}
@@ -68,7 +68,7 @@ export default function LoginComponent() {
               <div className="flex flex-col gap-1">
                 <div>Password</div>
                 <input
-                  className="px-2 py-2 rounded-md bg-gray-100 outline-none"
+                  className="py-2 border-b border-gray-300 bg-primaryColor outline-none"
                   type="password"
                   placeholder="Password"
                   value={password}

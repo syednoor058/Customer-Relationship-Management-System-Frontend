@@ -24,7 +24,7 @@ export default function Login() {
     alreadyLoggedinCheck();
   }, [navigate]);
   return (
-    <section className="w-full h-full relative">
+    <section className="w-full h-full relative text-gray-600">
       <div className="w-full h-full absolute top-0 z-[2]">
         <img className="w-full h-full" src={background} alt="background" />
       </div>

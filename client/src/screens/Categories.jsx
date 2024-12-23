@@ -7,15 +7,18 @@ import Select from "@mui/material/Select";
 import { useState } from "react";
 import { FcOpenedFolder, FcPlus } from "react-icons/fc";
 import {
+  HiArchive,
   HiOutlineEye,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
   HiOutlineTrash,
+  HiSearch,
 } from "react-icons/hi";
 import {
   MdAccountTree,
-  MdBusinessCenter,
   MdDashboardCustomize,
+  MdDeleteOutline,
+  MdOutlineDone,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
@@ -52,7 +55,7 @@ export default function Categories() {
           title="Total Products"
           number="52"
           desc="Last Month"
-          icon={<MdBusinessCenter />}
+          icon={<HiArchive />}
           fromColor="from-[#2746fa]/80"
           toColor="to-[#0ea5e9]/80"
         />
@@ -75,12 +78,18 @@ export default function Categories() {
                   placeholder="Enter category name"
                 />
               </div>
-              <div className="mt-3 flex">
-                <div className="px-3 py-2 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center">
+              <div className="mt-3 flex flex-row gap-3">
+                <div className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center">
                   <span className="text-xl">
-                    <HiOutlinePlusCircle />
+                    <MdOutlineDone />
                   </span>
                   Add Category
+                </div>
+                <div className="px-3 py-3 rounded-md bg-gray-300 text-accentColor flex flex-row gap-2 justify-center items-center">
+                  <span className="text-xl">
+                    <MdDeleteOutline />
+                  </span>
+                  Discard
                 </div>
               </div>
             </form>
@@ -104,7 +113,15 @@ export default function Categories() {
               Add Products
             </Link>
           </div>
-          <div className="pt-5 flex flex-col gap-7">
+          <div className="w-[350px] relative mt-5 ">
+            <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
+            <input
+              className="w-full ps-9 pe-2 py-2 rounded-md outline-none bg-transparent border border-gray-300"
+              type="text"
+              placeholder="Search category"
+            />
+          </div>
+          <div className="flex flex-col gap-7">
             {/* {error && <p className="text-red-500">{error}</p>} */}
             <table className="w-full">
               <thead className="w-full">

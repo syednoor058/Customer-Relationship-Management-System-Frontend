@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 // import React from 'react'
 import {
+  HiOutlineArchive,
   HiOutlineClipboardList,
   HiOutlineClock,
   HiOutlineLibrary,
   HiOutlineUserGroup,
   HiOutlineViewGrid,
+  HiOutlineViewGridAdd,
 } from "react-icons/hi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -152,9 +154,9 @@ export default function Sidebar() {
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
                   <span className="text-lg">
-                    <HiOutlineClipboardList />
+                    <HiOutlineViewGridAdd />
                   </span>
-                  All Categories
+                  Categories
                 </NavLink>
                 <NavLink
                   to="/dashboard/products"
@@ -165,7 +167,7 @@ export default function Sidebar() {
                   } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
                 >
                   <span className="text-lg">
-                    <HiOutlineClipboardList />
+                    <HiOutlineArchive />
                   </span>
                   All Products
                 </NavLink>

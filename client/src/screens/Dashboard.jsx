@@ -49,8 +49,11 @@ export default function Dashboard() {
         </div>
         <div className="ml-60 w-full flex flex-col overflow-y-scroll px-5 pt-2">
           <DashboardHeader />
-          <div className="mt-5">
+          <div className="mt-5 flex-1">
             <Outlet />
+          </div>
+          <div className="px-3 py-2 text-center text-xs rounded-md text-gray-500">
+            © 2025. All rights reserved by Devion Ark.
           </div>
         </div>
       </div>
