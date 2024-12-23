@@ -7,26 +7,27 @@ export default function DashboardCards({
   number,
   desc,
   icon,
-  fromColor,
-  toColor,
+  iconColor,
 }) {
   return (
     <div
-      className={`h-44 flex flex-row rounded-lg bg-gradient-to-tr ${fromColor} ${toColor} p-5 justify-between relative leading-none drop-shadow-xl overflow-hidden`}
+      className={`h-40 flex flex-row rounded-xl ${iconColor} border border-gray-200 p-5 justify-between relative leading-none drop-shadow-lg overflow-hidden`}
     >
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-1">
           <div className="text-lg font-medium text-primaryColor capitalize">
             {title}
           </div>
-          <div className="text-6xl font-light text-primaryColor">{number}</div>
+          <div className="text-4xl font-light text-gray-200">{number}</div>
         </div>
         <div className="text-sm text-gray-200">{desc}</div>
       </div>
-      <div className="flex items-start text-xl text-primaryColor justify-end">
+      <div className="flex items-start text-xl text-gray-200 justify-end">
         <BsThreeDotsVertical />
       </div>
-      <div className=" text-primaryColor absolute bottom-2 right-3 rounded-md text-8xl opacity-30 blur-[2px]">
+      <div
+        className={`text-primaryColor absolute bottom-2 right-3 rounded-md text-5xl`}
+      >
         {icon}
       </div>
     </div>

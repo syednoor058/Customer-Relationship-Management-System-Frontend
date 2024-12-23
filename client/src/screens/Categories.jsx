@@ -8,23 +8,30 @@ import { useState } from "react";
 import { FcOpenedFolder, FcPlus } from "react-icons/fc";
 import {
   HiArchive,
+  HiCurrencyDollar,
   HiOutlineEye,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
   HiOutlineTrash,
   HiSearch,
+  HiUsers,
 } from "react-icons/hi";
 import {
-  MdAccountTree,
   MdDashboardCustomize,
   MdDeleteOutline,
   MdOutlineDone,
 } from "react-icons/md";
+import { TbFilterPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
 
 export default function Categories() {
   const [page, setPage] = useState(10);
+  const [sort, setSort] = useState("no");
+
+  const handleChangeSort = (event) => {
+    setSort(event.target.value);
+  };
 
   const handleChange = (event) => {
     setPage(event.target.value);
@@ -33,22 +40,20 @@ export default function Categories() {
   // const [error, setError] = useState("")
   return (
     <div className="flex flex-col gap-5 font-light text-sm text-gray-600">
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-4 gap-3">
         <DashboardCards
           title="Total Leads"
           number="19"
           desc="Last Month"
-          icon={<MdAccountTree />}
-          fromColor="from-[#2746fa]/80"
-          toColor="to-[#0ea5e9]/80"
+          icon={<HiUsers />}
+          iconColor="bg-[#0ea5e9]/80"
         />
         <DashboardCards
           title="Total Categories"
           number="4"
           desc="Last Month"
           icon={<MdDashboardCustomize />}
-          fromColor="from-[#2746fa]/80"
-          toColor="to-[#6a0dad]/80"
+          iconColor="bg-[#6a0dad]/80"
         />
 
         <DashboardCards
@@ -56,13 +61,19 @@ export default function Categories() {
           number="52"
           desc="Last Month"
           icon={<HiArchive />}
-          fromColor="from-[#2746fa]/80"
-          toColor="to-[#0ea5e9]/80"
+          iconColor="bg-[#0ea5e9]/80"
+        />
+        <DashboardCards
+          title="Total Sales"
+          number="$4487"
+          desc="Last Month"
+          icon={<HiCurrencyDollar />}
+          iconColor="bg-[#6a0dad]/80"
         />
       </div>
       <div className="flex flex-row-reverse gap-5 pb-10">
         <div className="w-[35%]">
-          <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl text-[#1b1b1b]">
+          <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl border border-gray-200">
             <div className="text-xl font-semibold flex flex-row gap-3 items-center text-gray-900">
               <span className="text-4xl ">
                 <FcPlus />
@@ -70,10 +81,10 @@ export default function Categories() {
               Add New Category
             </div>
             <form className="">
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-3">
                 <div>Category Name</div>
                 <input
-                  className="px-2 py-2 bg-transparent rounded-md border border-gray-300 outline-none"
+                  className="w-[264px] pe-2 py-2 bg-transparent border-b border-gray-300 outline-none"
                   type="text"
                   placeholder="Enter category name"
                 />
@@ -85,7 +96,7 @@ export default function Categories() {
                   </span>
                   Add Category
                 </div>
-                <div className="px-3 py-3 rounded-md bg-gray-300 text-accentColor flex flex-row gap-2 justify-center items-center">
+                <div className="px-3 py-3 rounded-md bg-gray-200 text-accentColor flex flex-row gap-2 justify-center items-center">
                   <span className="text-xl">
                     <MdDeleteOutline />
                   </span>
@@ -95,7 +106,7 @@ export default function Categories() {
             </form>
           </div>
         </div>
-        <div className="w-[65%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-md drop-shadow-xl">
+        <div className="w-[65%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-xl border border-gray-200 drop-shadow-xl">
           <div className="flex flex-row justify-between">
             <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
               <span className="text-4xl">
@@ -113,14 +124,41 @@ export default function Categories() {
               Add Products
             </Link>
           </div>
-          <div className="w-[350px] relative mt-5 ">
-            <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
-            <input
-              className="w-full ps-9 pe-2 py-2 rounded-md outline-none bg-transparent border border-gray-300"
-              type="text"
-              placeholder="Search category"
-            />
+          <div className="mt-5 flex flex-row gap-5 justify-between items-center">
+            <div className="w-[350px] relative">
+              <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
+              <input
+                className="w-full ps-9 pe-2 py-2 rounded-xl outline-none bg-transparent border border-gray-300"
+                type="text"
+                placeholder="Search category"
+              />
+            </div>
+            <div className="flex flex-row gap-3 items-center">
+              <div className="text-sm p-2 aspect-square rounded-md drop-shadow-xl flex justify-center items-center border bg-accentColor/80 text-primaryColor">
+                <TbFilterPlus />
+              </div>
+              <div className="flex flex-row gap-1 items-center">
+                <div>Sort by:</div>
+                <FormControl
+                  sx={{ m: 1, padding: 0, width: 120, fontSize: "14px" }}
+                  size="small"
+                >
+                  <Select
+                    id="rows-select3"
+                    value={sort}
+                    onChange={handleChangeSort}
+                    sx={{ padding: 0, fontSize: "14px" }}
+                  >
+                    <MenuItem value="no">New - Old</MenuItem>
+                    <MenuItem value="on">Old - New</MenuItem>
+                    <MenuItem value="alphabet">A - Z</MenuItem>
+                    <MenuItem value="alphabet reverse">Z - A</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
           </div>
+
           <div className="flex flex-col gap-7">
             {/* {error && <p className="text-red-500">{error}</p>} */}
             <table className="w-full">

@@ -10,7 +10,7 @@ export default function AddProduct() {
   const [productName, setProductName] = useState("");
   return (
     <div className="w-full h-full flex flex-row gap-5 justify-between pb-10 font-light text-gray-600">
-      <div className="w-[75%] flex flex-col gap-7 rounded-md drop-shadow-xl bg-primaryColor p-5">
+      <div className="w-[75%] flex flex-col gap-7 rounded-xl border border-gray-200 drop-shadow-xl bg-primaryColor p-5">
         <div className="flex flex-row justify-between items-center">
           <Link
             to="/dashboard"

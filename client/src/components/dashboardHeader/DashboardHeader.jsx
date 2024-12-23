@@ -3,11 +3,11 @@ import { HiOutlineBell, HiOutlineChatAlt2, HiSearch } from "react-icons/hi";
 
 export default function DashboardHeader() {
   return (
-    <header className="w-full flex justify-between pe-10 py-2 bg-primaryColor sticky top-0 rounded drop-shadow-xl z-[999]">
-      <div className="ml-2 w-[300px] relative">
-        <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
+    <header className="w-full flex justify-between pe-10 py-3 bg-primaryColor sticky top-0 rounded-md drop-shadow-xl z-[999]">
+      <div className="ml-5 w-[300px] relative">
+        <HiSearch className="text-xl absolute top-[10px] left-0 z-[10]" />
         <input
-          className="w-full ps-9 pe-2 py-2 rounded-md outline-none bg-gray-100 border-gray-200 border"
+          className="w-full ps-9 pe-2 py-2 outline-none border-gray-300 border-b"
           type="text"
           placeholder="Search"
         />

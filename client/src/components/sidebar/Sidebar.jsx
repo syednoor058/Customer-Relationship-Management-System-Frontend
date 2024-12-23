@@ -4,8 +4,12 @@ import {
   HiOutlineArchive,
   HiOutlineClipboardList,
   HiOutlineClock,
+  HiOutlineIdentification,
   HiOutlineLibrary,
+  HiOutlineUser,
+  HiOutlineUserAdd,
   HiOutlineUserGroup,
+  HiOutlineUsers,
   HiOutlineViewGrid,
   HiOutlineViewGridAdd,
 } from "react-icons/hi";
@@ -71,8 +75,8 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="w-60 min-h-screen bg-gray-100 text-[#121212] pt-2 flex flex-col justify-between text-sm font-light">
-      <div className="px-3 flex justify-center items-center overflow-hidden sticky top-2 bg-gray-100">
+    <div className="w-60 min-h-screen bg-gray-100 text-[#121212] flex flex-col justify-between text-sm font-light">
+      <div className="px-3 flex justify-center items-center overflow-hidden sticky top-0 bg-gray-100 z-[10] py-2">
         <img className="w-[35%] h-auto" src={lightLogo} alt="light_logo" />
       </div>
 
@@ -266,6 +270,185 @@ export default function Sidebar() {
                     <HiOutlinePlusCircle />
                   </span>
                   Add Vendor
+                </NavLink>
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+        <div className="">
+          <Accordion
+            sx={{
+              backgroundColor: "transparent", // Set the background color of the accordion
+              boxShadow: "none", // Optional: Remove the default shadow
+              height: "auto",
+              padding: 0,
+              margin: 0,
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<MdKeyboardArrowDown className="text-xl" />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+              sx={{
+                padding: "0px",
+                paddingRight: "20px",
+                paddingLeft: "20px",
+                margin: "0px",
+                fontWeight: 500,
+                backgroundColor: "transparent",
+                "&:hover": {
+                  backgroundColor: "#e5e7eb", // Change background on hover
+                },
+                minHeight: "0px", // Set minimum height
+                "&.Mui-expanded": {
+                  minHeight: "0px", // Ensure consistency when expanded
+                },
+                ".MuiAccordionSummary-content": {
+                  height: "auto",
+                  margin: 0, // Remove default margin
+                  padding: 0,
+                },
+                ".MuiAccordionSummary-content.Mui-expanded": {
+                  margin: "0px", // Remove margin in expanded state
+                },
+              }}
+            >
+              <div className="flex flex-row gap-2 items-center py-[10px]">
+                <span className="text-lg">
+                  <HiOutlineUser />
+                </span>
+                Employee
+              </div>
+            </AccordionSummary>
+            <AccordionDetails
+              sx={{
+                padding: "0px", // Adjust padding for details
+                paddingLeft: "20px",
+                marginTop: "0px", // Space between summary and details
+              }}
+            >
+              <div className="ps-2 flex flex-col">
+                <NavLink
+                  to="/dashboard/products"
+                  className={`${
+                    pathname === "/dashboard/products"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
+                      : "hover:bg-gray-200 "
+                  } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
+                >
+                  <span className="text-lg">
+                    <HiOutlineClipboardList />
+                  </span>
+                  All Employees
+                </NavLink>
+                <NavLink
+                  to="/dashboard/add-product"
+                  className={`${
+                    pathname === "/dashboard/add-product"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
+                      : "hover:bg-gray-200 "
+                  } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
+                >
+                  <span className="text-lg">
+                    <HiOutlineUserAdd />
+                  </span>
+                  Add Employee
+                </NavLink>
+                <NavLink
+                  to="/dashboard/add-product"
+                  className={`${
+                    pathname === "/dashboard/add-product"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
+                      : "hover:bg-gray-200 "
+                  } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
+                >
+                  <span className="text-lg">
+                    <HiOutlineIdentification />
+                  </span>
+                  Employee Roles
+                </NavLink>
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+        <div className="">
+          <Accordion
+            sx={{
+              backgroundColor: "transparent", // Set the background color of the accordion
+              boxShadow: "none", // Optional: Remove the default shadow
+              height: "auto",
+              padding: 0,
+              margin: 0,
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<MdKeyboardArrowDown className="text-xl" />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+              sx={{
+                padding: "0px",
+                paddingRight: "20px",
+                paddingLeft: "20px",
+                margin: "0px",
+                fontWeight: 500,
+                backgroundColor: "transparent",
+                "&:hover": {
+                  backgroundColor: "#e5e7eb", // Change background on hover
+                },
+                minHeight: "0px", // Set minimum height
+                "&.Mui-expanded": {
+                  minHeight: "0px", // Ensure consistency when expanded
+                },
+                ".MuiAccordionSummary-content": {
+                  height: "auto",
+                  margin: 0, // Remove default margin
+                  padding: 0,
+                },
+                ".MuiAccordionSummary-content.Mui-expanded": {
+                  margin: "0px", // Remove margin in expanded state
+                },
+              }}
+            >
+              <div className="flex flex-row gap-2 items-center py-[10px]">
+                <span className="text-lg">
+                  <HiOutlineUsers />
+                </span>
+                Leads
+              </div>
+            </AccordionSummary>
+            <AccordionDetails
+              sx={{
+                padding: "0px", // Adjust padding for details
+                paddingLeft: "20px",
+                marginTop: "0px", // Space between summary and details
+              }}
+            >
+              <div className="ps-2 flex flex-col">
+                <NavLink
+                  to="/dashboard/categories"
+                  className={`${
+                    pathname === "/dashboard/categories"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
+                      : "hover:bg-gray-200 "
+                  } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
+                >
+                  <span className="text-lg">
+                    <HiOutlineClipboardList />
+                  </span>
+                  All Leads
+                </NavLink>
+                <NavLink
+                  to="/dashboard/add-product"
+                  className={`${
+                    pathname === "/dashboard/add-product"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
+                      : "hover:bg-gray-200 "
+                  } flex items-center gap-2 font-light ps-2 py-2 hover:no-underline text-sm`}
+                >
+                  <span className="text-lg">
+                    <HiOutlinePlusCircle />
+                  </span>
+                  Add Lead
                 </NavLink>
               </div>
             </AccordionDetails>
