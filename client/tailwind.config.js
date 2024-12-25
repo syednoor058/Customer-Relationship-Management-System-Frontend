@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'hero-back': "url('./src/assets/images/background.webp')",
+        'hero-back': "url('./src/assets/images/background.png')",
       },
       fontFamily: {
         bodyFont: ["Poppins", "sans-serif"],

@@ -27,7 +27,7 @@ export default function LoginComponent() {
   };
 
   return (
-    <div className="w-full bg-white rounded-xl overflow-hidden flex justify-center items-center">
+    <div className="w-full bg-white rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
       <div className="w-full h-full flex flex-row bg-primaryColor">
         <div className="w-[30%] bg-gradient-to-tr from-accentColor/90 to-[#0ea5e9]/80 h-auto p-5 flex flex-col gap-5 items-center">
           <div className="w-[85%] aspect-[9/16] overflow-hidden">

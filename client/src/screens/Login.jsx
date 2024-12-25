@@ -1,7 +1,7 @@
 // import React from "react";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import background from "../assets/images/background.webp";
+import background from "../assets/images/background.png";
 import Navbar from "../components/navBar/Navbar";
 
 export default function Login() {

@@ -11,7 +11,7 @@ export default function DashboardCards({
 }) {
   return (
     <div
-      className={`h-40 flex flex-row rounded-xl ${iconColor} border border-gray-200 p-5 justify-between relative leading-none drop-shadow-lg overflow-hidden`}
+      className={`h-40 flex flex-row rounded-md ${iconColor} border border-gray-200 p-5 justify-between relative leading-none drop-shadow-lg overflow-hidden`}
     >
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-1">
