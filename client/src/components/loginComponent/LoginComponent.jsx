@@ -14,10 +14,14 @@ export default function LoginComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/login", {
-        email,
-        password,
-      });
+      console.log(`${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/login`);
+      const response = await axios.post(
+        `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/login`,
+        {
+          email,
+          password,
+        }
+      );
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");
     } catch (err) {

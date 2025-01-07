@@ -50,9 +50,12 @@ export default function Products() {
       }
 
       try {
-        const response = await axios.get("/api/inventory", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/inventory`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (response.data && response.data.inventory) {
           setInventory(response.data.inventory);

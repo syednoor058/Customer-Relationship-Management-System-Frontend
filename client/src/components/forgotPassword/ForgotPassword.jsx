@@ -17,7 +17,10 @@ export default function ForgotPassword() {
   const handleSendOtp = async () => {
     try {
       setError("");
-      const response = await axios.post("/api/forgetpassword", { email });
+      const response = await axios.post(
+        `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/forgetpassword`,
+        { email }
+      );
       if (response.data.success) {
         setStep(2);
         setCountdown(60);
@@ -33,7 +36,10 @@ export default function ForgotPassword() {
   const handleVerifyOtp = async () => {
     try {
       setError("");
-      const response = await axios.post("/api/verifyotp", { email, otp });
+      const response = await axios.post(
+        `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/verifyotp`,
+        { email, otp }
+      );
       if (response.data.success) {
         setStep(3);
       } else {
@@ -48,10 +54,13 @@ export default function ForgotPassword() {
   const handleResetPassword = async () => {
     try {
       setError("");
-      const response = await axios.post("/api/resetpassword", {
-        email,
-        password: newPassword,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/resetpassword`,
+        {
+          email,
+          password: newPassword,
+        }
+      );
       if (response.data.success) {
         alert("Password reset successful");
         navigate("/");
