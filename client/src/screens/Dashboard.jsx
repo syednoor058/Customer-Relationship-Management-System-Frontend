@@ -12,7 +12,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("shikderFoundationAuthToken");
         if (!token) {
           navigate("/");
           return;

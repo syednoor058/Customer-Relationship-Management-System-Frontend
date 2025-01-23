@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
 import Select from "@mui/material/Select";
-import axios from "axios";
+// import axios from "axios";
 import { useEffect, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
 import {
@@ -19,13 +19,14 @@ import {
 import { MdDashboardCustomize } from "react-icons/md";
 import { TbFilterPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { getInventory } from "../components/apiServices/apiServices";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
 
 export default function Products() {
   const [inventory, setInventory] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("shikderFoundationAuthToken");
   const [page, setPage] = useState(10);
   const [cat, setCat] = useState("all");
   const [sort, setSort] = useState("no");
@@ -43,28 +44,12 @@ export default function Products() {
 
   useEffect(() => {
     const fetchInventory = async () => {
-      if (!token) {
-        setError("You need to log in first");
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/inventory`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (response.data && response.data.inventory) {
-          setInventory(response.data.inventory);
-        } else {
-          setError("No inventory data available");
-        }
+        const inventoryData = await getInventory();
+        setInventory(inventoryData);
       } catch (err) {
-        setError("Failed to fetch inventory");
-        console.error(err);
+        setError(err);
+        // console.error(err);
       } finally {
         setIsLoading(false); // End loading after the request completes
       }
@@ -133,7 +118,7 @@ export default function Products() {
             <div className="w-[450px] relative">
               <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
               <input
-                className="w-full ps-9 pe-2 py-2 rounded-xl outline-none bg-transparent border-gray-400/60 border"
+                className="w-full ps-9 pe-2 py-2 rounded-md outline-none bg-transparent border-gray-400/60 border"
                 type="text"
                 placeholder="Search product"
               />
@@ -219,7 +204,9 @@ export default function Products() {
                   ))}
                 </>
               ) : (
-                <p>No inventory items found!</p>
+                <><tr>
+                  <td colSpan="6" className="text-center py-10 text-xl font-semibold text-gray-400"><p>No items found!</p></td>
+                </tr></>
               )}
             </tbody>
           </table>

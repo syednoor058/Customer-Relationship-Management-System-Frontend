@@ -22,7 +22,7 @@ export default function LoginComponent() {
           password,
         }
       );
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("shikderFoundationAuthToken", response.data.token);
       navigate("/dashboard");
     } catch (err) {
       console.log(err);

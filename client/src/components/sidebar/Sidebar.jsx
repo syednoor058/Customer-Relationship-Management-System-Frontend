@@ -53,7 +53,7 @@ export default function Sidebar() {
   const [loggingOut, setLoggingOut] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("shikderFoundationAuthToken");
     if (token) {
       setLoggingOut(true);
       await axios.post(
@@ -63,7 +63,7 @@ export default function Sidebar() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      localStorage.removeItem("token");
+      localStorage.removeItem("shikderFoundationAuthToken");
     }
     navigate("/");
   };
