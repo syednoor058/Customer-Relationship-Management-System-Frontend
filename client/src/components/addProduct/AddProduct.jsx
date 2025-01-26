@@ -1,13 +1,67 @@
 // import React from 'react'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FcBusinessman, FcOpenedFolder, FcPlus } from "react-icons/fc";
 import { HiOutlineArchive, HiOutlineArrowSmLeft } from "react-icons/hi";
 import { MdDeleteOutline, MdOutlineDone } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { addInventory, getCategory } from "../apiServices/apiServices";
+import LoadingScreen from "../loadingScreen/LoadingScreen";
 
 export default function AddProduct() {
   const [productName, setProductName] = useState("");
+  const [productCategory, setProductCategory] = useState(0);
+  const [productPrice, setProductPrice] = useState(0);
+  const [productQuantity, setProductQuantity] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState([]);
+  const token = localStorage.getItem("shikderFoundationAuthToken");
+
+  const handleAddProductSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const addProductData = await addInventory(
+        productName,
+        productCategory,
+        productQuantity,
+        productPrice
+      );
+      setProductName("");
+      setProductCategory(0);
+      setProductPrice(0);
+      setProductQuantity(0);
+      toast(addProductData.message);
+    } catch (error) {
+      toast(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const categoryData = await getCategory();
+        setCategory(categoryData.inventory_category);
+      } catch (err) {
+        // setError(err);
+        toast(err.message);
+        // toast(error.message)
+        // console.error(err);
+      } finally {
+        setLoading(false); // End loading after the request completes
+      }
+    };
+
+    fetchCategory();
+  }, [token]);
+
+  if (loading) {
+    return <LoadingScreen />; // Show loading state
+  }
+
   return (
     <div className="w-full h-full flex flex-row gap-5 justify-between pb-10 font-light text-gray-600">
       <div className="w-[75%] flex flex-col gap-7 rounded-xl border border-gray-200 drop-shadow-xl bg-primaryColor p-5">
@@ -37,9 +91,12 @@ export default function AddProduct() {
           </span>
           Add New Product
         </div>
-        <div className="flex flex-row gap-5 justify-between">
-          <form className="w-full flex flex-row gap-5">
-            <div className="w-[50%] flex flex-col gap-5">
+        <div className="w-full flex flex-row gap-5 justify-between">
+          <form
+            className="w-full flex flex-col gap-5"
+            onSubmit={handleAddProductSubmit}
+          >
+            <div className="w-full flex flex-col gap-5">
               <div className="text-lg font-semibold text-gray-700">
                 General Information
               </div>
@@ -56,18 +113,49 @@ export default function AddProduct() {
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <div>Category</div>
-                <input
+                <label>Category</label>
+                <select
+                  className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
+                  value={productCategory}
+                  onChange={(e) => setProductCategory(e.target.value)}
+                  required
+                >
+                  <option value={0} disabled>
+                    Select a category
+                  </option>
+
+                  {category.length === 0 ? (
+                    <>
+                      <option disabled className="text-center">
+                        No categories found!
+                      </option>
+                    </>
+                  ) : (
+                    <>
+                      {category.map((item, index) => (
+                        <option
+                          key={index}
+                          value={item.id}
+                          className="capitalize"
+                        >
+                          {item.category_name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+
+                {/* <input
                   className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                   type="text"
                   placeholder="Enter product category"
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
                   required
-                />
+                /> */}
               </div>
 
-              <div className="flex flex-col gap-1">
+              {/* <div className="flex flex-col gap-1">
                 <div>Description</div>
                 <textarea
                   className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
@@ -79,33 +167,10 @@ export default function AddProduct() {
                   rows={3}
                   cols={10}
                 />
-              </div>
-              <div className="text-lg font-semibold text-gray-700">
-                Stock and Value
-              </div>
-              <div className="flex flex-row gap-5">
-                <div className="w-[50%] flex flex-col gap-1">
-                  <div>Initial Stock</div>
-                  <input
-                    className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
-                    type="number"
-                    value={0}
-                    required
-                  />
-                </div>
-                <div className="w-[50%] flex flex-col gap-1">
-                  <div>Initial Value</div>
-                  <input
-                    className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
-                    type="number"
-                    value={0}
-                    required
-                  />
-                </div>
-              </div>
+              </div> */}
             </div>
-            <div className="w-[50%] flex flex-col gap-5">
-              <div className="text-lg font-semibold text-gray-700">
+            <div className="w-full flex flex-col gap-5">
+              {/* <div className="text-lg font-semibold text-gray-700">
                 Vendor&apos;s Information
               </div>
               <div className="flex flex-col gap-1">
@@ -129,8 +194,33 @@ export default function AddProduct() {
                   onChange={(e) => setProductName(e.target.value)}
                   required
                 />
+              </div> */}
+              <div className="text-lg font-semibold text-gray-700">
+                Stock and Value
               </div>
-              <div className="flex flex-row gap-3 justify-end">
+              <div className="flex flex-row gap-5">
+                <div className="w-[50%] flex flex-col gap-1">
+                  <div>Initial Stock</div>
+                  <input
+                    className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
+                    type="number"
+                    value={productQuantity}
+                    onChange={(e) => setProductQuantity(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="w-[50%] flex flex-col gap-1">
+                  <div>Initial Value</div>
+                  <input
+                    className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
+                    type="number"
+                    value={productPrice}
+                    onChange={(e) => setProductPrice(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row gap-3 justify-start">
                 <div className="flex">
                   <button
                     type="submit"

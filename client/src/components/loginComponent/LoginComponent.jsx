@@ -1,8 +1,8 @@
 // import React from "react";
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../assets/images/loginRegister.webp";
+import { loginAPi } from "../apiServices/apiServices";
 // import logo from "../../assets/images/logo.png";
 
 export default function LoginComponent() {
@@ -14,15 +14,8 @@ export default function LoginComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(`${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/login`);
-      const response = await axios.post(
-        `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/login`,
-        {
-          email,
-          password,
-        }
-      );
-      localStorage.setItem("shikderFoundationAuthToken", response.data.token);
+      const loginData = await loginAPi(email, password);
+      localStorage.setItem("shikderFoundationAuthToken", loginData.token);
       navigate("/dashboard");
     } catch (err) {
       console.log(err);

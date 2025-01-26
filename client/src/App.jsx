@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "./App.css";
 import AddProduct from "./components/addProduct/AddProduct";
 import ForgotPassword from "./components/forgotPassword/ForgotPassword";
@@ -14,6 +15,7 @@ import Vendors from "./screens/Vendors";
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer autoClose={3000} transition:Slide />
       <Routes>
         <Route exact path="/" element={<Login />}>
           <Route index element={<LoginComponent />} />

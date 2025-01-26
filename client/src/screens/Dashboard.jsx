@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import DashboardHeader from "../components/dashboardHeader/DashboardHeader";
+import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 import Sidebar from "../components/sidebar/Sidebar";
 
 export default function Dashboard() {
@@ -36,7 +37,7 @@ export default function Dashboard() {
   if (!user) {
     return (
       <div className="w-screen h-screen fixed top-0 bg-primaryColor z-[20]">
-        Signing in...
+        <LoadingScreen />
       </div>
     );
   }
