@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
 import AddProduct from "./components/addProduct/AddProduct";
+import AddVendor from "./components/addVendor/AddVendor";
 import ForgotPassword from "./components/forgotPassword/ForgotPassword";
 import LoginComponent from "./components/loginComponent/LoginComponent";
 import Overview from "./components/overview/Overview";
@@ -26,7 +27,8 @@ function App() {
           <Route exact path="categories" element={<Categories />} />
           <Route exact path="products" element={<Products />} />
           <Route exact path="add-product" element={<AddProduct />} />
-          <Route exact path="vendors" element={<Vendors />} />
+          <Route exact path="all-vendors" element={<Vendors />} />
+          <Route exact path="add-vendor" element={<AddVendor />} />
           <Route exact path="accounts" element={<Accounts />} />
         </Route>
       </Routes>

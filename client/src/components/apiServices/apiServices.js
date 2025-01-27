@@ -15,7 +15,7 @@ const getHeaders = () => {
   export const loginAPi = async (email, password) => {
     try{
       const response = await axios.post(
-        `${import.meta.env.VITE_SIKDER_CMS_APP_API}/api/login`,
+        `${API_BASE_URL}/api/login`,
         {
           email,
           password,
