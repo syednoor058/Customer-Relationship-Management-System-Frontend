@@ -70,7 +70,7 @@ export default function Projects() {
     setPopup({ type: "edit", data: project });
     setEditProjectName(project.project_name);
     setEditProjectAddress(project.address);
-    setEditProjectState(project.state);
+    setEditProjectState(project.state_id);
     setEditProjectBudget(project.budget);
     setEditProjectBalance(project.balance);
   };
@@ -106,7 +106,7 @@ export default function Projects() {
     setEditProjectAddress("");
     setEditProjectBudget(0);
     setEditProjectBalance(0);
-    setEditProjectState("");
+    setEditProjectState(0);
   };
 
   const handleProjectDelete = async (_id) => {
