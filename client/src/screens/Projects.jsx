@@ -26,28 +26,30 @@ import { TbFilterPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  deleteInventory,
-  editInventory,
-  getCategory,
-  getInventory,
-} from "../components/apiServices/apiServices";
+  deleteProject,
+  editProject,
+  getProjects,
+  getProjectStates,
+} from "../components/apiServices/projectAPIServices";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
-export default function Products() {
+export default function Projects() {
   const [popup, setPopup] = useState({ type: "", data: null });
-  const [inventory, setInventory] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const [page, setPage] = useState(10);
-  const [cat, setCat] = useState("all");
+  const [state, setState] = useState(0);
   const [sort, setSort] = useState("no");
-  const [editProductName, setEditProductName] = useState("");
-  const [editProductCategory, setEditProductCategory] = useState(0);
-  const [editProductPrice, setEditProductPrice] = useState(0);
-  const [editProductQty, setEditProductQty] = useState(0);
-  const [category, setCategory] = useState([]);
+  const [editProjectName, setEditProjectName] = useState("");
+  const [editProjectAddress, setEditProjectAddress] = useState(0);
+  const [editProjectState, setEditProjectState] = useState(0);
+  const [editProjectBalance, setEditProjectBalance] = useState(0);
+  const [editProjectBudget, setEditProjectBudget] = useState(0);
+
+  const [projectStates, setProjectStates] = useState([]);
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
@@ -56,39 +58,41 @@ export default function Products() {
   const handleChange = (event) => {
     setPage(event.target.value);
   };
-  const handleChangeCat = (event) => {
-    setCat(event.target.value);
+  const handleChangeState = (event) => {
+    setState(event.target.value);
   };
 
-  const viewProductPopup = (product) => {
-    setPopup({ type: "view", data: product });
+  const viewProjectPopup = (project) => {
+    setPopup({ type: "view", data: project });
   };
 
-  const editProductPopup = (product) => {
-    setPopup({ type: "edit", data: product });
-    setEditProductName(product.product_name);
-    setEditProductCategory(product.category_id);
-    setEditProductPrice(product.price);
-    setEditProductQty(product.quantity);
+  const editProjectPopup = (project) => {
+    setPopup({ type: "edit", data: project });
+    setEditProjectName(project.project_name);
+    setEditProjectAddress(project.address);
+    setEditProjectState(project.state);
+    setEditProjectBudget(project.budget);
+    setEditProjectBalance(project.balance);
   };
 
-  const deleteProductPopup = (product) => {
-    setPopup({ type: "delete", data: product });
+  const deleteProjectPopup = (project) => {
+    setPopup({ type: "delete", data: project });
   };
 
-  const handleEditProductSubmit = async (e) => {
+  const handleEditProjectSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const editProductData = await editInventory(
+      const editProjectData = await editProject(
         popup.data?.id,
-        editProductName,
-        editProductCategory,
-        editProductQty,
-        editProductPrice
+        editProjectName,
+        editProjectAddress,
+        editProjectState,
+        editProjectBudget,
+        editProjectBalance
       );
-      setInventory(editProductData.inventory);
-      toast(editProductData.message);
+
+      toast(editProjectData.message);
       setPopup({ type: "", data: null });
     } catch (error) {
       toast(error.message);
@@ -97,12 +101,20 @@ export default function Products() {
     }
   };
 
-  const handleCategoryDelete = async (_id) => {
+  const clearEditProjectData = () => {
+    setEditProjectName("");
+    setEditProjectAddress("");
+    setEditProjectBudget(0);
+    setEditProjectBalance(0);
+    setEditProjectState("");
+  };
+
+  const handleProjectDelete = async (_id) => {
     setIsLoading(true);
     try {
-      const deleteProductData = await deleteInventory(_id);
-      setInventory(deleteProductData.inventory);
-      toast(deleteProductData.message);
+      const deleteProjectData = await deleteProject(_id);
+
+      toast(deleteProjectData.message);
     } catch (error) {
       toast(error.message);
     } finally {
@@ -112,10 +124,10 @@ export default function Products() {
   };
 
   useEffect(() => {
-    const fetchInventory = async () => {
+    const fetchProjects = async () => {
       try {
-        const inventoryData = await getInventory();
-        setInventory(inventoryData.inventory);
+        const projectsData = await getProjects();
+        setProjects(projectsData);
       } catch (err) {
         setError(err);
         // console.error(err);
@@ -124,14 +136,14 @@ export default function Products() {
       }
     };
 
-    fetchInventory();
+    fetchProjects();
   }, [token]);
 
   useEffect(() => {
-    const fetchCategory = async () => {
+    const fetchProjectStates = async () => {
       try {
-        const categoryData = await getCategory();
-        setCategory(categoryData.inventory_category);
+        const projectStatesData = await getProjectStates();
+        setProjectStates(projectStatesData);
       } catch (err) {
         // setError(err);
         toast(err.message);
@@ -142,7 +154,7 @@ export default function Products() {
       }
     };
 
-    fetchCategory();
+    fetchProjectStates();
   }, [token]);
 
   if (isLoading) {
@@ -152,7 +164,7 @@ export default function Products() {
   return (
     <div className="flex flex-col gap-5 pb-10 font-light text-sm text-gray-600">
       {popup.type !== "" && (
-        <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center backdrop-blur-[2px] z-[2000] bg-gray-800 bg-opacity-50">
+        <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center backdrop-blur-[2px] z-[2000] bg-gray-800 bg-opacity-50 overflow-y-auto">
           {popup.type === "view" && (
             <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative">
               <div
@@ -166,21 +178,35 @@ export default function Products() {
               </div>
               <div className="w-full flex flex-col gap-5">
                 <div className="font-medium text-lg border-b border-gray-400 pb-1">
-                  Product Details
+                  Project Details
                 </div>
                 <div className="flex flex-col gap-3">
-                  <div>Product Name: {popup.data?.product_name}</div>
-                  <div>Category ID: {popup.data?.category_id}</div>
-                  <div>Quantity: {popup.data?.quantity}</div>
-                  <div>Price: {popup.data?.price}</div>
-                  <div>Created At: {popup.data?.created_at}</div>
-                  <div>Updated At: {popup.data?.updated_at}</div>
+                  <div className="capitalize">
+                    Project Name: {popup.data?.project_name}
+                  </div>
+                  <div className="capitalize">
+                    Address: {popup.data?.address}
+                  </div>
+                  <div className="capitalize">
+                    State: {popup.data?.state_name}
+                  </div>
+                  <div className="capitalize">Budget: {popup.data?.budget}</div>
+                  <div className="capitalize">
+                    Balance: {popup.data?.balance}
+                  </div>
+                  <div className="capitalize">Added By: {popup.data?.name}</div>
+                  <div className="capitalize">
+                    Created At: {popup.data?.created_at}
+                  </div>
+                  <div className="capitalize">
+                    Updated At: {popup.data?.updated_at}
+                  </div>
                 </div>
               </div>
             </div>
           )}
           {popup.type === "edit" && (
-            <div className="p-10 bg-primaryColor w-[60%] rounded-lg relative overflow-x-hidden overflow-y-auto">
+            <div className="p-10 bg-primaryColor w-[60%] rounded-lg relative overflow-x-hidden overflow-y-auto mt-32">
               <div
                 onClick={() => setPopup({ type: "", data: null })}
                 className="flex flex-row items-center gap-1 font-light absolute top-5 right-5 cursor-pointer hover:text-red-600 duration-500"
@@ -192,12 +218,12 @@ export default function Products() {
               </div>
               <div className="w-full flex flex-col gap-5">
                 <div className="font-medium text-lg border-b border-gray-400 pb-1">
-                  Update Product Details
+                  Update Project Details
                 </div>
                 <div className="w-full flex flex-row gap-5 justify-between">
                   <form
                     className="w-full flex flex-col gap-5"
-                    onSubmit={handleEditProductSubmit}
+                    onSubmit={handleEditProjectSubmit}
                   >
                     <div className="w-full flex flex-col gap-5">
                       <div className="text-lg font-semibold text-gray-700">
@@ -209,41 +235,53 @@ export default function Products() {
                         <input
                           className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                           type="text"
-                          placeholder="Enter product name"
-                          value={editProductName}
-                          onChange={(e) => setEditProductName(e.target.value)}
+                          placeholder="Enter project name"
+                          value={editProjectName}
+                          onChange={(e) => setEditProjectName(e.target.value)}
                           required
                         />
                       </div>
                       <div className="flex flex-col gap-1">
-                        <label>Category</label>
-                        <select
+                        <div>Address</div>
+                        <input
                           className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
-                          value={editProductCategory}
+                          type="text"
+                          placeholder="Enter project address"
+                          value={editProjectAddress}
                           onChange={(e) =>
-                            setEditProductCategory(e.target.value)
+                            setEditProjectAddress(e.target.value)
                           }
+                          required
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <label>State</label>
+                        <select
+                          className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none capitalize"
+                          value={editProjectState}
+                          onChange={(e) => setEditProjectState(e.target.value)}
                           required
                         >
                           <option value={0} disabled>
-                            Select a category
+                            Select a state
                           </option>
 
-                          {category.length === 0 ? (
+                          {projectStates?.length === 0 ? (
                             <>
                               <option disabled className="text-center">
-                                No categories found!
+                                No state found!
                               </option>
                             </>
                           ) : (
                             <>
-                              {category.map((item, index) => (
+                              {projectStates.map((item, index) => (
                                 <option
                                   key={index}
                                   value={item.id}
                                   className="capitalize"
                                 >
-                                  {item.category_name}
+                                  {item.state_name}
                                 </option>
                               ))}
                             </>
@@ -253,27 +291,29 @@ export default function Products() {
                     </div>
                     <div className="w-full flex flex-col gap-5">
                       <div className="text-lg font-semibold text-gray-700">
-                        Stock and Value
+                        Budget and Balance
                       </div>
                       <div className="flex flex-row gap-5">
                         <div className="w-[50%] flex flex-col gap-1">
-                          <div>Initial Stock</div>
+                          <div>Budget</div>
                           <input
                             className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                             type="number"
-                            value={editProductQty}
-                            onChange={(e) => setEditProductQty(e.target.value)}
+                            value={editProjectBudget}
+                            onChange={(e) =>
+                              setEditProjectBudget(e.target.value)
+                            }
                             required
                           />
                         </div>
                         <div className="w-[50%] flex flex-col gap-1">
-                          <div>Initial Value</div>
+                          <div>Balance</div>
                           <input
                             className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                             type="number"
-                            value={editProductPrice}
+                            value={editProjectBalance}
                             onChange={(e) =>
-                              setEditProductPrice(e.target.value)
+                              setEditProjectBalance(e.target.value)
                             }
                             required
                           />
@@ -283,20 +323,23 @@ export default function Products() {
                         <div className="flex">
                           <button
                             type="submit"
-                            className="w-36 px-3 py-3 bg-accentColor text-primaryColor rounded-md text-center flex flex-row gap-2 justify-center items-center"
+                            className="w-40 px-3 py-3 bg-accentColor text-primaryColor rounded-md text-center flex flex-row gap-2 justify-center items-center"
                           >
                             <span className="text-xl">
                               <MdOutlineDone />
                             </span>
-                            Edit Product
+                            Edit Project
                           </button>
                         </div>
                         <div className="flex">
-                          <button className="w-36 px-3 py-3 bg-gray-200 text-accentColor rounded-md text-center flex flex-row gap-2 items-center justify-center">
+                          <button
+                            onClick={() => clearEditProjectData()}
+                            className="w-36 px-3 py-3 bg-gray-200 text-accentColor rounded-md text-center flex flex-row gap-2 items-center justify-center"
+                          >
                             <span className="text-xl">
                               <MdDeleteOutline />
                             </span>
-                            Discard
+                            Clear
                           </button>
                         </div>
                       </div>
@@ -309,11 +352,11 @@ export default function Products() {
           {popup.type === "delete" && (
             <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative flex flex-col gap-5">
               <div className="w-full text-center">
-                Confirm you want to delete this product?
+                Confirm you want to delete this project?
               </div>
               <div className="w-full flex flex-row justify-center gap-10">
                 <button
-                  onClick={() => handleCategoryDelete(popup.data?.id)}
+                  onClick={() => handleProjectDelete(popup.data?.id)}
                   className="px-5 py-2 rounded bg-red-600 text-primaryColor"
                 >
                   Delete
@@ -366,16 +409,16 @@ export default function Products() {
             <span className="text-4xl">
               <FcBriefcase />
             </span>
-            All Products
+            All Projects
           </div>
           <Link
-            to="/dashboard/add-product"
+            to="/dashboard/add-project"
             className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
           >
             <span className="text-xl">
               <HiOutlinePlusCircle />
             </span>
-            Add Products
+            Add Project
           </Link>
         </div>
         <div className="mt-5 flex flex-row justify-between items-center gap-5">
@@ -385,7 +428,7 @@ export default function Products() {
               <input
                 className="w-full ps-9 pe-2 py-2 rounded-md outline-none bg-transparent border-gray-400/60 border"
                 type="text"
-                placeholder="Search product"
+                placeholder="Search project"
               />
             </div>
           </div>
@@ -416,17 +459,20 @@ export default function Products() {
             </div>
 
             <div className="flex flex-row gap-1 items-center">
-              <div>Category:</div>
+              <div>State:</div>
               <FormControl sx={{ m: 1, width: 120 }} size="small">
                 <Select
                   id="rows-select2"
-                  value={cat}
-                  onChange={handleChangeCat}
+                  value={state}
+                  onChange={handleChangeState}
                   sx={{ fontSize: "14px" }}
                 >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="tripol">Tripol</MenuItem>
-                  <MenuItem value="selellute">Selellute</MenuItem>
+                  <MenuItem value={0}>All</MenuItem>
+                  {projectStates?.map((item, index) => (
+                    <MenuItem key={index} value={item.id}>
+                      {item.state_name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>
@@ -437,45 +483,49 @@ export default function Products() {
           <table className="w-full">
             <thead className="w-full">
               <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-                <th className="w-[10%] text-center py-3 px-2">ID</th>
-                <th className="w-[50%] text-start py-3 px-2">Name</th>
-                {/* <th className="w-[40%] text-start py-3 px-2">Description</th> */}
-                <th className="w-[10%] text-center py-3 px-2">Quantity</th>
-                <th className="w-[10%] text-center py-3 px-2">Price</th>
+                <th className="w-[5%] text-center py-3 px-2">ID</th>
+                <th className="w-[20%] text-start py-3 px-2">Name</th>
+                <th className="w-[20%] text-start py-3 px-2">Address</th>
+                <th className="w-[15%] text-center py-3 px-2">State</th>
+                <th className="w-[10%] text-center py-3 px-2">Budget</th>
+                <th className="w-[10%] text-center py-3 px-2">Balance</th>
                 <th className="w-[20%] text-center py-3 px-2">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {inventory.length > 0 ? (
+              {projects?.length > 0 ? (
                 <>
-                  {inventory.map((item, index) => (
+                  {projects.map((item, index) => (
                     <tr
                       key={index}
                       className={`text-sm font-light rounded-md ${
-                        (index + 1) % 2 === 0 && "bg-gray-200/60"
+                        (index + 1) % 2 === 0 && "bg-gray-100"
                       }`}
                     >
                       <td className="py-4 px-2 text-center">{index + 1}</td>
-                      <td className="py-4 px-2">{item.product_name}</td>
-                      {/* <td className="py-4 px-2">{item.description}</td> */}
-                      <td className="py-4 px-2 text-center">{item.quantity}</td>
-                      <td className="py-4 px-2 text-center">{item.price}</td>
+                      <td className="py-4 px-2">{item.project_name}</td>
+                      <td className="py-4 px-2">{item.address}</td>
+                      <td className="py-4 px-2 text-center">
+                        {item.state_name}
+                      </td>
+                      <td className="py-4 px-2 text-center">{item.budget}</td>
+                      <td className="py-4 px-2 text-center">{item.balance}</td>
                       <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
                         <div
                           className="cursor-pointer"
-                          onClick={() => viewProductPopup(item)}
+                          onClick={() => viewProjectPopup(item)}
                         >
                           <HiOutlineEye />
                         </div>
                         <div
                           className="cursor-pointer"
-                          onClick={() => editProductPopup(item)}
+                          onClick={() => editProjectPopup(item)}
                         >
                           <HiOutlinePencilAlt />
                         </div>
                         <div
                           className="cursor-pointer"
-                          onClick={() => deleteProductPopup(item)}
+                          onClick={() => deleteProjectPopup(item)}
                         >
                           <HiOutlineTrash className="text-red-500" />
                         </div>

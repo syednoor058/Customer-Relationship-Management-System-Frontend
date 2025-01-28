@@ -15,6 +15,7 @@ import {
   HiOutlineViewGridAdd,
 } from "react-icons/hi";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { PiStepsBold } from "react-icons/pi";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -30,6 +31,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import lightLogo from "../../assets/images/logo_light.png";
 import { DASHBOARD_SIDEBAR_BOTTOM_LINKS } from "../constant/SideBarLinksConstant";
 import DashboardAccordionLink from "../dashboardAccordionLink/DashboardAccordionLink";
+import LoadingScreen from "../loadingScreen/LoadingScreen";
 
 function SidebarLink({ item }) {
   const { pathname } = useLocation();
@@ -71,7 +73,7 @@ export default function Sidebar() {
   if (loggingOut) {
     return (
       <div className="w-screen h-screen fixed top-0 bg-primaryColor z-[20]">
-        Logging out...
+        <LoadingScreen />
       </div>
     );
   }
@@ -247,6 +249,11 @@ export default function Sidebar() {
               linkName: "Add Project",
               linkPath: "/dashboard/add-project",
               linkIcon: <HiOutlinePlusCircle />,
+            },
+            {
+              linkName: "Project States",
+              linkPath: "/dashboard/project-states",
+              linkIcon: <PiStepsBold />,
             },
           ]}
         />

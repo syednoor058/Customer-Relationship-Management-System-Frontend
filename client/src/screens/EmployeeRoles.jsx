@@ -1,5 +1,3 @@
-// import React from 'react'
-
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
@@ -26,25 +24,25 @@ import { TbFilterPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  addCategory,
-  deleteCategory,
-  editCategory,
-  getCategory,
-} from "../components/apiServices/apiServices";
+  addEmployeeRoles,
+  deleteEmployeeRoles,
+  editEmployeeRoles,
+  getEmployeeRoles,
+} from "../components/apiServices/employeeAPIServices";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
-export default function Categories() {
-  const [editCategoryName, setEditCategoryName] = useState("");
+export default function EmployeeRoles() {
+  const [editRoleName, setEditRoleName] = useState("");
   const [popup, setPopup] = useState({ type: "", data: null });
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const [page, setPage] = useState(10);
   const [sort, setSort] = useState("no");
-  const [category, setCategory] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [error, setError] = useState("");
   // const [alert, setAlert] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
-  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newRoleName, setNewRoleName] = useState("");
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
@@ -54,58 +52,58 @@ export default function Categories() {
     setPage(event.target.value);
   };
 
-  const handleCategoryView = (productPop) => {
+  const handleRoleView = (productPop) => {
     setPopup({ type: "view", data: productPop });
   };
 
-  const handleCategoryEdit = (productPop) => {
+  const handleRoleEdit = (productPop) => {
     setPopup({ type: "edit", data: productPop });
-    setEditCategoryName(productPop.category_name);
+    setEditRoleName(productPop.role_name);
   };
 
-  const handleCategoryDelete = (productPop) => {
+  const handleRoleDelete = (productPop) => {
     setPopup({ type: "delete", data: productPop });
   };
 
-  const handleCategoryDeleteRequest = async (id) => {
+  const handleRoleDeleteRequest = async (id) => {
     try {
-      const categoryDeleteData = await deleteCategory(id);
-      setCategory(categoryDeleteData.inventory_category);
+      const roleDeleteData = await deleteEmployeeRoles(id);
+      //   setCategory(roleDeleteData.inventory_category);
       setPopup({ type: "", data: null });
-      toast(categoryDeleteData.message);
+      toast(roleDeleteData.message);
     } catch (error) {
       setError(error);
     }
   };
 
-  const handleCategoryUpdate = async (id, category_name) => {
+  const handleEmployeeRoleUpdate = async (id, role_name) => {
     try {
-      const editCategoryData = await editCategory(id, category_name);
-      setCategory(editCategoryData.inventory_category);
-      setEditCategoryName("");
-      toast(editCategoryData.message);
+      const editRoleData = await editEmployeeRoles(id, role_name);
+      //   setCategory(editRoleData.inventory_category);
+      setEditRoleName("");
+      toast(editRoleData.message);
       setPopup({ type: "", data: null });
     } catch (error) {
       setError(error);
     }
   };
 
-  const handleCreateCategorySubmit = async (category_name) => {
+  const handleCreateEmployeeRoleSubmit = async (category_name) => {
     try {
-      const createCategoryData = await addCategory(category_name);
-      toast(createCategoryData.message);
-      setCategory(createCategoryData.inventory_category);
-      setNewCategoryName("");
+      const createEmployeeRoleData = await addEmployeeRoles(category_name);
+      toast(createEmployeeRoleData.message);
+      //   setCategory(createCategoryData.inventory_category);
+      setNewRoleName("");
     } catch (err) {
       setError(err);
     }
   };
 
   useEffect(() => {
-    const fetchCategory = async () => {
+    const fetchEmployeeRoles = async () => {
       try {
-        const categoryData = await getCategory();
-        setCategory(categoryData.inventory_category);
+        const employeeRolesData = await getEmployeeRoles();
+        setRoles(employeeRolesData);
       } catch (err) {
         setError(err);
         // console.error(err);
@@ -113,7 +111,7 @@ export default function Categories() {
         setIsLoading(false); // End loading after the request completes
       }
     };
-    fetchCategory();
+    fetchEmployeeRoles();
   }, [token]);
 
   if (isLoading) {
@@ -137,10 +135,11 @@ export default function Categories() {
               </div>
               <div className="w-full flex flex-col gap-5">
                 <div className="font-medium text-lg border-b border-gray-400 pb-1">
-                  Category Details
+                  Employe Role Details
                 </div>
                 <div className="flex flex-col gap-3">
-                  <div>Category Name: {popup.data?.category_name}</div>
+                  <div>Employee Role: {popup.data?.role_name}</div>
+                  <div>Created By: {popup.data?.added_by}</div>
                   <div>Created At: {popup.data?.created_at}</div>
                   <div>Updated At: {popup.data?.updated_at}</div>
                 </div>
@@ -160,27 +159,28 @@ export default function Categories() {
               </div>
               <div className="w-full flex flex-col gap-5">
                 <div className="text-lg font-semibold border-b border-gray-400 pb-1">
-                  Update Category
+                  Update Employee Role
                 </div>
                 <div className="flex flex-col gap-2">
                   <input
                     className="w-full px-2 py-2 outline-none border rounded border-gray-300"
-                    value={editCategoryName}
-                    placeholder="Enter category name"
-                    onChange={(e) => setEditCategoryName(e.target.value)}
+                    value={editRoleName}
+                    placeholder="Enter employee role name"
+                    onChange={(e) => setEditRoleName(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="w-full flex flex-row gap-10">
                   <button
                     onClick={() =>
-                      handleCategoryUpdate(popup.data.id, editCategoryName)
+                      handleEmployeeRoleUpdate(popup.data.id, editRoleName)
                     }
                     className="px-5 py-2 rounded bg-blue-500 text-primaryColor"
                   >
                     Update
                   </button>
                   <button
-                    onClick={() => setEditCategoryName("")}
+                    onClick={() => setEditRoleName("")}
                     className="px-5 py-2 rounded bg-gray-300 text-gray-800"
                   >
                     Discard
@@ -192,11 +192,11 @@ export default function Categories() {
           {popup.type === "delete" && (
             <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative flex flex-col gap-5">
               <div className="w-full text-center">
-                Confirm you want to delete this category?
+                Confirm you want to delete this employee role?
               </div>
               <div className="w-full flex flex-row justify-center gap-10">
                 <button
-                  onClick={() => handleCategoryDeleteRequest(popup.data.id)}
+                  onClick={() => handleRoleDeleteRequest(popup.data.id)}
                   className="px-5 py-2 rounded bg-red-600 text-primaryColor"
                 >
                   Delete
@@ -252,32 +252,33 @@ export default function Categories() {
               <span className="text-4xl ">
                 <FcPlus />
               </span>
-              Add New Category
+              Add New Employee Role
             </div>
             <div className="">
               <div className="flex flex-col gap-3">
-                <div>Category Name</div>
+                <div>Employee Role Name</div>
                 <input
                   className="w-full px-2 py-3 bg-transparent border rounded border-gray-300 outline-none"
                   type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Enter category name"
+                  value={newRoleName}
+                  onChange={(e) => setNewRoleName(e.target.value)}
+                  placeholder="Enter employee role name"
+                  required
                 />
               </div>
               <div className="mt-3 flex flex-row gap-3">
                 <div
-                  onClick={() => handleCreateCategorySubmit(newCategoryName)}
+                  onClick={() => handleCreateEmployeeRoleSubmit(newRoleName)}
                   className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center cursor-pointer"
                 >
                   <span className="text-xl">
                     <MdOutlineDone />
                   </span>
-                  Add Category
+                  Add Role
                 </div>
                 <div
                   className="px-3 py-3 rounded-md bg-gray-200 text-accentColor flex flex-row gap-2 justify-center items-center cursor-pointer"
-                  onClick={() => setNewCategoryName("")}
+                  onClick={() => setNewRoleName("")}
                 >
                   <span className="text-xl">
                     <MdDeleteOutline />
@@ -294,7 +295,7 @@ export default function Categories() {
               <span className="text-4xl">
                 <FcOpenedFolder />
               </span>
-              All Categories
+              All Employee Roles
             </div>
             <Link
               to="/dashboard/add-product"
@@ -303,7 +304,7 @@ export default function Categories() {
               <span className="text-xl">
                 <HiOutlinePlusCircle />
               </span>
-              Add Products
+              Add Employee
             </Link>
           </div>
           <div className="mt-5 flex flex-row gap-5 justify-between items-center">
@@ -312,7 +313,7 @@ export default function Categories() {
               <input
                 className="w-full ps-9 pe-2 py-2 rounded-xl outline-none bg-transparent border border-gray-300"
                 type="text"
-                placeholder="Search category"
+                placeholder="Search employee role"
               />
             </div>
             <div className="flex flex-row gap-3 items-center">
@@ -348,33 +349,28 @@ export default function Categories() {
                 <tr className="text-sm uppercase text--gray-700 rounded-md border-b border-gray-300">
                   <th className="w-[10%] text-center py-3 px-2">ID</th>
                   <th className="w-[75%] text-start py-3 px-2">
-                    Category Name
+                    Employee Roles Name
                   </th>
                   <th className="w-[15%] text-center py-3 px-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {category.length > 0 ? (
+                {roles?.length > 0 ? (
                   <>
-                    {category.map((item, index) => (
-                      <tr
-                        key={index}
-                        className={`text-sm font-light rounded-md ${
-                          (index + 1) % 2 === 0 && "bg-gray-200/60"
-                        }`}
-                      >
+                    {roles.map((item, index) => (
+                      <tr key={index} className="text-sm font-light rounded-md">
                         <td className="py-4 px-2 text-center">{index + 1}</td>
                         <td className="py-4 px-2 capitalize">
-                          {item.category_name}
+                          {item.role_name}
                         </td>
                         <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
-                          <button onClick={() => handleCategoryView(item)}>
+                          <button onClick={() => handleRoleView(item)}>
                             <HiOutlineEye />
                           </button>
-                          <button onClick={() => handleCategoryEdit(item)}>
+                          <button onClick={() => handleRoleEdit(item)}>
                             <HiOutlinePencilAlt />
                           </button>
-                          <button onClick={() => handleCategoryDelete(item)}>
+                          <button onClick={() => handleRoleDelete(item)}>
                             <HiOutlineTrash className="text-red-500" />
                           </button>
                         </td>
@@ -388,7 +384,7 @@ export default function Categories() {
                         colSpan="6"
                         className="text-center py-10 text-xl font-semibold text-gray-400"
                       >
-                        <p>No category found!</p>
+                        <p>No employee role found!</p>
                       </td>
                     </tr>
                   </>

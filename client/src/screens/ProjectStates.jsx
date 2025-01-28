@@ -26,25 +26,25 @@ import { TbFilterPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  addCategory,
-  deleteCategory,
-  editCategory,
-  getCategory,
-} from "../components/apiServices/apiServices";
+  addProjectStates,
+  deleteProjectStates,
+  editProjectStates,
+  getProjectStates,
+} from "../components/apiServices/projectAPIServices";
 import DashboardCards from "../components/dashboardCards/DashboardCards";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
-export default function Categories() {
-  const [editCategoryName, setEditCategoryName] = useState("");
+export default function ProjectStates() {
+  const [editStateName, setEditStateName] = useState("");
   const [popup, setPopup] = useState({ type: "", data: null });
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const [page, setPage] = useState(10);
   const [sort, setSort] = useState("no");
-  const [category, setCategory] = useState([]);
+  const [states, setStates] = useState([]);
   const [error, setError] = useState("");
   // const [alert, setAlert] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
-  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newStateName, setNewStateName] = useState("");
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
@@ -54,58 +54,56 @@ export default function Categories() {
     setPage(event.target.value);
   };
 
-  const handleCategoryView = (productPop) => {
-    setPopup({ type: "view", data: productPop });
+  const viewStatePopup = (state) => {
+    setPopup({ type: "view", data: state });
   };
 
-  const handleCategoryEdit = (productPop) => {
-    setPopup({ type: "edit", data: productPop });
-    setEditCategoryName(productPop.category_name);
+  const editStatePopup = (state) => {
+    setPopup({ type: "edit", data: state });
+    setEditStateName(state.state_name);
   };
 
-  const handleCategoryDelete = (productPop) => {
-    setPopup({ type: "delete", data: productPop });
+  const deleteStatePopup = (state) => {
+    setPopup({ type: "delete", data: state });
   };
 
-  const handleCategoryDeleteRequest = async (id) => {
+  const handleStateDeleteRequest = async (id) => {
     try {
-      const categoryDeleteData = await deleteCategory(id);
-      setCategory(categoryDeleteData.inventory_category);
+      const stateDeleteData = await deleteProjectStates(id);
       setPopup({ type: "", data: null });
-      toast(categoryDeleteData.message);
+      toast(stateDeleteData.message);
     } catch (error) {
       setError(error);
     }
   };
 
-  const handleCategoryUpdate = async (id, category_name) => {
+  const handleStateUpdate = async (id, state_name) => {
     try {
-      const editCategoryData = await editCategory(id, category_name);
-      setCategory(editCategoryData.inventory_category);
-      setEditCategoryName("");
-      toast(editCategoryData.message);
+      const editStateData = await editProjectStates(id, state_name);
+      setEditStateName("");
+      toast(editStateData.message);
       setPopup({ type: "", data: null });
     } catch (error) {
       setError(error);
     }
   };
 
-  const handleCreateCategorySubmit = async (category_name) => {
+  const handleCreateStateSubmit = async (state_name) => {
     try {
-      const createCategoryData = await addCategory(category_name);
-      toast(createCategoryData.message);
-      setCategory(createCategoryData.inventory_category);
-      setNewCategoryName("");
+      const createStateData = await addProjectStates(state_name);
+      toast(createStateData.message);
+
+      setNewStateName("");
     } catch (err) {
       setError(err);
     }
   };
 
   useEffect(() => {
-    const fetchCategory = async () => {
+    const fetchStates = async () => {
       try {
-        const categoryData = await getCategory();
-        setCategory(categoryData.inventory_category);
+        const statesData = await getProjectStates();
+        setStates(statesData);
       } catch (err) {
         setError(err);
         // console.error(err);
@@ -113,7 +111,7 @@ export default function Categories() {
         setIsLoading(false); // End loading after the request completes
       }
     };
-    fetchCategory();
+    fetchStates();
   }, [token]);
 
   if (isLoading) {
@@ -137,10 +135,11 @@ export default function Categories() {
               </div>
               <div className="w-full flex flex-col gap-5">
                 <div className="font-medium text-lg border-b border-gray-400 pb-1">
-                  Category Details
+                  Project State Details
                 </div>
                 <div className="flex flex-col gap-3">
-                  <div>Category Name: {popup.data?.category_name}</div>
+                  <div>State Name: {popup.data?.state_name}</div>
+                  <div>Added By: {popup.data?.added_by}</div>
                   <div>Created At: {popup.data?.created_at}</div>
                   <div>Updated At: {popup.data?.updated_at}</div>
                 </div>
@@ -160,27 +159,27 @@ export default function Categories() {
               </div>
               <div className="w-full flex flex-col gap-5">
                 <div className="text-lg font-semibold border-b border-gray-400 pb-1">
-                  Update Category
+                  Update Project State
                 </div>
                 <div className="flex flex-col gap-2">
                   <input
                     className="w-full px-2 py-2 outline-none border rounded border-gray-300"
-                    value={editCategoryName}
+                    value={editStateName}
                     placeholder="Enter category name"
-                    onChange={(e) => setEditCategoryName(e.target.value)}
+                    onChange={(e) => setEditStateName(e.target.value)}
                   />
                 </div>
                 <div className="w-full flex flex-row gap-10">
                   <button
                     onClick={() =>
-                      handleCategoryUpdate(popup.data.id, editCategoryName)
+                      handleStateUpdate(popup.data?.id, editStateName)
                     }
                     className="px-5 py-2 rounded bg-blue-500 text-primaryColor"
                   >
                     Update
                   </button>
                   <button
-                    onClick={() => setEditCategoryName("")}
+                    onClick={() => setEditStateName("")}
                     className="px-5 py-2 rounded bg-gray-300 text-gray-800"
                   >
                     Discard
@@ -192,11 +191,11 @@ export default function Categories() {
           {popup.type === "delete" && (
             <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative flex flex-col gap-5">
               <div className="w-full text-center">
-                Confirm you want to delete this category?
+                Confirm you want to delete this project state?
               </div>
               <div className="w-full flex flex-row justify-center gap-10">
                 <button
-                  onClick={() => handleCategoryDeleteRequest(popup.data.id)}
+                  onClick={() => handleStateDeleteRequest(popup.data?.id)}
                   className="px-5 py-2 rounded bg-red-600 text-primaryColor"
                 >
                   Delete
@@ -252,32 +251,32 @@ export default function Categories() {
               <span className="text-4xl ">
                 <FcPlus />
               </span>
-              Add New Category
+              Add New State
             </div>
             <div className="">
               <div className="flex flex-col gap-3">
-                <div>Category Name</div>
+                <div>State Name</div>
                 <input
                   className="w-full px-2 py-3 bg-transparent border rounded border-gray-300 outline-none"
                   type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Enter category name"
+                  value={newStateName}
+                  onChange={(e) => setNewStateName(e.target.value)}
+                  placeholder="Enter state name"
                 />
               </div>
               <div className="mt-3 flex flex-row gap-3">
                 <div
-                  onClick={() => handleCreateCategorySubmit(newCategoryName)}
+                  onClick={() => handleCreateStateSubmit(newStateName)}
                   className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center cursor-pointer"
                 >
                   <span className="text-xl">
                     <MdOutlineDone />
                   </span>
-                  Add Category
+                  Add State
                 </div>
                 <div
                   className="px-3 py-3 rounded-md bg-gray-200 text-accentColor flex flex-row gap-2 justify-center items-center cursor-pointer"
-                  onClick={() => setNewCategoryName("")}
+                  onClick={() => setNewStateName("")}
                 >
                   <span className="text-xl">
                     <MdDeleteOutline />
@@ -294,16 +293,16 @@ export default function Categories() {
               <span className="text-4xl">
                 <FcOpenedFolder />
               </span>
-              All Categories
+              All Project States
             </div>
             <Link
-              to="/dashboard/add-product"
+              to="/dashboard/add-project"
               className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
             >
               <span className="text-xl">
                 <HiOutlinePlusCircle />
               </span>
-              Add Products
+              Add Project
             </Link>
           </div>
           <div className="mt-5 flex flex-row gap-5 justify-between items-center">
@@ -312,7 +311,7 @@ export default function Categories() {
               <input
                 className="w-full ps-9 pe-2 py-2 rounded-xl outline-none bg-transparent border border-gray-300"
                 type="text"
-                placeholder="Search category"
+                placeholder="Search project state"
               />
             </div>
             <div className="flex flex-row gap-3 items-center">
@@ -347,16 +346,14 @@ export default function Categories() {
               <thead className="w-full">
                 <tr className="text-sm uppercase text--gray-700 rounded-md border-b border-gray-300">
                   <th className="w-[10%] text-center py-3 px-2">ID</th>
-                  <th className="w-[75%] text-start py-3 px-2">
-                    Category Name
-                  </th>
+                  <th className="w-[75%] text-start py-3 px-2">State Name</th>
                   <th className="w-[15%] text-center py-3 px-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {category.length > 0 ? (
+                {states?.length > 0 ? (
                   <>
-                    {category.map((item, index) => (
+                    {states.map((item, index) => (
                       <tr
                         key={index}
                         className={`text-sm font-light rounded-md ${
@@ -365,16 +362,16 @@ export default function Categories() {
                       >
                         <td className="py-4 px-2 text-center">{index + 1}</td>
                         <td className="py-4 px-2 capitalize">
-                          {item.category_name}
+                          {item.state_name}
                         </td>
                         <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
-                          <button onClick={() => handleCategoryView(item)}>
+                          <button onClick={() => viewStatePopup(item)}>
                             <HiOutlineEye />
                           </button>
-                          <button onClick={() => handleCategoryEdit(item)}>
+                          <button onClick={() => editStatePopup(item)}>
                             <HiOutlinePencilAlt />
                           </button>
-                          <button onClick={() => handleCategoryDelete(item)}>
+                          <button onClick={() => deleteStatePopup(item)}>
                             <HiOutlineTrash className="text-red-500" />
                           </button>
                         </td>
@@ -388,7 +385,7 @@ export default function Categories() {
                         colSpan="6"
                         className="text-center py-10 text-xl font-semibold text-gray-400"
                       >
-                        <p>No category found!</p>
+                        <p>No state found!</p>
                       </td>
                     </tr>
                   </>
