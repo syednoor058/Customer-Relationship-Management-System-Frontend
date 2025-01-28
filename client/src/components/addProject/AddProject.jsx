@@ -58,6 +58,7 @@ export default function AddProject() {
       try {
         const statesData = await getProjectStates();
         setStates(statesData);
+        // console.log(states);
       } catch (err) {
         // setError(err);
         toast(err.message);

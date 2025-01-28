@@ -17,7 +17,7 @@ const getHeaders = () => {
         `${API_BASE_URL}/api/project_state`,
         {headers: getHeaders(),}
       );
-    //   console.log(response)
+      console.log(response)
       return response.data;
     } catch(error) {
       throw error.response?.data || { message: 'Failed to fetch project states.' };
