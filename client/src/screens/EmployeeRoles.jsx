@@ -5,21 +5,13 @@ import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import { FcOpenedFolder, FcPlus } from "react-icons/fc";
 import {
-  HiArchive,
-  HiCurrencyDollar,
   HiOutlineEye,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
   HiOutlineTrash,
   HiSearch,
-  HiUsers,
 } from "react-icons/hi";
-import {
-  MdClose,
-  MdDashboardCustomize,
-  MdDeleteOutline,
-  MdOutlineDone,
-} from "react-icons/md";
+import { MdClose, MdDeleteOutline, MdOutlineDone } from "react-icons/md";
 import { TbFilterPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -29,7 +21,6 @@ import {
   editEmployeeRoles,
   getEmployeeRoles,
 } from "../components/apiServices/employeeAPIServices";
-import DashboardCards from "../components/dashboardCards/DashboardCards";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 export default function EmployeeRoles() {
@@ -214,7 +205,7 @@ export default function EmployeeRoles() {
       )}
 
       {/* {alert && <div>{alert}</div>} */}
-      <div className="grid grid-cols-4 gap-3">
+      {/* <div className="grid grid-cols-4 gap-3">
         <DashboardCards
           title="Total Leads"
           number="19"
@@ -244,10 +235,10 @@ export default function EmployeeRoles() {
           icon={<HiCurrencyDollar />}
           iconColor="bg-[#6a0dad]/80"
         />
-      </div>
+      </div> */}
       <div className="flex flex-row-reverse gap-5 pb-10">
         <div className="w-[35%]">
-          <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl border border-gray-200">
+          <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded drop-shadow-xl border border-gray-200">
             <div className="text-xl font-semibold flex flex-row gap-3 items-center text-gray-900">
               <span className="text-4xl ">
                 <FcPlus />
@@ -289,7 +280,7 @@ export default function EmployeeRoles() {
             </div>
           </div>
         </div>
-        <div className="w-[65%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-xl border border-gray-200 drop-shadow-xl">
+        <div className="w-[65%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded border border-gray-200 drop-shadow-xl">
           <div className="flex flex-row justify-between">
             <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
               <span className="text-4xl">
@@ -298,7 +289,7 @@ export default function EmployeeRoles() {
               All Employee Roles
             </div>
             <Link
-              to="/dashboard/add-product"
+              to="/dashboard/add-employee"
               className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
             >
               <span className="text-xl">
@@ -311,7 +302,7 @@ export default function EmployeeRoles() {
             <div className="w-[350px] relative">
               <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
               <input
-                className="w-full ps-9 pe-2 py-2 rounded-xl outline-none bg-transparent border border-gray-300"
+                className="w-full ps-9 pe-2 py-2 rounded outline-none bg-transparent border border-gray-300"
                 type="text"
                 placeholder="Search employee role"
               />
@@ -344,7 +335,7 @@ export default function EmployeeRoles() {
 
           <div className="flex flex-col gap-7">
             {error && <p className="text-red-500">{error}</p>}
-            <table className="w-full">
+            <table className="w-full border-collapse border border-gray-300">
               <thead className="w-full">
                 <tr className="text-sm uppercase text--gray-700 rounded-md border-b border-gray-300">
                   <th className="w-[10%] text-center py-3 px-2">ID</th>

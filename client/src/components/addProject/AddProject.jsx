@@ -90,7 +90,7 @@ export default function AddProject() {
             Dashboard
           </Link>
           <Link
-            to="/dashboard/all-projects"
+            to="/dashboard/projects"
             className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 items-center justify-center"
           >
             <span className="text-xl">

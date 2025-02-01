@@ -24,7 +24,7 @@ export default function LoginComponent() {
   };
 
   return (
-    <div className="w-full bg-white rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
+    <div className="w-full bg-white rounded overflow-hidden flex justify-center items-center border border-gray-200">
       <div className="w-full h-full flex flex-row bg-primaryColor">
         <div className="w-[30%] bg-gradient-to-tr from-accentColor/90 to-[#0ea5e9]/80 h-auto p-5 flex flex-col gap-5 items-center">
           <div className="w-[85%] aspect-[9/16] overflow-hidden">
@@ -54,7 +54,7 @@ export default function LoginComponent() {
               <div className="flex flex-col gap-1">
                 <div>Email/Username</div>
                 <input
-                  className="py-2 border-b border-gray-300 bg-primaryColor outline-none"
+                  className="p-2 border border-gray-300 bg-primaryColor outline-none rounded"
                   type="text"
                   placeholder="example@email.com"
                   value={email}
@@ -65,7 +65,7 @@ export default function LoginComponent() {
               <div className="flex flex-col gap-1">
                 <div>Password</div>
                 <input
-                  className="py-2 border-b border-gray-300 bg-primaryColor outline-none"
+                  className="p-2 border border-gray-300 bg-primaryColor outline-none rounded"
                   type="password"
                   placeholder="Password"
                   value={password}
@@ -74,7 +74,7 @@ export default function LoginComponent() {
                 />
               </div>
               {error && <p className="text-red-500">{error}</p>}
-              <button className="w-full bg-accentColor rounded-md text-white capitalize py-2 px-5 mt-2">
+              <button className="w-full bg-accentColor rounded text-white capitalize py-2 px-5 mt-2">
                 Log In
               </button>
             </form>

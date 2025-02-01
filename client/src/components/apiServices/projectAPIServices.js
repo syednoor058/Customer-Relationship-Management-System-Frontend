@@ -71,10 +71,23 @@ const getHeaders = () => {
         `${API_BASE_URL}/api/project`,
         {headers: getHeaders(),}
       );
-      console.log(response)
+      // console.log(response)
       return response.data;
     } catch(error) {
       throw error.response?.data || { message: 'Failed to fetch projects.' };
+    }
+  }
+
+  export const getProjectsById = async (_id) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/project/${_id}`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch project.' };
     }
   }
 
@@ -84,7 +97,7 @@ const getHeaders = () => {
         `${API_BASE_URL}/api/project`, {project_name, address, state_id, budget, balance},
         {headers: getHeaders(),}
       );
-      console.log(response)
+      // console.log(response)
       return response.data;
     } catch(error) {
       throw error.response?.data || { message: 'Failed to add projects.' };
@@ -97,7 +110,7 @@ const getHeaders = () => {
         `${API_BASE_URL}/api/project/${_id}`, {project_name, address, state_id, budget, balance},
         {headers: getHeaders(),}
       );
-      console.log(response)
+      // console.log(response)
       return response.data;
     } catch(error) {
       throw error.response?.data || { message: 'Failed to edit projects.' };
@@ -114,5 +127,32 @@ const getHeaders = () => {
       return response.data;
     } catch(error) {
       throw error.response?.data || { message: 'Failed to delete projects.' };
+    }
+  }
+
+
+  export const getProjectAssignment = async (projectId) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/project_employee_assign/release/${projectId}`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch assignments.' };
+    }
+  }
+
+  export const assignEmployees = async (employees, projectId) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/project_employee_assign/${projectId}`, {employees},
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to assign employees.' };
     }
   }

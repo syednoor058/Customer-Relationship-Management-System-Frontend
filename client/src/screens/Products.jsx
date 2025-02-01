@@ -7,21 +7,13 @@ import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
 import {
-  HiArchive,
-  HiCurrencyDollar,
   HiOutlineEye,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
   HiOutlineTrash,
   HiSearch,
-  HiUsers,
 } from "react-icons/hi";
-import {
-  MdClose,
-  MdDashboardCustomize,
-  MdDeleteOutline,
-  MdOutlineDone,
-} from "react-icons/md";
+import { MdClose, MdDeleteOutline, MdOutlineDone } from "react-icons/md";
 import { TbFilterPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -31,7 +23,6 @@ import {
   getCategory,
   getInventory,
 } from "../components/apiServices/apiServices";
-import DashboardCards from "../components/dashboardCards/DashboardCards";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 export default function Products() {
@@ -329,7 +320,7 @@ export default function Products() {
           )}
         </div>
       )}
-      <div className="grid grid-cols-4 gap-3">
+      {/* <div className="grid grid-cols-4 gap-3">
         <DashboardCards
           title="Total Leads"
           number="19"
@@ -359,8 +350,8 @@ export default function Products() {
           icon={<HiCurrencyDollar />}
           iconColor="bg-[#6a0dad]/80"
         />
-      </div>
-      <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl border border-gray-200">
+      </div> */}
+      <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded drop-shadow-xl border border-gray-200">
         <div className="flex flex-row justify-between">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
             <span className="text-4xl">
@@ -434,7 +425,7 @@ export default function Products() {
         </div>
         <div className="flex flex-col gap-7">
           {error && <p className="text-red-500">{error}</p>}
-          <table className="w-full">
+          <table className="w-full border-collapse border border-gray-300">
             <thead className="w-full">
               <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
                 <th className="w-[10%] text-center py-3 px-2">ID</th>

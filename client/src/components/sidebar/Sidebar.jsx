@@ -242,7 +242,7 @@ export default function Sidebar() {
           linkList={[
             {
               linkName: "All Projects",
-              linkPath: "/dashboard/all-projects",
+              linkPath: "/dashboard/projects",
               linkIcon: <HiOutlineClipboardList />,
             },
             {

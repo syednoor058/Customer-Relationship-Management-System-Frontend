@@ -5,9 +5,11 @@ import AddEmployee from "./components/addEmployee/AddEmployee";
 import AddProduct from "./components/addProduct/AddProduct";
 import AddProject from "./components/addProject/AddProject";
 import AddVendor from "./components/addVendor/AddVendor";
+import AssignEmployee from "./components/assignEmployee/AssignEmployee";
 import ForgotPassword from "./components/forgotPassword/ForgotPassword";
 import LoginComponent from "./components/loginComponent/LoginComponent";
 import Overview from "./components/overview/Overview";
+import ReleaseEmployee from "./components/releaseEmployee/ReleaseEmployee";
 import Accounts from "./screens/Accounts";
 import Categories from "./screens/Categories";
 import Dashboard from "./screens/Dashboard";
@@ -40,7 +42,18 @@ function App() {
           <Route exact path="all-employees" element={<Employees />} />
           <Route exact path="add-employee" element={<AddEmployee />} />
           <Route exact path="project-states" element={<ProjectStates />} />
-          <Route exact path="all-projects" element={<Projects />} />
+          <Route exact path="projects" element={<Projects />}>
+            <Route
+              exact
+              path="assign-employee/:projectId"
+              element={<AssignEmployee />}
+            />
+            <Route
+              exact
+              path="release-employee/:projectId"
+              element={<ReleaseEmployee />}
+            />
+          </Route>
           <Route exact path="add-project" element={<AddProject />} />
         </Route>
       </Routes>

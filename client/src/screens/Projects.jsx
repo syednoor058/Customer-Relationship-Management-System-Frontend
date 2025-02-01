@@ -3,27 +3,20 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
 import Select from "@mui/material/Select";
-// import axios from "axios";
 import { useEffect, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
 import {
-  HiArchive,
-  HiCurrencyDollar,
   HiOutlineEye,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
   HiOutlineTrash,
   HiSearch,
-  HiUsers,
 } from "react-icons/hi";
-import {
-  MdClose,
-  MdDashboardCustomize,
-  MdDeleteOutline,
-  MdOutlineDone,
-} from "react-icons/md";
+import { IoMdPersonAdd } from "react-icons/io";
+import { IoPersonRemove } from "react-icons/io5";
+import { MdClose, MdDeleteOutline, MdOutlineDone } from "react-icons/md";
 import { TbFilterPlus } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   deleteProject,
@@ -31,10 +24,10 @@ import {
   getProjects,
   getProjectStates,
 } from "../components/apiServices/projectAPIServices";
-import DashboardCards from "../components/dashboardCards/DashboardCards";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 export default function Projects() {
+  const navigate = useNavigate();
   const [popup, setPopup] = useState({ type: "", data: null });
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState("");
@@ -53,6 +46,13 @@ export default function Projects() {
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
+  };
+
+  const assignEmployee = (id) => {
+    navigate(`/dashboard/projects/assign-employee/${id}`);
+  };
+  const releaseEmployee = (id) => {
+    navigate(`/dashboard/projects/release-employee/${id}`);
   };
 
   const handleChange = (event) => {
@@ -372,7 +372,10 @@ export default function Projects() {
           )}
         </div>
       )}
-      <div className="grid grid-cols-4 gap-3">
+
+      <Outlet />
+
+      {/* <div className="grid grid-cols-4 gap-3">
         <DashboardCards
           title="Total Leads"
           number="19"
@@ -402,7 +405,7 @@ export default function Projects() {
           icon={<HiCurrencyDollar />}
           iconColor="bg-[#6a0dad]/80"
         />
-      </div>
+      </div> */}
       <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl border border-gray-200">
         <div className="flex flex-row justify-between">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
@@ -480,16 +483,14 @@ export default function Projects() {
         </div>
         <div className="flex flex-col gap-7">
           {error && <p className="text-red-500">{error}</p>}
-          <table className="w-full">
+          <table className="w-full border-collapse border border-gray-300">
             <thead className="w-full">
               <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
                 <th className="w-[5%] text-center py-3 px-2">ID</th>
                 <th className="w-[20%] text-start py-3 px-2">Name</th>
                 <th className="w-[20%] text-start py-3 px-2">Address</th>
                 <th className="w-[15%] text-center py-3 px-2">State</th>
-                <th className="w-[10%] text-center py-3 px-2">Budget</th>
-                <th className="w-[10%] text-center py-3 px-2">Balance</th>
-                <th className="w-[20%] text-center py-3 px-2">Actions</th>
+                <th className="w-[40%] text-center py-3 px-2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -508,14 +509,24 @@ export default function Projects() {
                       <td className="py-4 px-2 text-center">
                         {item.state_name}
                       </td>
-                      <td className="py-4 px-2 text-center">{item.budget}</td>
-                      <td className="py-4 px-2 text-center">{item.balance}</td>
                       <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
                         <div
                           className="cursor-pointer"
                           onClick={() => viewProjectPopup(item)}
                         >
                           <HiOutlineEye />
+                        </div>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => assignEmployee(item?.id)}
+                        >
+                          <IoMdPersonAdd />
+                        </div>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => releaseEmployee(item?.id)}
+                        >
+                          <IoPersonRemove />
                         </div>
                         <div
                           className="cursor-pointer"

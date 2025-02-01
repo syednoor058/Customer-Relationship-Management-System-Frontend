@@ -64,7 +64,7 @@ export default function AddProduct() {
 
   return (
     <div className="w-full h-full flex flex-row gap-5 justify-between pb-10 font-light text-gray-600">
-      <div className="w-[75%] flex flex-col gap-7 rounded-xl border border-gray-200 drop-shadow-xl bg-primaryColor p-5">
+      <div className="w-[75%] flex flex-col gap-7 rounded border border-gray-200 drop-shadow-xl bg-primaryColor p-5">
         <div className="flex flex-row justify-between items-center">
           <Link
             to="/dashboard"
@@ -246,7 +246,7 @@ export default function AddProduct() {
         </div>
       </div>
       <div className="w-[25%] flex flex-col gap-5 text-gray-100">
-        <div className="flex flex-col rounded-xl drop-shadow-xl gap-5 bg-gradient-to-tr from-accentColor/80 to-[#6a0dad]/80 p-5 relative">
+        <div className="flex flex-col rounded drop-shadow-xl gap-5 bg-gradient-to-tr from-accentColor/80 to-[#6a0dad]/80 p-5 relative">
           <div className="text-xl font-semibold flex flex-row gap-2 items-center text-primaryColor">
             <span className="text-2xl">
               <FcOpenedFolder />
@@ -264,7 +264,7 @@ export default function AddProduct() {
             <FcPlus />
           </Link>
         </div>
-        <div className="flex flex-col rounded-xl drop-shadow-xl gap-5 bg-gradient-to-tr from-[#0ea5e9]/80 to-[#3b82f6]/80 p-5 relative">
+        <div className="flex flex-col rounded drop-shadow-xl gap-5 bg-gradient-to-tr from-[#0ea5e9]/80 to-[#3b82f6]/80 p-5 relative">
           <div className="text-xl font-semibold flex flex-row gap-2 items-center text-primaryColor">
             <span className="text-3xl">
               <FcBusinessman />
