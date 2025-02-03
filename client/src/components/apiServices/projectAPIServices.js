@@ -144,6 +144,19 @@ const getHeaders = () => {
     }
   }
 
+  export const releaseProjectAssignment = async (employees, projectId) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/project_employee_assign/release/${projectId}`, {employees},
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to release assignments.' };
+    }
+  }
+
   export const assignEmployees = async (employees, projectId) => {
     try{
       const response = await axios.post(

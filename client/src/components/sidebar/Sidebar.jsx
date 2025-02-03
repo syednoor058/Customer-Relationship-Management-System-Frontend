@@ -79,12 +79,12 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="w-60 min-h-screen bg-gray-900 text-primaryColor flex flex-col justify-between text-sm font-light">
-      <div className="px-3 flex justify-center items-center overflow-hidden sticky top-0 bg-gray-900 z-[10] py-2">
+    <div className="w-56 min-h-screen bg-gray-900 text-primaryColor flex flex-col justify-between text-sm font-light">
+      <div className="px-2 flex justify-center items-center overflow-hidden sticky top-0 bg-gray-900 z-[10] py-2">
         <img className="w-[35%] h-auto" src={lightLogo} alt="light_logo" />
       </div>
 
-      <div className="flex-1 pt-5 px-3">
+      <div className="flex-1 pt-5 px-2">
         <NavLink
           to="/dashboard"
           className={`${
@@ -279,7 +279,7 @@ export default function Sidebar() {
           linkList={[
             {
               linkName: "All Accounts",
-              linkPath: "/dashboard/all-accounts",
+              linkPath: "/dashboard/accounts",
               linkIcon: <HiOutlineClipboardList />,
             },
             {
@@ -298,7 +298,7 @@ export default function Sidebar() {
           <SidebarLink key={item.key} item={item} />
         ))} */}
       </div>
-      <div className="border-t border-gray-800 pt-3 sticky bottom-0 bg-gray-900 px-3">
+      <div className="border-t border-gray-800 pt-3 sticky bottom-0 bg-gray-900 px-2">
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))}

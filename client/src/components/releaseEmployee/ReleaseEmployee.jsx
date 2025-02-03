@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import {
   getProjectAssignment,
   getProjectsById,
+  releaseProjectAssignment,
 } from "../apiServices/projectAPIServices";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
 
@@ -33,6 +34,24 @@ export default function ReleaseEmployee() {
   const closeNavigate = () => {
     navigate("/dashboard/projects");
   };
+
+  const handleemployeeRelease = async (employees, projectId) => {
+    setLoading(true);
+    try {
+      const employeeReleaseData = await releaseProjectAssignment(
+        employees,
+        projectId
+      );
+      navigate("/dashboard/projects");
+      toast(employeeReleaseData.message);
+    } catch (error) {
+      navigate("/dashboard/projects");
+      toast(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchProject = async (id) => {
       setLoading(true);
@@ -136,7 +155,12 @@ export default function ReleaseEmployee() {
             </tbody>
           </table>
           <div className="w-full flex flex-row justify-center items-center gap-5">
-            <button className="px-5 py-3 rounded bg-accentColor text-primaryColor">
+            <button
+              onClick={() =>
+                handleemployeeRelease(selectedEmployees, projectId)
+              }
+              className="px-5 py-3 rounded bg-accentColor text-primaryColor"
+            >
               Release Employee
             </button>
             <button

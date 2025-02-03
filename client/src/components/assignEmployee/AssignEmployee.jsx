@@ -42,9 +42,10 @@ export default function AssignEmployee() {
     setLoading(true);
     try {
       const employeeAssignData = await assignEmployees(employees, projectId);
-
+      navigate("/dashboard/projects");
       toast(employeeAssignData.message);
     } catch (error) {
+      navigate("/dashboard/projects");
       toast(error.message);
     } finally {
       setLoading(false);
@@ -124,7 +125,6 @@ export default function AssignEmployee() {
                     >
                       <td className="py-3 px-2 text-center">
                         <input
-                          className="cursor-pointer"
                           type="checkbox"
                           checked={selectedEmployees.some(
                             (e) => e.employee_id === employee.id
@@ -132,6 +132,12 @@ export default function AssignEmployee() {
                           onChange={() =>
                             handleSelect({ employee_id: employee.id })
                           }
+                          disabled={employee.is_free !== "1"} // Disable if not free
+                          className={`${
+                            employee.is_free === "1"
+                              ? "cursor-pointer"
+                              : "cursor-not-allowed"
+                          }`}
                         />
                       </td>
                       <td className="py-3 px-2 text-center">{index + 1}</td>

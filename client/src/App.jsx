@@ -10,7 +10,7 @@ import ForgotPassword from "./components/forgotPassword/ForgotPassword";
 import LoginComponent from "./components/loginComponent/LoginComponent";
 import Overview from "./components/overview/Overview";
 import ReleaseEmployee from "./components/releaseEmployee/ReleaseEmployee";
-import Accounts from "./screens/Accounts";
+import BankAccounts from "./screens/BankAccounts";
 import Categories from "./screens/Categories";
 import Dashboard from "./screens/Dashboard";
 import EmployeeRoles from "./screens/EmployeeRoles";
@@ -37,7 +37,6 @@ function App() {
           <Route exact path="add-product" element={<AddProduct />} />
           <Route exact path="all-vendors" element={<Vendors />} />
           <Route exact path="add-vendor" element={<AddVendor />} />
-          <Route exact path="accounts" element={<Accounts />} />
           <Route exact path="employee-roles" element={<EmployeeRoles />} />
           <Route exact path="all-employees" element={<Employees />} />
           <Route exact path="add-employee" element={<AddEmployee />} />
@@ -55,6 +54,7 @@ function App() {
             />
           </Route>
           <Route exact path="add-project" element={<AddProject />} />
+          <Route exact path="accounts" element={<BankAccounts />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
