@@ -138,7 +138,7 @@ export default function AddVendor() {
                   />
                 </div>
                 <div className="w-full flex flex-col gap-1">
-                  <div>Note</div>
+                  <div>Contact</div>
                   <textarea
                     className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                     type="text"

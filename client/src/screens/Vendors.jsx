@@ -392,7 +392,7 @@ export default function Vendors() {
                 <th className="w-[5%] text-center py-3 px-2">ID</th>
                 <th className="w-[16%] text-start py-3 px-2">Name</th>
                 <th className="w-[16%] text-start py-3 px-2">Address</th>
-                <th className="w-[16%] text-center py-3 px-2">Notes</th>
+                <th className="w-[16%] text-center py-3 px-2">Contact</th>
                 <th className="w-[16%] text-center py-3 px-2">Phone</th>
                 <th className="w-[16%] text-center py-3 px-2">Balance</th>
                 <th className="w-[15%] text-center py-3 px-2">Actions</th>

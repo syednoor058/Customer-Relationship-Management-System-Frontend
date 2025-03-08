@@ -254,6 +254,7 @@ export default function Categories() {
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
                   placeholder="Enter category name"
+                  required
                 />
               </div>
               <div className="mt-3 flex flex-row gap-3">
