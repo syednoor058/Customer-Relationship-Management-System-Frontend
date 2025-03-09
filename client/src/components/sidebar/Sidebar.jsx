@@ -75,7 +75,7 @@ export default function Sidebar() {
         toast(logoutRes.message || "Logged out!");
       } catch (err) {
         toast.error(err.message || "Something went wromg!");
-        // console.log(err);
+        console.log(err);
       } finally {
         localStorage.removeItem("shikderFoundationAuthToken");
         navigate("/");
