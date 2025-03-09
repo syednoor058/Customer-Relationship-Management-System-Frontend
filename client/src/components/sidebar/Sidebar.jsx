@@ -75,12 +75,11 @@ export default function Sidebar() {
         toast(logoutRes.message || "Logged out!");
       } catch (err) {
         toast.error(err.message || "Something went wromg!");
-        console.log(err);
+        // console.log(err);
       } finally {
         setLoggingOut(false);
         localStorage.removeItem("shikderFoundationAuthToken");
         navigate("/");
-        window.location.reload();
       }
     }
   };
