@@ -6,29 +6,53 @@ import {
   getCategory,
   getInventory,
 } from "../components/apiServices/apiServices";
-import { getVendors } from "../components/apiServices/vendorsAPIServices";
+import {
+  assignProduct,
+  getProjects,
+} from "../components/apiServices/projectAPIServices";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 export default function ProductAssign() {
   const token = localStorage.getItem("shikderFoundationAuthToken");
-  const [vendors, setVendors] = useState([]);
-  const [inventory, setInventory] = useState([]);
+  const [assignDate, setAssignDate] = useState(
+    () => new Date().toISOString().split("T")[0]
+  );
+  const [selectedProject, setSelectedProject] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [vendor, setVendor] = useState(0);
-  const [purchaseDate, setPurchaseDate] = useState(() => {
-    const today = new Date();
-    return today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
-  });
+  const [products, setProducts] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [rows, setRows] = useState([
     {
       id: Date.now(),
       category: 0,
       product: 0,
-      quantity: 0,
+      quantity: null,
     },
   ]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch initial data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [cats, prods, projects] = await Promise.all([
+          getCategory(),
+          getInventory(),
+          getProjects(),
+        ]);
+
+        setCategories(cats.inventory_category || []);
+        setProducts(prods.inventory || []);
+        setProjects(projects || []);
+      } catch (error) {
+        toast.error(error.message || "Failed to load initial data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [token]);
+
+  // Handle row operations
   const handleAddRow = () => {
     setRows([
       ...rows,
@@ -36,7 +60,7 @@ export default function ProductAssign() {
         id: Date.now(),
         category: 0,
         product: 0,
-        quantity: 0,
+        quantity: null,
       },
     ]);
   };
@@ -47,100 +71,118 @@ export default function ProductAssign() {
     }
   };
 
-  const handleInputChange = (id, field, value) => {
-    setRows(
-      rows.map((row) => {
-        if (row.id === id) {
-          const updatedRow = { ...row };
+  // Handle input changes with validation
+  const handleRowChange = (id, field, value) => {
+    const updatedRows = rows.map((row) => {
+      if (row.id === id) {
+        const update = { ...row };
 
-          // Parse numeric values
-          if (["quantity", "totalPrice"].includes(field)) {
-            updatedRow[field] = Number(value) || 0;
-          } else {
-            updatedRow[field] = value;
-          }
-
-          return updatedRow;
+        if (field === "category") {
+          update.product = 0; // Reset product when category changes
         }
-        return row;
-      })
-    );
+
+        // Handle numeric fields
+        if (["quantity"].includes(field)) {
+          const numValue = parseFloat(value) || null;
+          update[field] = numValue;
+        } else {
+          update[field] = value;
+        }
+
+        return update;
+      }
+      return row;
+    });
+
+    setRows(updatedRows);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchNecessaryData = async () => {
-      try {
-        const [inventoryData, categoryData, vendorsData] = await Promise.all([
-          getInventory(),
-          getCategory(),
-          getVendors(),
-        ]);
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Ensure we're getting arrays from API
-        setInventory(inventoryData.inventory);
-        setCategories(categoryData.inventory_category);
-        setVendors(Array.isArray(vendorsData) ? vendorsData : []);
-      } catch (err) {
-        setError(err.message || "Failed to fetch data");
-        toast.error(err.message || "Failed to fetch data");
-      } finally {
-        setLoading(false);
-      }
+    // Validate form
+    if (
+      !selectedProject ||
+      rows.some((row) => !row.category || !row.product || row.quantity <= 0)
+    ) {
+      return toast.error("Please fill all required fields correctly");
+    }
+
+    const payload = {
+      project_id: selectedProject,
+      inventory: rows.map((row) => ({
+        product_id: row.product,
+        qty: row.quantity,
+      })),
+      date: assignDate,
     };
-    fetchNecessaryData();
-  }, [token]);
+
+    try {
+      const assign = await assignProduct(
+        payload.project_id,
+        payload.inventory,
+        payload.date
+      );
+      toast.success(assign.message || "Assigned product(s) successfully!");
+      handleCancel();
+    } catch (error) {
+      toast.error(error.message || "Failed to assign product(s)!");
+    }
+  };
+
+  // Reset form
+  const handleCancel = () => {
+    setAssignDate(new Date().toISOString().split("T")[0]);
+    setSelectedProject(0);
+    setRows([
+      {
+        id: Date.now(),
+        category: 0,
+        product: 0,
+        quantity: 0,
+      },
+    ]);
+  };
 
   if (loading) {
     return <LoadingScreen />; // Show loading state
-  }
-
-  if (error) {
-    toast(error);
   }
 
   return (
     <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
       <div className="flex flex-col gap-10 pb-10">
         <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
-          <h1>Product Assign</h1>
+          <h1>Inventory Purchase</h1>
         </div>
-        <form className="flex flex-col divide-y-[1px] divide-gray-200">
-          <div className="w-full grid grid-cols-3 gap-10 py-5">
-            <div className="flex flex-col gap-1">
-              <label>Memo ID</label>
-              <input
-                className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                type="text"
-                placeholder="Enter memo ID"
-                //   value={employeeAddress}
-                //   onChange={(e) => setEmployeeAddress(e.target.value)}
-                required
-              />
-            </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col divide-y-[1px] divide-gray-200"
+        >
+          <div className="w-full grid grid-cols-2 gap-10 py-5">
             <div className="flex flex-col gap-1">
               <label>Assign Date</label>
               <input
                 className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
                 type="date"
-                value={purchaseDate}
-                onChange={(e) => setPurchaseDate(e.target.value)}
+                value={assignDate}
+                onChange={(e) => setAssignDate(e.target.value)}
                 required
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label>Project</label>
+              <label>Projects</label>
               <select
                 className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                value={vendor}
-                onChange={(e) => setVendor(e.target.value)}
+                value={selectedProject}
+                onChange={(e) => setSelectedProject(Number(e.target.value))}
                 required
               >
                 <option value={0} disabled>
                   Select a project
                 </option>
 
-                {vendors.length === 0 ? (
+                {projects.length === 0 ? (
                   <>
                     <option disabled className="text-center">
                       No project found!
@@ -148,13 +190,13 @@ export default function ProductAssign() {
                   </>
                 ) : (
                   <>
-                    {vendors?.map((item) => (
+                    {projects?.map((item) => (
                       <option
                         key={item.id}
                         value={item.id}
                         className="capitalize"
                       >
-                        {item.vendor_name}
+                        {item.project_name}
                       </option>
                     ))}
                   </>
@@ -164,47 +206,20 @@ export default function ProductAssign() {
           </div>
           <div className="flex flex-col gap-3 py-5">
             <div className="w-full flex flex-row gap-5 border border-gray-400 bg-gray-200 divide-x-[1px] px-5">
-              <div className="w-[30%] py-3">Category</div>
+              <div className="w-[20%] py-3">Category</div>
               <div className="w-[40%] py-3">Product</div>
-              <div className="w-[15%] py-3">Quantity</div>
-              <div className="w-[15%] py-3"></div>
+              <div className="w-[20%] py-3">Quantity</div>
+              <div className="w-[20%] py-3"></div>
             </div>
             <div className="flex flex-col gap-3">
               {rows?.map((row, index) => (
                 <div key={row.id} className="w-full flex gap-5">
-                  {/* <select
-                    className="w-[20%] px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                    defaultValue={0}
-                    value={row.category}
-                    onChange={(e) =>
-                      handleInputChange(row.id, "category", e.target.value)
-                    }
-                    required
-                  >
-                    <option value={0} disabled>
-                      Select a category
-                    </option>
-                    {Array.isArray(categories) && categories.length === 0 ? (
-                      <option disabled className="text-center">
-                        No category found!
-                      </option>
-                    ) : (
-                      categories?.map((item) => (
-                        <option
-                          key={item.id}
-                          value={item.id}
-                          className="capitalize"
-                        >
-                          {item.category_name}
-                        </option>
-                      ))
-                    )}
-                  </select> */}
+                  {/* Category Select  */}
                   <select
-                    className="w-[30%] px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                    className="w-[20%] px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
                     value={row.category}
                     onChange={(e) =>
-                      handleInputChange(row.id, "category", e.target.value)
+                      handleRowChange(row.id, "category", e.target.value)
                     }
                     required
                   >
@@ -233,21 +248,11 @@ export default function ProductAssign() {
                     )}
                   </select>
 
-                  {/* <input
-                  type="text"
-                  placeholder="Category"
-                  className="p-2 border rounded w-full"
-                  value={row.category}
-                  onChange={(e) =>
-                    handleInputChange(row.id, "category", e.target.value)
-                  }
-                /> */}
-
                   <select
                     className="w-[40%] px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
                     value={row.product}
                     onChange={(e) =>
-                      handleInputChange(row.id, "product", e.target.value)
+                      handleRowChange(row.id, "product", e.target.value)
                     }
                     required
                   >
@@ -255,7 +260,9 @@ export default function ProductAssign() {
                       Select a product
                     </option>
 
-                    {inventory.length === 0 ? (
+                    {products.filter(
+                      (product) => product.category_id === row.category
+                    ).length === 0 ? (
                       <>
                         <option disabled className="text-center">
                           No product found!
@@ -263,40 +270,35 @@ export default function ProductAssign() {
                       </>
                     ) : (
                       <>
-                        {inventory?.map((item) => (
-                          <option
-                            key={item.id}
-                            value={item.id}
-                            className="capitalize"
-                          >
-                            {item.product_name}
-                          </option>
-                        ))}
+                        {products
+                          ?.filter(
+                            (product) => product.category_id === row.category
+                          )
+                          .map((item) => (
+                            <option
+                              key={item.id}
+                              value={item.id}
+                              className="capitalize"
+                            >
+                              {item.product_name}
+                            </option>
+                          ))}
                       </>
                     )}
                   </select>
 
-                  {/* <input
-                  type="text"
-                  placeholder="Product"
-                  className="p-2 border rounded w-full"
-                  value={row.product}
-                  onChange={(e) =>
-                    handleInputChange(row.id, "product", e.target.value)
-                  }
-                /> */}
-
                   <input
                     type="number"
                     placeholder="Quantity"
-                    className="w-[15%] p-2 border rounded"
+                    className="w-[20%] p-2 border rounded outline-none"
+                    min={1}
                     value={row.quantity}
                     onChange={(e) =>
-                      handleInputChange(row.id, "quantity", e.target.value)
+                      handleRowChange(row.id, "quantity", e.target.value)
                     }
                   />
 
-                  <div className="flex gap-2 w-[15%] text-xl items-center px-5">
+                  <div className="flex gap-2 w-[20%] text-xl items-center px-5">
                     {rows.length > 1 && (
                       <button
                         onClick={() => handleDeleteRow(row.id)}
@@ -315,9 +317,12 @@ export default function ProductAssign() {
               ))}
             </div>
           </div>
-          <div className="w-full flex flex-row gap-5 justify-end items-center py-5">
+          <div className="w-full flex flex-row gap-5 justify-center items-center py-5">
             <div className="flex">
-              <button className="px-5 py-3 bg-blue-600 text-primaryColor rounded">
+              <button
+                type="submit"
+                className="px-5 py-3 bg-blue-600 text-primaryColor rounded"
+              >
                 Assign
               </button>
             </div>

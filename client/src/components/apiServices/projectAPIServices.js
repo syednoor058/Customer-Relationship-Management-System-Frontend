@@ -169,3 +169,32 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to assign employees.' };
     }
   }
+
+
+
+  export const assignProduct = async (project_id, inventory, date) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/supply_inventory_project`, {project_id, inventory, date},
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to assign products.' };
+    }
+  }
+
+
+  export const getProductAssignmentHistory = async (date) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/supply_inventory_project/history/${date}`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch product assign history.'};
+    }
+  }

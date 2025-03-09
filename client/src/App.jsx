@@ -20,6 +20,7 @@ import InventoryPurchase from "./screens/InventoryPurchase";
 import InventoryPurchaseHistory from "./screens/InventoryPurchaseHistory";
 import Login from "./screens/Login";
 import ProductAssign from "./screens/ProductAssign";
+import ProductAssignHistory from "./screens/ProductAssignHistory";
 import Products from "./screens/Products";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
@@ -67,9 +68,14 @@ function App() {
               path="release-employee/:projectId"
               element={<ReleaseEmployee />}
             />
+            <Route exact path="assign-product" element={<ProductAssign />} />
           </Route>
           <Route exact path="add-project" element={<AddProject />} />
-          <Route exact path="assign-product" element={<ProductAssign />} />
+          <Route
+            exact
+            path="projects/assign-history"
+            element={<ProductAssignHistory />}
+          />
           <Route
             exact
             path="inventory-purchase-history"

@@ -297,7 +297,12 @@ export default function Sidebar() {
             },
             {
               linkName: "Assign Product",
-              linkPath: "/dashboard/assign-product",
+              linkPath: "/dashboard/projects/assign-product",
+              linkIcon: <PiStepsBold />,
+            },
+            {
+              linkName: "Assign History",
+              linkPath: "/dashboard/projects/assign-history",
               linkIcon: <PiStepsBold />,
             },
           ]}
