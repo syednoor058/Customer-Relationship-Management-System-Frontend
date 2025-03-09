@@ -61,6 +61,7 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const handleLogout = async () => {
     const token = localStorage.getItem("shikderFoundationAuthToken");
+    if (!token) return;
     if (token) {
       setLoggingOut(true);
       try {
@@ -71,13 +72,16 @@ export default function Sidebar() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        localStorage.removeItem("shikderFoundationAuthToken");
         toast(logoutRes.message || "Logged out!");
       } catch (err) {
         toast.error(err.message || "Something went wromg!");
+        // console.log(err);
+      } finally {
+        localStorage.removeItem("shikderFoundationAuthToken");
+        navigate("/");
+        window.location.reload();
       }
     }
-    navigate("/");
   };
 
   if (loggingOut) {
