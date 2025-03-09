@@ -37,7 +37,7 @@ import lightLogo from "../../assets/images/logo_light.png";
 import { DASHBOARD_SIDEBAR_BOTTOM_LINKS } from "../constant/SideBarLinksConstant";
 import DashboardAccordionLink from "../dashboardAccordionLink/DashboardAccordionLink";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
-
+const API_BASE_URL = import.meta.env.VITE_SIKDER_CMS_APP_API;
 function SidebarLink({ item }) {
   const { pathname } = useLocation();
   return (
@@ -66,7 +66,7 @@ export default function Sidebar() {
       setLoggingOut(true);
       try {
         const logoutRes = await axios.post(
-          "/api/logout",
+          `${API_BASE_URL}/api/logout`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -77,9 +77,10 @@ export default function Sidebar() {
         toast.error(err.message || "Something went wromg!");
         console.log(err);
       } finally {
+        setLoggingOut(false);
         localStorage.removeItem("shikderFoundationAuthToken");
         navigate("/");
-        // window.location.reload();
+        window.location.reload();
       }
     }
   };
