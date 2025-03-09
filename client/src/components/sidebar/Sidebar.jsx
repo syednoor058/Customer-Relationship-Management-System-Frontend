@@ -14,7 +14,11 @@ import {
   HiOutlineViewGrid,
   HiOutlineViewGridAdd,
 } from "react-icons/hi";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import {
+  MdHistory,
+  MdKeyboardArrowDown,
+  MdOutlineShoppingCart,
+} from "react-icons/md";
 import { PiStepsBold } from "react-icons/pi";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
@@ -28,6 +32,7 @@ import {
   HiOutlinePlusCircle,
 } from "react-icons/hi";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import lightLogo from "../../assets/images/logo_light.png";
 import { DASHBOARD_SIDEBAR_BOTTOM_LINKS } from "../constant/SideBarLinksConstant";
 import DashboardAccordionLink from "../dashboardAccordionLink/DashboardAccordionLink";
@@ -58,14 +63,19 @@ export default function Sidebar() {
     const token = localStorage.getItem("shikderFoundationAuthToken");
     if (token) {
       setLoggingOut(true);
-      await axios.post(
-        "/api/logout",
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      localStorage.removeItem("shikderFoundationAuthToken");
+      try {
+        const logoutRes = await axios.post(
+          "/api/logout",
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        localStorage.removeItem("shikderFoundationAuthToken");
+        toast(logoutRes.message || "Logged out!");
+      } catch (err) {
+        toast.error(err.message || "Something went wromg!");
+      }
     }
     navigate("/");
   };
@@ -93,7 +103,7 @@ export default function Sidebar() {
               : "hover:bg-gray-800 "
           } flex items-center gap-2 font-[500] ps-5 py-[10px] hover:no-underline text-sm`}
         >
-          <span className="text-lg">
+          <span className="">
             <HiOutlineViewGrid />
           </span>
           Dashboard
@@ -141,7 +151,7 @@ export default function Sidebar() {
               }}
             >
               <div className="flex flex-row gap-2 items-center py-[10px] text-primaryColor">
-                <span className="text-lg">
+                <span className="">
                   <HiOutlineFolderOpen />
                 </span>
                 Inventory
@@ -163,7 +173,7 @@ export default function Sidebar() {
                       : "hover:bg-gray-800 "
                   } flex items-center gap-2 font-light ps-2 py-[6px] hover:no-underline text-sm`}
                 >
-                  <span className="text-lg">
+                  <span className="">
                     <HiOutlineViewGridAdd />
                   </span>
                   Categories
@@ -176,7 +186,7 @@ export default function Sidebar() {
                       : "hover:bg-gray-800 "
                   } flex items-center gap-2 font-light ps-2 py-[6px] hover:no-underline text-sm`}
                 >
-                  <span className="text-lg">
+                  <span className="">
                     <HiOutlineArchive />
                   </span>
                   All Products
@@ -189,10 +199,36 @@ export default function Sidebar() {
                       : "hover:bg-gray-800 "
                   } flex items-center gap-2 font-light ps-2 py-[6px] hover:no-underline text-sm`}
                 >
-                  <span className="text-lg">
+                  <span className="">
                     <HiOutlinePlusCircle />
                   </span>
                   Add Product
+                </NavLink>
+                <NavLink
+                  to="/dashboard/inventory-purchase"
+                  className={`${
+                    pathname === "/dashboard/inventory-purchase"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
+                      : "hover:bg-gray-800 "
+                  } flex items-center gap-2 font-light ps-2 py-[6px] hover:no-underline text-sm`}
+                >
+                  <span className="">
+                    <MdOutlineShoppingCart />
+                  </span>
+                  Purchase
+                </NavLink>
+                <NavLink
+                  to="/dashboard/inventory-purchase-history"
+                  className={`${
+                    pathname === "/dashboard/inventory-purchase-history"
+                      ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
+                      : "hover:bg-gray-800 "
+                  } flex items-center gap-2 font-light ps-2 py-[6px] hover:no-underline text-sm`}
+                >
+                  <span className="">
+                    <MdHistory />
+                  </span>
+                  Purchase History
                 </NavLink>
               </div>
             </AccordionDetails>
@@ -253,6 +289,11 @@ export default function Sidebar() {
             {
               linkName: "Project States",
               linkPath: "/dashboard/project-states",
+              linkIcon: <PiStepsBold />,
+            },
+            {
+              linkName: "Assign Product",
+              linkPath: "/dashboard/assign-product",
               linkIcon: <PiStepsBold />,
             },
           ]}

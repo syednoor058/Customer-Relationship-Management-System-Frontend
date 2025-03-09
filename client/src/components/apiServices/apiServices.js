@@ -125,4 +125,40 @@ const getHeaders = () => {
     }
   };
 
+
+  export const inventoryPurchase = async (vendor_id, sub_total, discount, total, inventory, date) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/inventory_purchase`, {vendor_id, sub_total, discount, total, inventory, date}, {
+        headers: getHeaders(),
+      });
+      // console.log(response)
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to add product.' };
+    }
+  };
+
+  export const getInventoryPurchaseHistory = async (date) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/inventory_purchase/history/${date}`, {
+        headers: getHeaders(),
+      });
+      // console.log(response);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch inventory.' };
+    }
+  };
+
   
+  export const getSingleProductLedger = async (id) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/inventory/ledger/${id}`, {
+        headers: getHeaders(),
+      });
+      // console.log(response);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch inventory.' };
+    }
+  };

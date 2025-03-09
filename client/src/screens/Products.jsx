@@ -7,6 +7,7 @@ import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
 import {
+  HiOutlineClipboardList,
   HiOutlineEye,
   HiOutlinePencilAlt,
   HiOutlinePlusCircle,
@@ -15,7 +16,7 @@ import {
 } from "react-icons/hi";
 import { MdClose, MdDeleteOutline, MdOutlineDone } from "react-icons/md";
 import { TbFilterPlus } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   deleteInventory,
@@ -26,6 +27,7 @@ import {
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 export default function Products() {
+  const navigate = useNavigate();
   const [popup, setPopup] = useState({ type: "", data: null });
   const [inventory, setInventory] = useState([]);
   const [error, setError] = useState("");
@@ -39,6 +41,10 @@ export default function Products() {
   const [editProductPrice, setEditProductPrice] = useState(0);
   const [editProductQty, setEditProductQty] = useState(0);
   const [category, setCategory] = useState([]);
+
+  const handleProductLedger = (item) => {
+    navigate(`/dashboard/products/history/${item.id}`);
+  };
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
@@ -320,37 +326,7 @@ export default function Products() {
           )}
         </div>
       )}
-      {/* <div className="grid grid-cols-4 gap-3">
-        <DashboardCards
-          title="Total Leads"
-          number="19"
-          desc="Last Month"
-          icon={<HiUsers />}
-          iconColor="bg-[#0ea5e9]/80"
-        />
-        <DashboardCards
-          title="Total Categories"
-          number="4"
-          desc="Last Month"
-          icon={<MdDashboardCustomize />}
-          iconColor="bg-[#6a0dad]/80"
-        />
-
-        <DashboardCards
-          title="Total Products"
-          number="52"
-          desc="Last Month"
-          icon={<HiArchive />}
-          iconColor="bg-[#0ea5e9]/80"
-        />
-        <DashboardCards
-          title="Total Sales"
-          number="$4487"
-          desc="Last Month"
-          icon={<HiCurrencyDollar />}
-          iconColor="bg-[#6a0dad]/80"
-        />
-      </div> */}
+      <Outlet />
       <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded drop-shadow-xl border border-gray-200">
         <div className="flex flex-row justify-between">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
@@ -463,6 +439,12 @@ export default function Products() {
                           onClick={() => editProductPopup(item)}
                         >
                           <HiOutlinePencilAlt />
+                        </div>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => handleProductLedger(item)}
+                        >
+                          <HiOutlineClipboardList />
                         </div>
                         <div
                           className="cursor-pointer"
