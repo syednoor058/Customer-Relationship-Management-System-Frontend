@@ -79,7 +79,7 @@ export default function Sidebar() {
       } finally {
         localStorage.removeItem("shikderFoundationAuthToken");
         navigate("/");
-        window.location.reload();
+        // window.location.reload();
       }
     }
   };
