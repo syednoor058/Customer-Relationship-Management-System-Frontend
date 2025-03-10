@@ -25,8 +25,8 @@ export default function DashboardAccordionLink({ title, titleIcon, linkList }) {
           id="panel1-header"
           sx={{
             padding: "0px",
-            paddingRight: "20px",
-            paddingLeft: "20px",
+            paddingRight: "10px",
+            paddingLeft: "10px",
             margin: "0px",
             fontWeight: 500,
             backgroundColor: "transparent",
@@ -47,15 +47,15 @@ export default function DashboardAccordionLink({ title, titleIcon, linkList }) {
             },
           }}
         >
-          <div className="flex flex-row gap-2 items-center py-[10px] text-primaryColor">
-            <span className="text-lg">{titleIcon}</span>
+          <div className="flex flex-row gap-2 items-center py-[10px] text-primaryColor font-light">
+            <span className="">{titleIcon}</span>
             {title}
           </div>
         </AccordionSummary>
         <AccordionDetails
           sx={{
             padding: "0px", // Adjust padding for details
-            paddingLeft: "20px",
+            paddingLeft: "10px",
             marginTop: "0px", // Space between summary and details
           }}
         >
@@ -70,7 +70,7 @@ export default function DashboardAccordionLink({ title, titleIcon, linkList }) {
                     : "hover:bg-gray-800 "
                 } flex items-center gap-2 font-light ps-2 py-[6px] hover:no-underline text-sm`}
               >
-                <span className="text-lg">{link.linkIcon}</span>
+                <span className="">{link.linkIcon}</span>
                 {link.linkName}
               </NavLink>
             ))}

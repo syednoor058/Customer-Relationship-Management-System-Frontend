@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getProductAssignmentHistory } from "../components/apiServices/projectAPIServices";
+import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 export default function ProductAssignHistory() {
   const [assignDate, setAssignDate] = useState(
     () => new Date().toISOString().split("T")[0]
   );
   const [hist, setHist] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchInventoryPurchaseHistory = async () => {
+      setLoading(true);
       try {
         const purchaseHistory = await getProductAssignmentHistory(assignDate);
         setHist(purchaseHistory);
-        console.log(purchaseHistory);
+        // console.log(purchaseHistory);
       } catch (error) {
         toast.error(error.message || "Error occured while fetching data!");
+      } finally {
+        setLoading(false);
       }
     };
     fetchInventoryPurchaseHistory();
   }, [assignDate]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
@@ -42,8 +50,8 @@ export default function ProductAssignHistory() {
             <thead className="w-full">
               <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
                 <th className="w-[10%] text-center py-3 px-2">ID</th>
-                <th className="w-[25%] text-start py-3 px-2">Total</th>
-                <th className="w-[45%] text-center py-3 px-2">Products Name</th>
+                <th className="w-[45%] text-start py-3 px-2">Project Name</th>
+                <th className="w-[25%] text-center py-3 px-2">Date</th>
                 <th className="w-[20%] text-center py-3 px-2">Actions</th>
               </tr>
             </thead>
@@ -58,9 +66,9 @@ export default function ProductAssignHistory() {
                       }`}
                     >
                       <td className="py-4 px-2 text-center">{item.id}</td>
-                      <td className="py-4 px-2">{item.total}</td>
+                      <td className="py-4 px-2">{item.project_name}</td>
                       <td className="py-4 px-2 text-center">
-                        {item.vendor_name}
+                        {item.created_at}
                       </td>
                       <td className=" px-2 py-2 flex flex-row gap-5 justify-center items-center opacity-70">
                         <div className="cursor-pointer px-3 py-1 bg-blue-600 text-primaryColor">

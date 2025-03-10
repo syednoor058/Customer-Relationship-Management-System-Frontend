@@ -14,12 +14,13 @@ import {
   HiOutlineViewGrid,
   HiOutlineViewGridAdd,
 } from "react-icons/hi";
+import { LuWorkflow } from "react-icons/lu";
 import {
+  MdAddBusiness,
   MdHistory,
   MdKeyboardArrowDown,
   MdOutlineShoppingCart,
 } from "react-icons/md";
-import { PiStepsBold } from "react-icons/pi";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -47,9 +48,9 @@ function SidebarLink({ item }) {
         pathname === item.path
           ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
           : "hover:bg-gray-800 "
-      } flex items-center gap-5 font-light px-5 py-2 hover:no-underline text-sm`}
+      } flex items-center gap-2 font-light px-[10px] py-2 hover:no-underline text-sm`}
     >
-      <span className="text-xl">{item.icon}</span>
+      <span className="">{item.icon}</span>
       {item.label}
     </NavLink>
   );
@@ -105,7 +106,7 @@ export default function Sidebar() {
             pathname === "/dashboard"
               ? " bg-accentColor bg-opacity-10 border-r-[5px] border-accentColor"
               : "hover:bg-gray-800 "
-          } flex items-center gap-2 font-[500] ps-5 py-[10px] hover:no-underline text-sm`}
+          } flex items-center gap-2 font-light ps-[10px] py-[10px] hover:no-underline text-sm`}
         >
           <span className="">
             <HiOutlineViewGrid />
@@ -132,8 +133,8 @@ export default function Sidebar() {
               id="panel1-header"
               sx={{
                 padding: "0px",
-                paddingRight: "20px",
-                paddingLeft: "20px",
+                paddingRight: "10px",
+                paddingLeft: "10px",
                 margin: "0px",
                 fontWeight: 500,
                 backgroundColor: "transparent",
@@ -154,7 +155,7 @@ export default function Sidebar() {
                 },
               }}
             >
-              <div className="flex flex-row gap-2 items-center py-[10px] text-primaryColor">
+              <div className="flex flex-row gap-2 items-center py-[10px] text-primaryColor font-light">
                 <span className="">
                   <HiOutlineFolderOpen />
                 </span>
@@ -164,7 +165,7 @@ export default function Sidebar() {
             <AccordionDetails
               sx={{
                 padding: "0px", // Adjust padding for details
-                paddingLeft: "20px",
+                paddingLeft: "10px",
                 marginTop: "0px", // Space between summary and details
               }}
             >
@@ -293,17 +294,17 @@ export default function Sidebar() {
             {
               linkName: "Project States",
               linkPath: "/dashboard/project-states",
-              linkIcon: <PiStepsBold />,
+              linkIcon: <LuWorkflow />,
             },
             {
               linkName: "Assign Product",
               linkPath: "/dashboard/projects/assign-product",
-              linkIcon: <PiStepsBold />,
+              linkIcon: <MdAddBusiness />,
             },
             {
               linkName: "Assign History",
               linkPath: "/dashboard/projects/assign-history",
-              linkIcon: <PiStepsBold />,
+              linkIcon: <MdHistory />,
             },
           ]}
         />
@@ -353,10 +354,10 @@ export default function Sidebar() {
           <SidebarLink key={item.key} item={item} />
         ))}
         <div
-          className="flex items-center gap-5 font-light px-5 py-2 hover:bg-gray-800 cursor-pointer text-red-500"
+          className="flex items-center gap-2 font-light px-[10px] py-2 hover:bg-gray-800 cursor-pointer text-red-500 text-sm"
           onClick={handleLogout}
         >
-          <span className="text-xl">
+          <span className="">
             <HiOutlineLogout />
           </span>
           Logout

@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import DashboardHeader from "../components/dashboardHeader/DashboardHeader";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -26,7 +27,7 @@ export default function Dashboard() {
         setUser(response.data);
         // navigate("/dashboard/overview");
       } catch (err) {
-        console.error("Error fetching user data", err);
+        toast.error("Error fetching user data", err);
         navigate("/");
       }
     };
