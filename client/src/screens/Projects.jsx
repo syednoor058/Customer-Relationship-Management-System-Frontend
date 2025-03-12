@@ -55,6 +55,15 @@ export default function Projects() {
     navigate(`/dashboard/projects/release-employee/${id}`);
   };
 
+  const reload = async () => {
+    try {
+      const projectData = await getProjects(); 
+      setProjects(projectData); 
+    } catch (error) {
+      setError(err);
+    }
+  };
+
   const handleChange = (event) => {
     setPage(event.target.value);
   };
@@ -92,7 +101,11 @@ export default function Projects() {
         editProjectBalance
       );
 
-      toast(editProjectData.message);
+      if(editProjectData.success){
+        reload()
+        toast(editProjectData.message);
+      }
+
       setPopup({ type: "", data: null });
     } catch (error) {
       toast(error.message);
@@ -114,7 +127,11 @@ export default function Projects() {
     try {
       const deleteProjectData = await deleteProject(_id);
 
-      toast(deleteProjectData.message);
+      if(deleteProjectData.success){
+        reload()
+        toast(deleteProjectData.message);
+      }
+
     } catch (error) {
       toast(error.message);
     } finally {
@@ -490,6 +507,7 @@ export default function Projects() {
                 <th className="w-[20%] text-start py-3 px-2">Name</th>
                 <th className="w-[20%] text-start py-3 px-2">Address</th>
                 <th className="w-[15%] text-center py-3 px-2">State</th>
+                <th className="w-[15%] text-center py-3 px-2">Balance</th>
                 <th className="w-[40%] text-center py-3 px-2">Actions</th>
               </tr>
             </thead>
@@ -506,6 +524,7 @@ export default function Projects() {
                       <td className="py-4 px-2 text-center">{index + 1}</td>
                       <td className="py-4 px-2">{item.project_name}</td>
                       <td className="py-4 px-2">{item.address}</td>
+                      <td className="py-4 px-2">{item.balance}</td>
                       <td className="py-4 px-2 text-center">
                         {item.state_name}
                       </td>

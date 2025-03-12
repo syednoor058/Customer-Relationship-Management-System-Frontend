@@ -66,11 +66,11 @@ export default function Overview() {
             </div>
             <div className="w-full font-semibold text-5xl flex flex-row justify-end items-end gap-5">
               <span className="font-normal text-base">BDT</span>
-              <span className="text-primaryColor">{cash[0].balance}</span>
+              <span className="text-primaryColor">{cash[0].balance ?? 0}</span>
             </div>
             <div className="w-full flex flex-row gap-10 justify-between items-center text-xs">
               <p>Last Update:</p>
-              <p>{cash[0].updated_at.split(" ")[0]}</p>
+              <p>{cash[0]?.updated_at.split(" ")[0] ?? "" }</p>
             </div>
           </div>
         </div>
