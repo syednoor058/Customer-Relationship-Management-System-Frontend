@@ -12,9 +12,11 @@ import Overview from "./components/overview/Overview";
 import ProductLedger from "./components/productLedger/ProductLedger";
 import ReleaseEmployee from "./components/releaseEmployee/ReleaseEmployee";
 import BankAccounts from "./screens/BankAccounts";
+import CashSupply from "./screens/CashSupply";
 import Categories from "./screens/Categories";
 import Dashboard from "./screens/Dashboard";
 import EmployeeRoles from "./screens/EmployeeRoles";
+import EmployeeSalary from "./screens/EmployeeSalary";
 import Employees from "./screens/Employees";
 import InventoryPurchase from "./screens/InventoryPurchase";
 import InventoryPurchaseHistory from "./screens/InventoryPurchaseHistory";
@@ -68,8 +70,12 @@ function App() {
               path="release-employee/:projectId"
               element={<ReleaseEmployee />}
             />
-            <Route exact path="assign-product" element={<ProductAssign />} />
           </Route>
+          <Route
+            exact
+            path="projects/assign-product"
+            element={<ProductAssign />}
+          />
           <Route exact path="add-project" element={<AddProject />} />
           <Route
             exact
@@ -81,8 +87,13 @@ function App() {
             path="inventory-purchase-history"
             element={<InventoryPurchaseHistory />}
           />
-
+          <Route
+            exact
+            path="projects/supply-cash"
+            element={<CashSupply />}
+          ></Route>
           <Route exact path="accounts" element={<BankAccounts />}></Route>
+          <Route exact path="employee-salary" element={<EmployeeSalary />} />
         </Route>
       </Routes>
     </BrowserRouter>

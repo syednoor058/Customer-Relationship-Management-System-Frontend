@@ -114,3 +114,29 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to delete employee roles.' };
     }
   }
+
+  export const employeeSalarySubmit = async (employee_id, amount) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/employee/salary`, {employee_id, amount},
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to add employee salary.' };
+    }
+  }
+
+  export const getEmployeesSalary = async (formattedDate) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/employee/history/${formattedDate}`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch employees salary history.' };
+    }
+  }

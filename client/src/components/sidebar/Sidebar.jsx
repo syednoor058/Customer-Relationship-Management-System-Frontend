@@ -14,7 +14,7 @@ import {
   HiOutlineViewGrid,
   HiOutlineViewGridAdd,
 } from "react-icons/hi";
-import { LuWorkflow } from "react-icons/lu";
+import { LuCircleDollarSign, LuWorkflow } from "react-icons/lu";
 import {
   MdAddBusiness,
   MdHistory,
@@ -274,6 +274,11 @@ export default function Sidebar() {
               linkPath: "/dashboard/employee-roles",
               linkIcon: <HiOutlineIdentification />,
             },
+            {
+              linkName: "Employee Salary",
+              linkPath: "/dashboard/employee-salary",
+              linkIcon: <LuCircleDollarSign />,
+            },
           ]}
         />
 
@@ -305,6 +310,11 @@ export default function Sidebar() {
               linkName: "Assign History",
               linkPath: "/dashboard/projects/assign-history",
               linkIcon: <MdHistory />,
+            },
+            {
+              linkName: "Supply Cash",
+              linkPath: "/dashboard/projects/supply-cash",
+              linkIcon: <LuCircleDollarSign />,
             },
           ]}
         />
