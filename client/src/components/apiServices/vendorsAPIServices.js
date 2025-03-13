@@ -62,3 +62,28 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to delete vendors.' };
     }
   }
+
+  export const postVendorsPayment = async (vendor_id, amount) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/vendor/payment`, {vendor_id, amount},
+        {headers: getHeaders(),}
+      );
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to delete vendors.' };
+    }
+  }
+
+  export const getVendorLedgerById = async (_id) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/vendor/ledger/${_id}`,
+        {headers: getHeaders(),}
+      );
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to delete vendors.' };
+    }
+  }
+

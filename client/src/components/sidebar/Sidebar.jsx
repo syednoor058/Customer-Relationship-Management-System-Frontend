@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 // import React from 'react'
+import { BsCash } from "react-icons/bs";
 import {
   HiOutlineArchive,
   HiOutlineClipboardList,
@@ -14,13 +15,15 @@ import {
   HiOutlineViewGrid,
   HiOutlineViewGridAdd,
 } from "react-icons/hi";
-import { LuCircleDollarSign, LuWorkflow } from "react-icons/lu";
+import { LuCircleDollarSign, LuHandCoins, LuWorkflow } from "react-icons/lu";
 import {
   MdAddBusiness,
   MdHistory,
   MdKeyboardArrowDown,
+  MdOutlinePayments,
   MdOutlineShoppingCart,
 } from "react-icons/md";
+import { TbReport } from "react-icons/tb";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -253,6 +256,16 @@ export default function Sidebar() {
               linkPath: "/dashboard/add-vendor",
               linkIcon: <HiOutlinePlusCircle />,
             },
+            {
+              linkName: "Payment",
+              linkPath: "/dashboard/vendors/payment",
+              linkIcon: <MdOutlinePayments />,
+            },
+            {
+              linkName: "Vendors Ledger",
+              linkPath: "/dashboard/vendors/ledger",
+              linkIcon: <TbReport />,
+            },
           ]}
         />
         <DashboardAccordionLink
@@ -280,9 +293,14 @@ export default function Sidebar() {
               linkIcon: <LuCircleDollarSign />,
             },
             {
+              linkName: "Employee Wages",
+              linkPath: "/dashboard/employee-wages",
+              linkIcon: <BsCash />,
+            },
+            {
               linkName: "Employee Ledger",
               linkPath: "/dashboard/employee-ledger",
-              linkIcon: <LuCircleDollarSign />,
+              linkIcon: <TbReport />,
             },
           ]}
         />
@@ -319,11 +337,6 @@ export default function Sidebar() {
             {
               linkName: "Supply Cash",
               linkPath: "/dashboard/projects/supply-cash",
-              linkIcon: <LuCircleDollarSign />,
-            },
-            {
-              linkName: "Employee Wages",
-              linkPath: "/dashboard/projects/employee-wages",
               linkIcon: <LuCircleDollarSign />,
             },
           ]}
@@ -366,7 +379,7 @@ export default function Sidebar() {
             {
               linkName: "Expense",
               linkPath: "/dashboard/expense",
-              linkIcon: <HiOutlineClock />,
+              linkIcon: <LuHandCoins />,
             },
           ]}
         />

@@ -29,7 +29,9 @@ import ProductAssignHistory from "./screens/ProductAssignHistory";
 import Products from "./screens/Products";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
+import VendorLedger from "./screens/VendorLedger";
 import Vendors from "./screens/Vendors";
+import VendorsPayment from "./screens/VendorsPayment";
 
 function App() {
   return (
@@ -85,11 +87,7 @@ function App() {
             path="projects/assign-history"
             element={<ProductAssignHistory />}
           />
-          <Route
-            exact
-            path="projects/employee-wages"
-            element={<EmployeeWages />}
-          />
+          <Route exact path="employee-wages" element={<EmployeeWages />} />
           <Route exact path="employee-ledger" element={<EmployeeLedger />} />
           <Route
             exact
@@ -104,6 +102,8 @@ function App() {
           <Route exact path="accounts" element={<BankAccounts />}></Route>
           <Route exact path="employee-salary" element={<EmployeeSalary />} />
           <Route exact path="expense" element={<Expense />} />
+          <Route exact path="vendors/payment" element={<VendorsPayment />} />
+          <Route exact path="vendors/ledger" element={<VendorLedger />} />
         </Route>
       </Routes>
     </BrowserRouter>

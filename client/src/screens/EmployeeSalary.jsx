@@ -64,7 +64,7 @@ export default function EmployeeSalary() {
   }
   return (
     <div className="w-full flex flex-col gap-10 pb-10">
-      {/* Cash Suppy Entry */}
+      {/* Employee Salary Entry */}
       <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
         <div className="flex flex-col gap-5">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
