@@ -15,9 +15,12 @@ import BankAccounts from "./screens/BankAccounts";
 import CashSupply from "./screens/CashSupply";
 import Categories from "./screens/Categories";
 import Dashboard from "./screens/Dashboard";
+import EmployeeLedger from "./screens/EmployeeLedger";
 import EmployeeRoles from "./screens/EmployeeRoles";
 import EmployeeSalary from "./screens/EmployeeSalary";
+import EmployeeWages from "./screens/EmployeeWages";
 import Employees from "./screens/Employees";
+import Expense from "./screens/Expense";
 import InventoryPurchase from "./screens/InventoryPurchase";
 import InventoryPurchaseHistory from "./screens/InventoryPurchaseHistory";
 import Login from "./screens/Login";
@@ -84,6 +87,12 @@ function App() {
           />
           <Route
             exact
+            path="projects/employee-wages"
+            element={<EmployeeWages />}
+          />
+          <Route exact path="employee-ledger" element={<EmployeeLedger />} />
+          <Route
+            exact
             path="inventory-purchase-history"
             element={<InventoryPurchaseHistory />}
           />
@@ -94,6 +103,7 @@ function App() {
           ></Route>
           <Route exact path="accounts" element={<BankAccounts />}></Route>
           <Route exact path="employee-salary" element={<EmployeeSalary />} />
+          <Route exact path="expense" element={<Expense />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -140,3 +140,30 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to fetch employees salary history.' };
     }
   }
+
+  export const getEmployeeLedgerById = async (id) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/employee/ledger/${id}`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch employees salary history.' };
+    }
+  }
+
+
+  export const getEmployeeForSalary = async () => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/employee/salary/all`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch employees!' };
+    }
+  }

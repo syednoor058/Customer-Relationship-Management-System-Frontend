@@ -1,61 +1,56 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
-  employeeSalarySubmit,
-  getEmployeeForSalary,
-  getEmployeesSalary,
-} from "../components/apiServices/employeeAPIServices";
+  addExpense,
+  getAllExpense,
+} from "../components/apiServices/expenseAPIServices";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
-export default function EmployeeSalary() {
+export default function Expense() {
+  const token = localStorage.getItem("shikderFoundationAuthToken");
   const [historyDate, setHistoryDate] = useState(
     () => new Date().toISOString().split("T")[0]
   );
-  const [loading, setLoading] = useState(true);
-  const [employees, setEmployees] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState(0);
-  const [salary, setSalary] = useState(0);
-  const [salaryHistory, setSalaryHistory] = useState([]);
-  const token = localStorage.getItem("shikderFoundationAuthToken");
+  const [expenseName, setExpenseName] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [expense, setExpense] = useState([]);
+  const handleReset = () => {
+    setExpenseName("");
+    setAmount(0);
+  };
 
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    setLoading(true);
     try {
-      const res = await employeeSalarySubmit(selectedEmployee, salary);
-      if (res.message === "Salary added successfully") {
-        const updatedSalaryHistory = await getEmployeesSalary(historyDate);
-        setSalaryHistory(updatedSalaryHistory);
-      }
-      toast.success(res.message);
-    } catch (err) {
-      toast.error(err.message || "Something went wrong!");
-    } finally {
+      const expenseSubmit = await addExpense(expenseName, amount);
+      toast.success(expenseSubmit.message || "Expense added successfully!");
       handleReset();
+      const updatedExpenseHistory = await getAllExpense(
+        new Date().toISOString().split("T")[0]
+      );
+      setExpense(updatedExpenseHistory);
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    } finally {
       setLoading(false);
     }
   };
 
-  const handleReset = () => {
-    setSelectedEmployee(0);
-    setSalary(0);
-  };
-
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
-      setLoading(true);
       try {
-        const employeesRes = await getEmployeeForSalary();
-        const employeesSalaryHistory = await getEmployeesSalary(historyDate);
-        setSalaryHistory(employeesSalaryHistory);
-        setEmployees(employeesRes);
-        // console.log(employeesSalaryHistory);
-      } catch (err) {
-        toast.error(err.message || "Something went wrong!");
+        const getExpensesData = await getAllExpense(historyDate);
+        setExpense(getExpensesData);
+      } catch (error) {
+        toast.error(error.message || "Something went wrong!");
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, [historyDate, token]);
 
@@ -64,59 +59,36 @@ export default function EmployeeSalary() {
   }
   return (
     <div className="w-full flex flex-col gap-10 pb-10">
-      {/* Cash Suppy Entry */}
+      {/* Expense Entry */}
       <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
         <div className="flex flex-col gap-5">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
-            <h1>Employee Salary Entry</h1>
+            <h1>Expense Entry</h1>
           </div>
           <div>
             <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
               <div className="w-full grid grid-cols-2 gap-10">
                 <div className="flex flex-col gap-2">
-                  <label>Employee</label>
-                  <select
-                    className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                    value={selectedEmployee}
-                    onChange={(e) =>
-                      setSelectedEmployee(Number(e.target.value))
-                    }
-                    required
-                  >
-                    <option value={0} disabled>
-                      Select an employee
-                    </option>
-
-                    {employees.length === 0 ? (
-                      <>
-                        <option disabled className="text-center">
-                          No employee found!
-                        </option>
-                      </>
-                    ) : (
-                      <>
-                        {employees?.map((item) => (
-                          <option
-                            key={item.id}
-                            value={item.id}
-                            className="capitalize"
-                          >
-                            {item.employee_name}
-                          </option>
-                        ))}
-                      </>
-                    )}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label>Salary</label>
+                  <label>Expense Name</label>
                   <input
-                    type="number"
-                    placeholder="Salary amount"
+                    type="text"
+                    placeholder="Expense name"
                     className="p-2 border rounded w-full outline-none"
                     min={0}
-                    value={salary}
-                    onChange={(e) => setSalary(Number(e.target.value))}
+                    value={expenseName}
+                    onChange={(e) => setExpenseName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label>Amount</label>
+                  <input
+                    type="number"
+                    placeholder="Expense amount"
+                    className="p-2 border rounded w-full outline-none"
+                    min={0}
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
                     required
                   />
                 </div>
@@ -145,12 +117,12 @@ export default function EmployeeSalary() {
         </div>
       </div>
 
-      {/* Cash Supply History  */}
+      {/* Expense History  */}
       <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-5 items-center">
             <div className="w-full text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900 justify-center">
-              <h1>Employee Salary History</h1>
+              <h1>Expense History</h1>
             </div>
             <div className="flex flex-row gap-5 justify-center items-center">
               <label>Select Date:</label>
@@ -168,25 +140,16 @@ export default function EmployeeSalary() {
               <thead className="w-full">
                 <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
                   <th className="w-[5%] text-center py-3 px-2">ID</th>
-                  <th className="w-[20%] text-start py-3 px-2">
-                    Employee Name
-                  </th>
-                  <th className="w-[10%] text-center py-3 px-2">Amount</th>
-                  <th className="w-[10%] text-center py-3 px-2">Type</th>
-                  <th className="w-[10%] text-center py-3 px-2">
-                    Current Balance
-                  </th>
-                  <th className="w-[10%] text-center py-3 px-2">
-                    Previous Balance
-                  </th>
+                  <th className="w-[40%] text-start py-3 px-2">Expense Name</th>
+                  <th className="w-[20%] text-center py-3 px-2">Amount</th>
                   <th className="w-[25%] text-center py-3 px-2">Created At</th>
                   <th className="w-[10%] text-center py-3 px-2">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {salaryHistory.length > 0 ? (
+                {expense.length > 0 ? (
                   <>
-                    {salaryHistory.map((item, index) => (
+                    {expense.map((item, index) => (
                       <tr
                         key={index}
                         className={`text-sm font-light rounded-md ${
@@ -194,15 +157,8 @@ export default function EmployeeSalary() {
                         }`}
                       >
                         <td className="py-4 px-2 text-center">{item.id}</td>
-                        <td className="py-4 px-2">{item.employee_name}</td>
+                        <td className="py-4 px-2">{item.expense_name}</td>
                         <td className="py-4 px-2 text-center">{item.amount}</td>
-                        <td className="py-4 px-2 text-center">{item.type}</td>
-                        <td className="py-4 px-2 text-center">
-                          {item.current_balance}
-                        </td>
-                        <td className="py-4 px-2 text-center">
-                          {item.previous_balance}
-                        </td>
                         <td className="py-4 px-2 text-center">
                           {item.created_at.split(" ")[1]}
                         </td>
@@ -221,7 +177,7 @@ export default function EmployeeSalary() {
                         colSpan="6"
                         className="text-center py-10 text-xl font-semibold text-gray-400"
                       >
-                        <p>No purchase found!</p>
+                        <p>No expense found!</p>
                       </td>
                     </tr>
                   </>

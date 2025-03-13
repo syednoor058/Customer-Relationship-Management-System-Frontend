@@ -11,18 +11,25 @@ const getHeaders = () => {
   };
 };
 
-  export const getCash = async () => {
-    try{
-      const response = await axios.get(
-        `${API_BASE_URL}/api/cash`,
-        {headers: getHeaders(),}
-      );
-      // console.log(response)
-      return response.data;
-    } catch(error) {
-      throw error.response?.data || { message: 'Failed to fetch cash opening.' };
+export const getCash = async () => {
+  try {
+    const openingResponse = await axios.get(`${API_BASE_URL}/api/cash/opening`, {
+      headers: getHeaders(),
+    });
+
+    if (openingResponse.data.success) {
+      const cashResponse = await axios.get(`${API_BASE_URL}/api/cash`, {
+        headers: getHeaders(),
+      });
+
+      return cashResponse.data; 
     }
+
+    return [{ balance: 0, updated_at: null }];
+  } catch (error) {
+    throw error.response?.data || { message: 'Failed to fetch cash opening.' };
   }
+};
 
   export const getSupplyCashHistory = async (formattedDate) => {
     try{

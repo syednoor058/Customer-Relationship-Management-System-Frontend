@@ -279,6 +279,11 @@ export default function Sidebar() {
               linkPath: "/dashboard/employee-salary",
               linkIcon: <LuCircleDollarSign />,
             },
+            {
+              linkName: "Employee Ledger",
+              linkPath: "/dashboard/employee-ledger",
+              linkIcon: <LuCircleDollarSign />,
+            },
           ]}
         />
 
@@ -316,6 +321,11 @@ export default function Sidebar() {
               linkPath: "/dashboard/projects/supply-cash",
               linkIcon: <LuCircleDollarSign />,
             },
+            {
+              linkName: "Employee Wages",
+              linkPath: "/dashboard/projects/employee-wages",
+              linkIcon: <LuCircleDollarSign />,
+            },
           ]}
         />
         <DashboardAccordionLink
@@ -351,6 +361,11 @@ export default function Sidebar() {
             {
               linkName: "Transaction History",
               linkPath: "/dashboard/transaction-history",
+              linkIcon: <HiOutlineClock />,
+            },
+            {
+              linkName: "Expense",
+              linkPath: "/dashboard/expense",
               linkIcon: <HiOutlineClock />,
             },
           ]}

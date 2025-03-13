@@ -57,10 +57,10 @@ export default function Projects() {
 
   const reload = async () => {
     try {
-      const projectData = await getProjects(); 
-      setProjects(projectData); 
+      const projectData = await getProjects();
+      setProjects(projectData);
     } catch (error) {
-      setError(err);
+      setError(error);
     }
   };
 
@@ -101,8 +101,8 @@ export default function Projects() {
         editProjectBalance
       );
 
-      if(editProjectData.success){
-        reload()
+      if (editProjectData.success) {
+        reload();
         toast(editProjectData.message);
       }
 
@@ -127,11 +127,10 @@ export default function Projects() {
     try {
       const deleteProjectData = await deleteProject(_id);
 
-      if(deleteProjectData.success){
-        reload()
+      if (deleteProjectData.success) {
+        reload();
         toast(deleteProjectData.message);
       }
-
     } catch (error) {
       toast(error.message);
     } finally {
@@ -392,37 +391,6 @@ export default function Projects() {
 
       <Outlet />
 
-      {/* <div className="grid grid-cols-4 gap-3">
-        <DashboardCards
-          title="Total Leads"
-          number="19"
-          desc="Last Month"
-          icon={<HiUsers />}
-          iconColor="bg-[#0ea5e9]/80"
-        />
-        <DashboardCards
-          title="Total Categories"
-          number="4"
-          desc="Last Month"
-          icon={<MdDashboardCustomize />}
-          iconColor="bg-[#6a0dad]/80"
-        />
-
-        <DashboardCards
-          title="Total Products"
-          number="52"
-          desc="Last Month"
-          icon={<HiArchive />}
-          iconColor="bg-[#0ea5e9]/80"
-        />
-        <DashboardCards
-          title="Total Sales"
-          number="$4487"
-          desc="Last Month"
-          icon={<HiCurrencyDollar />}
-          iconColor="bg-[#6a0dad]/80"
-        />
-      </div> */}
       <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl border border-gray-200">
         <div className="flex flex-row justify-between">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
@@ -524,10 +492,8 @@ export default function Projects() {
                       <td className="py-4 px-2 text-center">{index + 1}</td>
                       <td className="py-4 px-2">{item.project_name}</td>
                       <td className="py-4 px-2">{item.address}</td>
-                      <td className="py-4 px-2">{item.balance}</td>
-                      <td className="py-4 px-2 text-center">
-                        {item.state_name}
-                      </td>
+                      <td className="py-4 px-2">{item.state_name}</td>
+                      <td className="py-4 px-2 text-center">{item.balance}</td>
                       <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
                         <div
                           className="cursor-pointer"

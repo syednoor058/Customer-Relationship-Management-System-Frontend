@@ -198,3 +198,30 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to fetch product assign history.'};
     }
   }
+
+  export const getProjectEmployeeWage = async (id) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/employee/wage/all/${id}`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch product assign history.'};
+    }
+  }
+
+  export const postProjectEmployeeWage = async (project_id, employee_id, amount) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/employee/wage/${project_id}`, {employee_id, amount},
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch product assign history.'};
+    }
+  }
+

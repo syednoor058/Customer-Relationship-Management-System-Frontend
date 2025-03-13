@@ -70,7 +70,7 @@ export default function Overview() {
             </div>
             <div className="w-full flex flex-row gap-10 justify-between items-center text-xs">
               <p>Last Update:</p>
-              <p>{cash[0]?.updated_at.split(" ")[0] ?? "" }</p>
+              <p>{cash[0]?.updated_at.split(" ")[0] ?? ""}</p>
             </div>
           </div>
         </div>
