@@ -36,3 +36,16 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to fetch employees.' };
     }
   }
+
+  export const postProjectExpense = async (project_id, expense_name, amount) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/expense/projectwise/${project_id}`, {expense_name, amount},
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch product assign history.'};
+    }
+  }

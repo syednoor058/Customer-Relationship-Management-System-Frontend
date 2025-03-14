@@ -11,10 +11,14 @@ import LoginComponent from "./components/loginComponent/LoginComponent";
 import Overview from "./components/overview/Overview";
 import ProductLedger from "./components/productLedger/ProductLedger";
 import ReleaseEmployee from "./components/releaseEmployee/ReleaseEmployee";
+import AccountLedger from "./screens/AccountLedger";
+import AddBankAccount from "./screens/AddBankAccount";
 import BankAccounts from "./screens/BankAccounts";
+import BankDetails from "./screens/BankDetails";
 import CashSupply from "./screens/CashSupply";
 import Categories from "./screens/Categories";
 import Dashboard from "./screens/Dashboard";
+import EditBankDetails from "./screens/EditBankDetails";
 import EmployeeLedger from "./screens/EmployeeLedger";
 import EmployeeRoles from "./screens/EmployeeRoles";
 import EmployeeSalary from "./screens/EmployeeSalary";
@@ -27,6 +31,7 @@ import Login from "./screens/Login";
 import ProductAssign from "./screens/ProductAssign";
 import ProductAssignHistory from "./screens/ProductAssignHistory";
 import Products from "./screens/Products";
+import ProjectExpense from "./screens/ProjectExpense";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
 import VendorLedger from "./screens/VendorLedger";
@@ -104,6 +109,23 @@ function App() {
           <Route exact path="expense" element={<Expense />} />
           <Route exact path="vendors/payment" element={<VendorsPayment />} />
           <Route exact path="vendors/ledger" element={<VendorLedger />} />
+          <Route exact path="projects/expense" element={<ProjectExpense />} />
+          <Route
+            exact
+            path="accounts/details/:bankId"
+            element={<BankDetails />}
+          />
+          <Route
+            exact
+            path="accounts/edit/:bankId"
+            element={<EditBankDetails />}
+          />
+          <Route
+            exact
+            path="accounts/add-account"
+            element={<AddBankAccount />}
+          />
+          <Route exact path="accounts/ledger" element={<AccountLedger />} />
         </Route>
       </Routes>
     </BrowserRouter>

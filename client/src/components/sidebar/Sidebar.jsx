@@ -4,7 +4,6 @@ import { BsCash } from "react-icons/bs";
 import {
   HiOutlineArchive,
   HiOutlineClipboardList,
-  HiOutlineClock,
   HiOutlineHome,
   HiOutlineIdentification,
   HiOutlineLibrary,
@@ -368,17 +367,22 @@ export default function Sidebar() {
             },
             {
               linkName: "Add Account",
-              linkPath: "/dashboard/add-account",
+              linkPath: "/dashboard/accounts/add-account",
               linkIcon: <HiOutlinePlusCircle />,
             },
             {
-              linkName: "Transaction History",
-              linkPath: "/dashboard/transaction-history",
-              linkIcon: <HiOutlineClock />,
+              linkName: "Accounts Ledger",
+              linkPath: "/dashboard/accounts/ledger",
+              linkIcon: <TbReport />,
             },
             {
               linkName: "Expense",
               linkPath: "/dashboard/expense",
+              linkIcon: <LuHandCoins />,
+            },
+            {
+              linkName: "Project Expense",
+              linkPath: "/dashboard/projects/expense",
               linkIcon: <LuHandCoins />,
             },
           ]}

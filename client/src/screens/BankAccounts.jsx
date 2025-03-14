@@ -5,16 +5,10 @@ import Pagination from "@mui/material/Pagination";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
-import {
-  HiOutlineEye,
-  HiOutlinePencilAlt,
-  HiOutlinePlusCircle,
-  HiOutlineTrash,
-  HiSearch,
-} from "react-icons/hi";
+import { HiOutlinePlusCircle, HiSearch } from "react-icons/hi";
 import { TbFilterPlus } from "react-icons/tb";
 import { Link, Outlet } from "react-router-dom";
-import { getAccountss } from "../components/apiServices/accountsAPIServices";
+import { getAccounts } from "../components/apiServices/accountsAPIServices";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 export default function BankAccounts() {
@@ -37,7 +31,7 @@ export default function BankAccounts() {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const accountsData = await getAccountss();
+        const accountsData = await getAccounts();
         setAccounts(accountsData);
       } catch (err) {
         setError(err);
@@ -58,7 +52,7 @@ export default function BankAccounts() {
     <div className="flex flex-col gap-5 pb-10 font-light text-sm text-gray-600">
       <Outlet />
 
-      <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded-xl drop-shadow-xl border border-gray-200">
+      <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded drop-shadow-xl border border-gray-200">
         <div className="flex flex-row justify-between">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
             <span className="text-4xl">
@@ -67,7 +61,7 @@ export default function BankAccounts() {
             All Accounts
           </div>
           <Link
-            to="/dashboard/add-account"
+            to="/dashboard/accounts/add-account"
             className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
           >
             <span className="text-xl">
@@ -119,10 +113,11 @@ export default function BankAccounts() {
           <table className="w-full border-collapse border border-gray-300">
             <thead className="w-full">
               <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-                <th className="w-[5%] text-center py-3 px-2">ID</th>
+                <th className="w-[10%] text-center py-3 px-2">ID</th>
                 <th className="w-[40%] text-start py-3 px-2">Account Name</th>
                 <th className="w-[15%] text-start py-3 px-2">Balance</th>
-                <th className="w-[40%] text-center py-3 px-2">Actions</th>
+                <th className="w-[15%] text-start py-3 px-2">Created</th>
+                <th className="w-[15%] text-start py-3 px-2">Last Update</th>
               </tr>
             </thead>
             <tbody>
@@ -136,19 +131,20 @@ export default function BankAccounts() {
                       }`}
                     >
                       <td className="py-4 px-2 text-center">{index + 1}</td>
-                      <td className="py-4 px-2">{item.bank_name}</td>
+                      <td className="py-4 px-2">
+                        <Link
+                          to={`/dashboard/accounts/details/${item.id}`}
+                          className="hover:underline underline-offset-2"
+                        >
+                          {item.bank_name}
+                        </Link>
+                      </td>
                       <td className="py-4 px-2">{item.balance}</td>
-                      <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
-                        <div className="cursor-pointer">
-                          <HiOutlineEye />
-                        </div>
-
-                        <div className="cursor-pointer">
-                          <HiOutlinePencilAlt />
-                        </div>
-                        <div className="cursor-pointer">
-                          <HiOutlineTrash className="text-red-500" />
-                        </div>
+                      <td className="py-4 px-2">
+                        {item.created_at.split(" ")[0]}
+                      </td>
+                      <td className="py-4 px-2">
+                        {item.updated_at.split(" ")[0]}
                       </td>
                     </tr>
                   ))}

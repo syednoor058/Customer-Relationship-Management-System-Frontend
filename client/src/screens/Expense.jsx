@@ -74,7 +74,6 @@ export default function Expense() {
                     type="text"
                     placeholder="Expense name"
                     className="p-2 border rounded w-full outline-none"
-                    min={0}
                     value={expenseName}
                     onChange={(e) => setExpenseName(e.target.value)}
                     required
