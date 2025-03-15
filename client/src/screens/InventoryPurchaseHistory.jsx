@@ -23,8 +23,8 @@ export default function InventoryPurchaseHistory() {
   return (
     <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
       <div className="flex flex-col gap-10 pb-10">
-        <div className="text-4xl font-bold text-center">
-          <h1>Product(s) Purchase History</h1>
+        <div className="text-2xl font-bold text-center uppercase">
+          <h1>Products Purchase History</h1>
         </div>
         <div className="flex flex-row gap-5 justify-center items-center">
           <label>Select Date:</label>

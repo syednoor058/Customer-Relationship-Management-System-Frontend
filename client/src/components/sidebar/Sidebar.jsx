@@ -18,6 +18,7 @@ import { LuCircleDollarSign, LuHandCoins, LuWorkflow } from "react-icons/lu";
 import {
   MdAddBusiness,
   MdHistory,
+  MdInfoOutline,
   MdKeyboardArrowDown,
   MdOutlinePayments,
   MdOutlineShoppingCart,
@@ -29,6 +30,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import axios from "axios";
 import { useState } from "react";
+import { FaRegCheckCircle } from "react-icons/fa";
 import {
   HiOutlineFolderOpen,
   HiOutlineLogout,
@@ -338,6 +340,16 @@ export default function Sidebar() {
               linkPath: "/dashboard/projects/supply-cash",
               linkIcon: <LuCircleDollarSign />,
             },
+            {
+              linkName: "Completed",
+              linkPath: "/dashboard/projects/completed",
+              linkIcon: <FaRegCheckCircle />,
+            },
+            {
+              linkName: "Complete Info",
+              linkPath: "/dashboard/projects/completed/info",
+              linkIcon: <MdInfoOutline />,
+            },
           ]}
         />
         <DashboardAccordionLink
@@ -346,12 +358,12 @@ export default function Sidebar() {
           linkList={[
             {
               linkName: "All Customers",
-              linkPath: "/dashboard/all-customers",
+              linkPath: "/dashboard/customers",
               linkIcon: <HiOutlineClipboardList />,
             },
             {
               linkName: "Add Customer",
-              linkPath: "/dashboard/add-customer",
+              linkPath: "/dashboard/customers/add-customer",
               linkIcon: <HiOutlinePlusCircle />,
             },
           ]}
@@ -383,6 +395,11 @@ export default function Sidebar() {
             {
               linkName: "Project Expense",
               linkPath: "/dashboard/projects/expense",
+              linkIcon: <LuHandCoins />,
+            },
+            {
+              linkName: "Cash Ledger",
+              linkPath: "/dashboard/cash-ledger",
               linkIcon: <LuHandCoins />,
             },
           ]}

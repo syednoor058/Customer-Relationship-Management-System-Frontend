@@ -13,12 +13,19 @@ import ProductLedger from "./components/productLedger/ProductLedger";
 import ReleaseEmployee from "./components/releaseEmployee/ReleaseEmployee";
 import AccountLedger from "./screens/AccountLedger";
 import AddBankAccount from "./screens/AddBankAccount";
+import AddCustomer from "./screens/AddCustomer";
 import BankAccounts from "./screens/BankAccounts";
 import BankDetails from "./screens/BankDetails";
+import CashLedger from "./screens/CashLedger";
 import CashSupply from "./screens/CashSupply";
 import Categories from "./screens/Categories";
+import CompleteInfo from "./screens/CompleteInfo";
+import CompletedProjects from "./screens/CompletedProjects";
+import CustomerDetails from "./screens/CustomerDetails";
+import Customers from "./screens/Customers";
 import Dashboard from "./screens/Dashboard";
 import EditBankDetails from "./screens/EditBankDetails";
+import EditProjectDetails from "./screens/EditProjectDetails";
 import EmployeeLedger from "./screens/EmployeeLedger";
 import EmployeeRoles from "./screens/EmployeeRoles";
 import EmployeeSalary from "./screens/EmployeeSalary";
@@ -31,6 +38,7 @@ import Login from "./screens/Login";
 import ProductAssign from "./screens/ProductAssign";
 import ProductAssignHistory from "./screens/ProductAssignHistory";
 import Products from "./screens/Products";
+import ProjectDetails from "./screens/ProjectDetails";
 import ProjectExpense from "./screens/ProjectExpense";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
@@ -126,6 +134,38 @@ function App() {
             element={<AddBankAccount />}
           />
           <Route exact path="accounts/ledger" element={<AccountLedger />} />
+          <Route exact path="cash-ledger" element={<CashLedger />} />
+          <Route
+            exact
+            path="projects/details/:projectId"
+            element={<ProjectDetails />}
+          />
+          <Route
+            exact
+            path="projects/edit/:projectId"
+            element={<EditProjectDetails />}
+          />
+          <Route exact path="customers" element={<Customers />} />
+          <Route
+            exact
+            path="customers/details/:customerId"
+            element={<CustomerDetails />}
+          />
+          <Route
+            exact
+            path="customers/add-customer"
+            element={<AddCustomer />}
+          />
+          <Route
+            exact
+            path="projects/completed"
+            element={<CompletedProjects />}
+          />
+          <Route
+            exact
+            path="projects/completed/info"
+            element={<CompleteInfo />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

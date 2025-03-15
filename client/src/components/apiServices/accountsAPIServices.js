@@ -114,3 +114,16 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to withdraw amount.' };
     }
   }
+
+  export const getCashLedger = async () => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/cash/ledger`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch cash ledger!' };
+    }
+  }

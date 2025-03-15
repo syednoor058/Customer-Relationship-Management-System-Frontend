@@ -339,7 +339,7 @@ export default function InventoryPurchase() {
                     placeholder="Quantity"
                     className="w-[10%] p-2 border rounded outline-none"
                     min={1}
-                    value={row.quantity}
+                    value={row.quantity || 0}
                     onChange={(e) =>
                       handleRowChange(row.id, "quantity", e.target.value)
                     }
@@ -350,7 +350,7 @@ export default function InventoryPurchase() {
                     placeholder="Total Price"
                     className="p-2 border rounded w-[15%] outline-none"
                     min={1}
-                    value={row.totalPrice}
+                    value={row.totalPrice || 0}
                     onChange={(e) =>
                       handleRowChange(row.id, "totalPrice", e.target.value)
                     }
@@ -395,7 +395,7 @@ export default function InventoryPurchase() {
                   className="w-40 px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
                   type="number"
                   placeholder="Discount"
-                  value={discount}
+                  value={discount || 0}
                   min={0}
                   max={subtotal}
                   onChange={(e) =>
@@ -421,7 +421,10 @@ export default function InventoryPurchase() {
               </button>
             </div>
             <div className="flex">
-              <button className="px-5 py-3 border border-blue-600 text-blue-600 rounded">
+              <button
+                className="px-5 py-3 border border-blue-600 text-blue-600 rounded"
+                type="button"
+              >
                 Cancel
               </button>
             </div>

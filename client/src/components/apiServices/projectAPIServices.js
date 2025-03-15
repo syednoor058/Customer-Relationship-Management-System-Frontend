@@ -91,10 +91,10 @@ const getHeaders = () => {
     }
   }
 
-  export const addProject = async (project_name, address, state_id, budget, balance) => {
+  export const addProject = async (project_name, total_floor, total_unit, per_floor_unit, total_shop, per_floor_shop, address, state_id, budget, balance) => {
     try{
       const response = await axios.post(
-        `${API_BASE_URL}/api/project`, {project_name, address, state_id, budget, balance},
+        `${API_BASE_URL}/api/project`, {project_name, total_floor, total_unit, per_floor_unit, total_shop, per_floor_shop, address, state_id, budget, balance},
         {headers: getHeaders(),}
       );
       // console.log(response)
@@ -104,10 +104,10 @@ const getHeaders = () => {
     }
   }
 
-  export const editProject = async (_id, project_name, address, state_id, budget, balance) => {
+  export const editProject = async (_id, project_name, total_floor, total_unit, per_floor_unit, is_completed, total_shop, per_floor_shop, address, state_id, budget, balance) => {
     try{
       const response = await axios.put(
-        `${API_BASE_URL}/api/project/${_id}`, {project_name, address, state_id, budget, balance},
+        `${API_BASE_URL}/api/project/${_id}`, {project_name, total_floor, total_unit, per_floor_unit, is_completed, total_shop, per_floor_shop, address, state_id, budget, balance},
         {headers: getHeaders(),}
       );
       // console.log(response)
@@ -117,7 +117,7 @@ const getHeaders = () => {
     }
   }
 
-  export const deleteProject = async (_id) => {
+  export const deleteProjectAPI = async (_id) => {
     try{
       const response = await axios.delete(
         `${API_BASE_URL}/api/project/${_id}`,
@@ -222,6 +222,45 @@ const getHeaders = () => {
       return response.data;
     } catch(error) {
       throw error.response?.data || { message: 'Failed to fetch product assign history.'};
+    }
+  }
+
+  export const getCompletedProjects = async () => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/project/completed/all`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch completed projects.'};
+    }
+  }
+
+  export const getCompletedProjectInfoById = async (project_id) => {
+    try{
+      const response = await axios.get(
+        `${API_BASE_URL}/api/project/info/${project_id}`,
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch completed projects.'};
+    }
+  }
+
+  export const postCompletedProjectInfo = async (project_id, info) => {
+    try{
+      const response = await axios.post(
+        `${API_BASE_URL}/api/project/info/${project_id}`, {info},
+        {headers: getHeaders(),}
+      );
+      // console.log(response)
+      return response.data;
+    } catch(error) {
+      throw error.response?.data || { message: 'Failed to fetch completed projects.'};
     }
   }
 
