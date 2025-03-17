@@ -34,9 +34,9 @@ import Employees from "./screens/Employees";
 import Expense from "./screens/Expense";
 import InventoryPurchase from "./screens/InventoryPurchase";
 import InventoryPurchaseHistory from "./screens/InventoryPurchaseHistory";
-import Login from "./screens/Login";
 import ProductAssign from "./screens/ProductAssign";
 import ProductAssignHistory from "./screens/ProductAssignHistory";
+import ProductDetails from "./screens/ProductDetails";
 import Products from "./screens/Products";
 import ProjectDetails from "./screens/ProjectDetails";
 import ProjectExpense from "./screens/ProjectExpense";
@@ -51,10 +51,9 @@ function App() {
     <BrowserRouter>
       <ToastContainer autoClose={3000} transition:Slide />
       <Routes>
-        <Route exact path="/" element={<Login />}>
-          <Route index element={<LoginComponent />} />
+
+          <Route exact path="/" element={<LoginComponent />} />
           <Route exact path="/forget-password" element={<ForgotPassword />} />
-        </Route>
         <Route exact path="/dashboard" element={<Dashboard />}>
           <Route index element={<Overview />} />
           <Route exact path="categories" element={<Categories />} />
@@ -165,6 +164,11 @@ function App() {
             exact
             path="projects/completed/info"
             element={<CompleteInfo />}
+          />
+          <Route
+            exact
+            path="products/details/:productId"
+            element={<ProductDetails />}
           />
         </Route>
       </Routes>

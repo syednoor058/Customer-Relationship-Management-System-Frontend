@@ -1,21 +1,10 @@
 // import React from 'react'
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Pagination from "@mui/material/Pagination";
-import Select from "@mui/material/Select";
 // import axios from "axios";
-import { useEffect, useState } from "react";
+import { Pagination } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
-import {
-  HiOutlineClipboardList,
-  HiOutlineEye,
-  HiOutlinePencilAlt,
-  HiOutlinePlusCircle,
-  HiOutlineTrash,
-  HiSearch,
-} from "react-icons/hi";
+import { HiOutlineDotsHorizontal, HiOutlinePlusCircle } from "react-icons/hi";
 import { MdClose, MdDeleteOutline, MdOutlineDone } from "react-icons/md";
-import { TbFilterPlus } from "react-icons/tb";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -26,6 +15,69 @@ import {
 } from "../components/apiServices/apiServices";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
+// Add this component at the top of your file
+// eslint-disable-next-line react/prop-types
+const ActionsMenu = ({ product, onView, onEdit, onDelete }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`p-1 hover:bg-blue-100 rounded transition-colors duration-[350ms] relative z-[10] text-gray-500 ${
+          isOpen && "bg-blue-100"
+        }`}
+      >
+        <HiOutlineDotsHorizontal />
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 z-[100] rounded-sm shadow-lg border border-blue-100 text-nowrap bg-primary flex flex-col bg-primaryColor">
+          <button
+            onClick={() => {
+              onView(product);
+              setIsOpen(false);
+            }}
+            className="w-full ps-3 pe-6 py-2 text-sm text-gray-800 hover:bg-blue-100 text-left"
+          >
+            View
+          </button>
+          <button
+            onClick={() => {
+              onEdit(product);
+              setIsOpen(false);
+            }}
+            className="w-full ps-3 pe-6 py-2 text-sm text-gray-800 hover:bg-blue-100 text-left"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              onDelete(product);
+              setIsOpen(false);
+            }}
+            className="block w-full ps-3 pe-6 py-2 text-sm text-red-500 hover:bg-blue-100 text-left"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function Products() {
   const navigate = useNavigate();
   const [popup, setPopup] = useState({ type: "", data: null });
@@ -33,32 +85,31 @@ export default function Products() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const token = localStorage.getItem("shikderFoundationAuthToken");
-  const [page, setPage] = useState(10);
-  const [cat, setCat] = useState("all");
-  const [sort, setSort] = useState("no");
   const [editProductName, setEditProductName] = useState("");
   const [editProductCategory, setEditProductCategory] = useState(0);
   const [editProductPrice, setEditProductPrice] = useState(0);
   const [editProductQty, setEditProductQty] = useState(0);
   const [category, setCategory] = useState([]);
 
-  const handleProductLedger = (item) => {
-    navigate(`/dashboard/products/history/${item.id}`);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const totalItems = inventory.length;
+  const totalPages = Math.ceil(totalItems / rowsPerPage);
+  const indexOfLastItem = currentPage * rowsPerPage;
+  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+  const currentItems = inventory.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
-  const handleChangeSort = (event) => {
-    setSort(event.target.value);
+  const handleRowsPerPageChange = (event) => {
+    setRowsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset to first page when changing page size
   };
 
-  const handleChange = (event) => {
-    setPage(event.target.value);
-  };
-  const handleChangeCat = (event) => {
-    setCat(event.target.value);
-  };
-
-  const viewProductPopup = (product) => {
-    setPopup({ type: "view", data: product });
+  const viewProduct = (product) => {
+    navigate(`/dashboard/products/details/${product.id}`);
   };
 
   const editProductPopup = (product) => {
@@ -109,37 +160,24 @@ export default function Products() {
   };
 
   useEffect(() => {
-    const fetchInventory = async () => {
+    setIsLoading(true);
+    const fetchData = async () => {
       try {
         const inventoryData = await getInventory();
-        setInventory(inventoryData.inventory);
-      } catch (err) {
-        setError(err);
-        // console.error(err);
-      } finally {
-        setIsLoading(false); // End loading after the request completes
-      }
-    };
-
-    fetchInventory();
-  }, [token]);
-
-  useEffect(() => {
-    const fetchCategory = async () => {
-      try {
         const categoryData = await getCategory();
         setCategory(categoryData.inventory_category);
+        setInventory(inventoryData.inventory);
+        // console.log(inventoryData);
       } catch (err) {
-        // setError(err);
-        toast(err.message);
-        // toast(error.message)
+        setError(err);
+        toast.error(err.message);
         // console.error(err);
       } finally {
         setIsLoading(false); // End loading after the request completes
       }
     };
 
-    fetchCategory();
+    fetchData();
   }, [token]);
 
   if (isLoading) {
@@ -204,7 +242,7 @@ export default function Products() {
                       <div className="flex flex-col gap-1">
                         <div>Name</div>
                         <input
-                          className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
+                          className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                           type="text"
                           placeholder="Enter product name"
                           value={editProductName}
@@ -215,7 +253,7 @@ export default function Products() {
                       <div className="flex flex-col gap-1">
                         <label>Category</label>
                         <select
-                          className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
+                          className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                           value={editProductCategory}
                           onChange={(e) =>
                             setEditProductCategory(e.target.value)
@@ -256,7 +294,7 @@ export default function Products() {
                         <div className="w-[50%] flex flex-col gap-1">
                           <div>Initial Stock</div>
                           <input
-                            className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
+                            className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                             type="number"
                             value={editProductQty}
                             onChange={(e) => setEditProductQty(e.target.value)}
@@ -266,7 +304,7 @@ export default function Products() {
                         <div className="w-[50%] flex flex-col gap-1">
                           <div>Initial Value</div>
                           <input
-                            className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
+                            className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                             type="number"
                             value={editProductPrice}
                             onChange={(e) =>
@@ -280,7 +318,7 @@ export default function Products() {
                         <div className="flex">
                           <button
                             type="submit"
-                            className="w-36 px-3 py-3 bg-accentColor text-primaryColor rounded-md text-center flex flex-row gap-2 justify-center items-center"
+                            className="w-36 px-3 py-4 bg-accentColor text-primaryColor rounded-md text-center flex flex-row gap-2 justify-center items-center"
                           >
                             <span className="text-xl">
                               <MdOutlineDone />
@@ -289,7 +327,7 @@ export default function Products() {
                           </button>
                         </div>
                         <div className="flex">
-                          <button className="w-36 px-3 py-3 bg-gray-200 text-accentColor rounded-md text-center flex flex-row gap-2 items-center justify-center">
+                          <button className="w-36 px-3 py-4 bg-gray-200 text-accentColor rounded-md text-center flex flex-row gap-2 items-center justify-center">
                             <span className="text-xl">
                               <MdDeleteOutline />
                             </span>
@@ -327,25 +365,25 @@ export default function Products() {
         </div>
       )}
       <Outlet />
-      <div className="w-full h-full flex flex-col gap-5 bg-primaryColor p-5 rounded drop-shadow-xl border border-gray-200">
-        <div className="flex flex-row justify-between">
-          <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
-            <span className="text-4xl">
+      <div className="w-full h-full flex flex-col gap-5 bg-primaryColor">
+        <div className="flex flex-row justify-between py-2 lg:py-5">
+          <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800">
+            <span className="text-2xl lg:text-3xl">
               <FcBriefcase />
             </span>
-            All Products
+            <span>All Products</span>
           </div>
           <Link
             to="/dashboard/add-product"
-            className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
+            className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 text-primaryColor flex flex-row gap-2 justify-center items-center"
           >
-            <span className="text-xl">
+            <span className="text-lg lg:text-xl">
               <HiOutlinePlusCircle />
             </span>
             Add Products
           </Link>
         </div>
-        <div className="mt-5 flex flex-row justify-between items-center gap-5">
+        {/* <div className="mt-5 flex flex-row justify-between items-center gap-5">
           <div>
             <div className="w-[450px] relative">
               <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
@@ -398,60 +436,79 @@ export default function Products() {
               </FormControl>
             </div>
           </div>
+        </div> */}
+        <div>
+          <div className="flex flex-row gap-1 items-center">
+            <div className="flex flex-row gap-2 items-center">
+              <label>Rows:</label>
+              <select
+                className="px-[5px] py-[2px] rounded-sm border border-blue-200 bg-primaryColor outline-none"
+                value={rowsPerPage}
+                onChange={handleRowsPerPageChange}
+                required
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-7 rounded-sm drop-shadow-xl bg-primaryColor border border-blue-200">
           {error && <p className="text-red-500">{error}</p>}
-          <table className="w-full border-collapse border border-gray-300">
+          <table className="w-full hidden lg:inline-table">
             <thead className="w-full">
-              <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-                <th className="w-[10%] text-center py-3 px-2">ID</th>
-                <th className="w-[50%] text-start py-3 px-2">Name</th>
-                {/* <th className="w-[40%] text-start py-3 px-2">Description</th> */}
-                <th className="w-[10%] text-center py-3 px-2">Quantity</th>
-                <th className="w-[10%] text-center py-3 px-2">Price</th>
-                <th className="w-[20%] text-center py-3 px-2">Actions</th>
+              <tr className="text-sm text-gray-800 rounded-sm font-normal bg-blue-100">
+                <th className="w-[5%] text-start py-4 px-3 font-normal">
+                  Index
+                </th>
+                <th className="w-[25%] text-start py-4 px-3 font-normal">
+                  Name
+                </th>
+                <th className="w-[15%] text-start py-4 px-3 font-normal">
+                  Category
+                </th>
+                <th className="w-[15%] text-center py-4 px-3 font-normal">
+                  Quantity
+                </th>
+                <th className="w-[15%] text-center py-4 px-3 font-normal">
+                  Price
+                </th>
+                <th className="w-[20%] text-center py-4 px-3 font-normal">
+                  Last Update
+                </th>
+                <th className="w-[5%] text-center py-4 px-3 font-normal"></th>
               </tr>
             </thead>
             <tbody>
-              {inventory.length > 0 ? (
+              {currentItems.length > 0 ? (
                 <>
-                  {inventory.map((item, index) => (
+                  {currentItems.map((item, index) => (
                     <tr
                       key={index}
-                      className={`text-sm font-light rounded-md ${
-                        (index + 1) % 2 === 0 && "bg-gray-200/60"
-                      }`}
+                      className={`text-sm font-light rounded-sm border-b border-blue-100`}
                     >
-                      <td className="py-4 px-2 text-center">{index + 1}</td>
-                      <td className="py-4 px-2">{item.product_name}</td>
-                      {/* <td className="py-4 px-2">{item.description}</td> */}
-                      <td className="py-4 px-2 text-center">{item.quantity}</td>
-                      <td className="py-4 px-2 text-center">{item.price}</td>
-                      <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => viewProductPopup(item)}
-                        >
-                          <HiOutlineEye />
-                        </div>
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => editProductPopup(item)}
-                        >
-                          <HiOutlinePencilAlt />
-                        </div>
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => handleProductLedger(item)}
-                        >
-                          <HiOutlineClipboardList />
-                        </div>
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => deleteProductPopup(item)}
-                        >
-                          <HiOutlineTrash className="text-red-500" />
-                        </div>
+                      <td className="py-4 ps-4 pe-3 text-start">{index + 1}</td>
+                      <td className="py-4 px-3">{item.product_name}</td>
+                      <td className="py-4 px-3">
+                        {
+                          category.find((cat) => cat.id === item.category_id)
+                            .category_name
+                        }
+                      </td>
+                      <td className="py-4 px-3 text-center">{item.quantity}</td>
+                      <td className="py-4 px-3 text-center">{item.price}</td>
+                      <td className="py-4 px-3 text-center">
+                        {item.updated_at.split(" ")[0]}
+                      </td>
+                      <td className="py-4 px-3 text-xl flex flex-row gap-5 justify-center items-center">
+                        <ActionsMenu
+                          product={item}
+                          onView={viewProduct}
+                          onEdit={editProductPopup}
+                          onDelete={deleteProductPopup}
+                        />
                       </td>
                     </tr>
                   ))}
@@ -470,19 +527,61 @@ export default function Products() {
               )}
             </tbody>
           </table>
-          <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row gap-1 items-center">
-              <div>Rows per page:</div>
-              <FormControl sx={{ m: 1, minWidth: 80 }} size="small">
-                <Select id="rows-select" value={page} onChange={handleChange}>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={10}>10</MenuItem>
-                  <MenuItem value={20}>20</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <Pagination count={10} color="primary" />
-          </div>
+          <table className="w-full inline-table lg:hidden">
+            <thead className="w-full">
+              <tr className="w-full text-sm text-gray-800 rounded-sm font-normal bg-blue-100">
+                <th className="w-[10%] text-start py-4 px-3 font-normal">
+                  Index
+                </th>
+                <th className="w-[80%] text-start py-4 px-3 font-normal">
+                  Name
+                </th>
+                <th className="w-[10%] text-center py-4 px-3 font-normal"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.length > 0 ? (
+                <>
+                  {currentItems.map((item, index) => (
+                    <tr
+                      key={index}
+                      className={`w-full text-sm font-light rounded-sm border-b border-blue-100`}
+                    >
+                      <td className="py-4 ps-4 pe-3 text-start">{index + 1}</td>
+                      <td className="py-4 px-3">{item.product_name}</td>
+                      <td className="py-4 px-3 text-xl flex flex-row gap-5 justify-center items-center">
+                        <ActionsMenu
+                          product={item}
+                          onView={viewProduct}
+                          onEdit={editProductPopup}
+                          onDelete={deleteProductPopup}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <tr>
+                    <td
+                      colSpan="6"
+                      className="text-center py-10 text-xl font-semibold text-gray-400"
+                    >
+                      <p>No items found!</p>
+                    </td>
+                  </tr>
+                </>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex flex-row justify-center items-center">
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
         </div>
       </div>
     </div>

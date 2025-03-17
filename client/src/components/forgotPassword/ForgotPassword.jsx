@@ -2,8 +2,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { MdMail, MdVpnKey } from "react-icons/md";
+import { RiLockPasswordFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
-import loginImg from "../../assets/images/loginRegister.webp";
+import loginScreenImg from "../../assets/images/login_screen_image.jpg";
+import propSuiteLogo from "../../assets/images/prop_suite_logo.png";
+import propSuiteLightLogo from "../../assets/images/propsuite_light_logo.png";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -14,7 +18,8 @@ export default function ForgotPassword() {
   const [countdown, setCountdown] = useState(60);
   const navigate = useNavigate();
 
-  const handleSendOtp = async () => {
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
     try {
       setError("");
       const response = await axios.post(
@@ -33,7 +38,8 @@ export default function ForgotPassword() {
     }
   };
 
-  const handleVerifyOtp = async () => {
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
     try {
       setError("");
       const response = await axios.post(
@@ -51,7 +57,8 @@ export default function ForgotPassword() {
     }
   };
 
-  const handleResetPassword = async () => {
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
     try {
       setError("");
       const response = await axios.post(
@@ -85,102 +92,210 @@ export default function ForgotPassword() {
   }, [step, countdown]);
 
   return (
-    <div className="w-full bg-white rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
-      <div className="w-full h-full flex flex-row">
-        <div className="w-[30%] bg-gradient-to-tr from-accentColor/90 to-[#0ea5e9]/80 h-auto p-5 flex flex-col gap-5 items-center">
-          <div className="w-[85%] aspect-[9/16] overflow-hidden">
-            <img
-              className="w-full h-full object-contain"
-              src={loginImg}
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="w-[70%] flex flex-col gap-20 py-10 items-center">
-          <div className="w-[55%] flex flex-col gap-5">
-            <div className="flex flex-col gap-1">
-              <div className="uppercase text-4xl font-bold text-center text-gray-900">
-                OTP Verification
-              </div>
-              <div className="text-gray-500 text-center">
-                The OTP will be send to your phone number.
-              </div>
+    <>
+      <div className="w-screen h-screen bg-white overflow-hidden flex justify-center items-center">
+        <div className="w-full h-full flex flex-row-reverse bg-primaryColor">
+          <div className="w-full lg:w-[50%] flex flex-col justify-between p-10 items-center bg-primaryColor gap-10">
+            <div className="w-full text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-col gap-2">
+              <Link to="/">
+                <div className="flex flex-row gap-1 px-2  rounded-xl">
+                  <span className="text-4xl">
+                    <IoIosArrowRoundBack />
+                  </span>
+                </div>
+              </Link>
             </div>
-          </div>
-          <div className="w-[55%] flex flex-col gap-3 justify-center items-center">
+            <div className="w-[80%] lg:w-[40%] h-auto">
+              <img
+                src={propSuiteLightLogo}
+                alt="PropSuite Light Logo"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+
             {step === 1 && (
-              <div className="w-full flex flex-col gap-5">
-                <input
-                  className="py-2 bg-transparent border-b border-gray-300 outline-none"
-                  type="email"
-                  placeholder="Enter username/email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <button
-                  onClick={handleSendOtp}
-                  className="w-full bg-accentColor rounded-md text-white capitalize py-2 px-5 mt-2"
-                >
-                  Send OTP
-                </button>
+              <div className="w-full lg:w-[65%] flex flex-col items-center gap-7">
+                <div className="w-full flex flex-col gap-5">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1">
+                      <h1 className="text-2xl font-semibold text-center text-gray-800">
+                        OTP Verification!
+                      </h1>
+                      <p className="text-sm font-light text-center text-gray-500">
+                        The OTP will be sent to your registered phone number.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full flex justify-center items-center">
+                  <form
+                    className="w-full flex flex-col gap-3"
+                    onSubmit={handleSendOtp}
+                  >
+                    <div className="h-full flex flex-row items-stretch border border-blue-200 px-5 py-3 rounded-sm">
+                      <div className="text-2xl pe-5 flex items-center">
+                        <MdMail />
+                      </div>
+                      <div className="w-[1px] flex bg-blue-200 items-stretch"></div>
+                      <div className="ps-5 flex flex-col">
+                        <label className="text-xs text-gray-500">
+                          Email Address
+                        </label>
+                        <input
+                          className="bg-primaryColor outline-none rounded text-gray-800"
+                          type="email"
+                          placeholder="Enter email address"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    {error && <p className="text-red-500">{error}</p>}
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] rounded-sm text-white capitalize py-3 px-5 mt-2"
+                    >
+                      Send OTP
+                    </button>
+                  </form>
+                </div>
               </div>
             )}
             {step === 2 && (
-              <div className="w-full flex flex-col gap-3">
-                <input
-                  className="py-2 bg-transparent border-b border-gray-300 outline-none"
-                  type="text"
-                  placeholder="Enter OTP code"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  required
-                />
-                <p className="text-gray-600">
-                  Time remaining: <span className="text-xl">{countdown}</span>{" "}
-                  seconds
-                </p>
-                <button
-                  onClick={handleVerifyOtp}
-                  className="w-full bg-accentColor rounded-md text-white capitalize py-2 px-5 mt-2"
-                >
-                  Verify OTP
-                </button>
+              <div className="w-full lg:w-[65%] flex flex-col gap-7">
+                <div className="w-full flex flex-col gap-5">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1">
+                      <h1 className="text-2xl font-semibold text-center text-gray-800">
+                        OTP Verification!
+                      </h1>
+                      <p className="text-sm font-light text-center text-gray-500">
+                        Submit the correct OTP code to verify your identity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full flex justify-center items-center">
+                  <form
+                    className="w-full flex flex-col gap-3"
+                    onSubmit={handleVerifyOtp}
+                  >
+                    <div className="h-full flex flex-row items-stretch border border-blue-200 px-5 py-3 rounded-sm">
+                      <div className="text-2xl pe-5 flex items-center">
+                        <RiLockPasswordFill />
+                      </div>
+                      <div className="w-[1px] flex bg-blue-200 items-stretch"></div>
+                      <div className="ps-5 flex flex-col">
+                        <label className="text-xs text-gray-500">
+                          OTP Code
+                        </label>
+                        <input
+                          className="bg-primaryColor outline-none rounded text-gray-800"
+                          type="text"
+                          placeholder="Enter OTP code"
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <p className="text-gray-500">
+                      Time left:{" "}
+                      <span className="text-lg ps-1 text-blue-500 font-medium">
+                        {countdown}
+                      </span>{" "}
+                      seconds
+                    </p>
+                    {error && <p className="text-red-500">{error}</p>}
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] rounded-sm text-white capitalize py-3 px-5 mt-2"
+                    >
+                      Verify OTP
+                    </button>
+                  </form>
+                </div>
               </div>
             )}
             {step === 3 && (
-              <div className="w-full flex flex-col gap-3">
-                <input
-                  className="py-2 bg-transparent border-b border-gray-300 outline-none"
-                  type="password"
-                  placeholder="Enter new password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                />
-                <button
-                  onClick={handleResetPassword}
-                  className="w-full bg-accentColor rounded-md text-white capitalize py-2 px-5 mt-2"
-                >
-                  Reset Password
-                </button>
+              <div className="w-full lg:w-[65%] flex flex-col gap-7">
+                <div className="w-full flex flex-col gap-5">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1">
+                      <h1 className="text-2xl font-semibold text-center text-gray-800">
+                        Reset Password
+                      </h1>
+                      <p className="text-sm font-light text-center text-gray-500">
+                        Do not share your new password with anyone.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full flex justify-center items-center">
+                  <form
+                    className="w-full flex flex-col gap-3"
+                    onSubmit={handleResetPassword}
+                  >
+                    <div className="h-full flex flex-row items-stretch border border-blue-200 px-5 py-3 rounded-sm">
+                      <div className="text-2xl pe-5 flex items-center">
+                        <MdVpnKey />
+                      </div>
+                      <div className="w-[1px] flex bg-blue-200 items-stretch"></div>
+                      <div className="ps-5 flex flex-col">
+                        <label className="text-xs text-gray-500">
+                          New Password
+                        </label>
+                        <input
+                          className="bg-primaryColor outline-none rounded text-gray-800"
+                          type="password"
+                          placeholder="Enter new password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    {error && <p className="text-red-500">{error}</p>}
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] rounded-sm text-white capitalize py-3 px-5 mt-2"
+                    >
+                      Reset Password
+                    </button>
+                  </form>
+                </div>
               </div>
             )}
-            {error && <p className="text-red-500">{error}</p>}
+            <div className="w-full lg:w-[65%]">
+              <p className="text-sm font-light text-center text-gray-400">
+                &copy; 2025. All rights reserved by Devion Ark.
+              </p>
+            </div>
           </div>
-          <div className="w-[55%] text-gray-500 text-center flex flex-col gap-2">
-            <Link to="/">
-              <div className="flex flex-row justify-center items-center gap-1">
-                {" "}
-                <span className="text-2xl">
-                  <IoIosArrowRoundBack />
-                </span>{" "}
-                Go Back
+          <div className="w-[50%] bg-blue-500 hidden lg:flex flex-col gap-5 items-center overflow-hidden relative">
+            <img
+              src={loginScreenImg}
+              alt="a laptop and a mobile on the desk"
+              className="w-full h-full object-cover object-left blur-[1px]"
+            />
+            <div className="absolute w-full h-full top-0 left-0 p-7 bg-black bg-opacity-20">
+              <div className="w-full h-full flex flex-col gap-10 justify-between">
+                <div>
+                  <p className="text-xl font-light text-primaryColor"></p>
+                </div>
+                <div className="w-[30%] h-auto flex">
+                  <img
+                    src={propSuiteLogo}
+                    alt="PropSuite Logo"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

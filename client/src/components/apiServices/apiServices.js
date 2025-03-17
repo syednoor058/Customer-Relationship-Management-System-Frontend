@@ -38,6 +38,18 @@ const getHeaders = () => {
       throw error.response?.data || { message: 'Failed to fetch inventory.' };
     }
   };
+
+  export const getInventoryById = async (product_id) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/inventory/${product_id}`, {
+        headers: getHeaders(),
+      });
+      // console.log(response);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch product.' };
+    }
+  };
   
   export const addInventory = async (product_name, category_id, quantity, price) => {
     try {
@@ -78,6 +90,18 @@ const getHeaders = () => {
   export const getCategory = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/inventory_category`, {
+        headers: getHeaders(),
+      });
+      // console.log(response);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch category.' };
+    }
+  };
+
+  export const getCategoryById = async (category_id) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/inventory_category/${category_id}`, {
         headers: getHeaders(),
       });
       // console.log(response);

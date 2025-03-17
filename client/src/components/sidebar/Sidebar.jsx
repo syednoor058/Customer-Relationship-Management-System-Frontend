@@ -38,7 +38,7 @@ import {
 } from "react-icons/hi";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import lightLogo from "../../assets/images/logo_light.png";
+import lightLogo from "../../assets/images/prop_suite_logo.png";
 import { DASHBOARD_SIDEBAR_BOTTOM_LINKS } from "../constant/SideBarLinksConstant";
 import DashboardAccordionLink from "../dashboardAccordionLink/DashboardAccordionLink";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
@@ -99,11 +99,11 @@ export default function Sidebar() {
 
   return (
     <div className="w-56 min-h-screen bg-gray-900 text-primaryColor flex flex-col justify-between text-sm font-light">
-      <div className="px-2 flex justify-center items-center overflow-hidden sticky top-0 bg-gray-900 z-[10] py-2">
-        <img className="w-[35%] h-auto" src={lightLogo} alt="light_logo" />
+      <div className="px-4 flex items-center overflow-hidden sticky top-0 bg-gray-900 z-[10] pt-2 pb-5">
+        <img className="w-[60%] h-auto" src={lightLogo} alt="light_logo" />
       </div>
 
-      <div className="flex-1 pt-5 px-2">
+      <div className="flex-1 px-2">
         <NavLink
           to="/dashboard"
           className={`${
@@ -408,7 +408,7 @@ export default function Sidebar() {
           <SidebarLink key={item.key} item={item} />
         ))} */}
       </div>
-      <div className="border-t border-gray-800 pt-3 sticky bottom-0 bg-gray-900 px-2">
+      <div className="border-t border-gray-800 pt-3 bg-gray-900 px-2">
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))}
