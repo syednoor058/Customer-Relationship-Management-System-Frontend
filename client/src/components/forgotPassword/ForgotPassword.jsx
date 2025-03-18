@@ -2,12 +2,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { MdMail, MdVpnKey } from "react-icons/md";
+import {
+  MdInventory,
+  MdMail,
+  MdManageAccounts,
+  MdMyLocation,
+  MdSecurity,
+  MdSettings,
+  MdVpnKey,
+} from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
-import loginScreenImg from "../../assets/images/login_screen_image.jpg";
-import propSuiteLogo from "../../assets/images/prop_suite_logo.png";
+import gdprCertificate from "../../assets/images/gdrp_certificate.png";
+import loginScreenImg from "../../assets/images/login_screen_img.jpg";
 import propSuiteLightLogo from "../../assets/images/propsuite_light_logo.png";
+import sslCertificate from "../../assets/images/ssl_certificate.png";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -93,9 +102,9 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <div className="w-screen h-screen bg-white overflow-hidden flex justify-center items-center">
-        <div className="w-full h-full flex flex-row-reverse bg-primaryColor">
-          <div className="w-full lg:w-[50%] flex flex-col justify-between p-10 items-center bg-primaryColor gap-10">
+      <div className="w-screen lg:h-screen bg-white overflow-hidden flex justify-center items-center">
+        <div className="w-full h-full flex flex-col-reverse lg:flex-row-reverse bg-primaryColor">
+          <div className="w-full lg:w-[50%] flex flex-col justify-between p-10 items-center gap-10">
             <div className="w-full text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-col gap-2">
               <Link to="/">
                 <div className="flex flex-row gap-1 px-2  rounded-xl">
@@ -273,24 +282,70 @@ export default function ForgotPassword() {
               </p>
             </div>
           </div>
-          <div className="w-[50%] bg-blue-500 hidden lg:flex flex-col gap-5 items-center overflow-hidden relative">
-            <img
-              src={loginScreenImg}
-              alt="a laptop and a mobile on the desk"
-              className="w-full h-full object-cover object-left blur-[1px]"
-            />
-            <div className="absolute w-full h-full top-0 left-0 p-7 bg-black bg-opacity-20">
-              <div className="w-full h-full flex flex-col gap-10 justify-between">
-                <div>
-                  <p className="text-xl font-light text-primaryColor"></p>
+          <div className="w-full lg:w-[50%] h-full rounded-b-[40px] lg:rounded-none overflow-hidden drop-shadow-2xl lg:drop-shadow-none">
+            <div className="w-full h-full relative bg-gradient-to-tr from-accentColor to-blue-400">
+              {/* <!-- Content --> */}
+              <div className="w-full h-full text-white text-center flex flex-col gap-20 justify-between bg-black bg-opacity-70 z-[10] p-10 relative">
+                {/* <!-- Value Proposition --> */}
+                <h2 className="text-[26px] lg:text-[42px] font-bold leading-tight">
+                  Your All-in-One Real Estate Management System
+                </h2>
+
+                {/* <!-- Feature Highlights --> */}
+                <div className="flex flex-col gap-3 text-lg font-light">
+                  <div className="flex items-center gap-3">
+                    <MdMyLocation />
+                    <span>Track 500+ properties in real-time</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <MdSettings />
+                    <span>Manage vendor payments & payroll</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <MdSecurity />
+                    <span>Secure financial analytics dashboard</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <MdInventory />
+                    <span>Full functional organized inventory</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <MdManageAccounts />
+                    <span>Smooth custoner leads management</span>
+                  </div>
                 </div>
-                <div className="w-[30%] h-auto flex">
-                  <img
-                    src={propSuiteLogo}
-                    alt="PropSuite Logo"
-                    className="w-full h-auto object-cover"
-                  />
+
+                {/* <!-- Trust Badges --> */}
+                <div className="border-t pt-6">
+                  <p className="text-sm text-gray-200">
+                    Trusted by{" "}
+                    <span className="text-primaryColor font-medium">
+                      over 100+
+                    </span>{" "}
+                    real estate professionals all over the world
+                  </p>
+                  <div className="flex justify-center gap-5 pt-3">
+                    <img
+                      src={sslCertificate}
+                      alt="SSL Certificate Badge"
+                      className="h-10"
+                    />
+                    <img
+                      src={gdprCertificate}
+                      alt="GDPR Certificate Badge"
+                      className="h-10"
+                    />
+                  </div>
                 </div>
+              </div>
+
+              {/* <!-- Background Image --> */}
+              <div className="w-full h-full absolute inset-0 z-[5]">
+                <img
+                  src={loginScreenImg}
+                  alt="Software Preview"
+                  className="w-full h-full object-cover object-right lg:object-left blur-[3px]"
+                />
               </div>
             </div>
           </div>
