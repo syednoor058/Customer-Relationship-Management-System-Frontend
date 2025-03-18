@@ -366,16 +366,16 @@ export default function Products() {
       )}
       <Outlet />
       <div className="w-full h-full flex flex-col gap-5 bg-primaryColor">
-        <div className="flex flex-row justify-between py-2 lg:py-5">
-          <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800">
+        <div className="flex flex-row justify-between py-2 lg:py-5 px-3 lg:px-0">
+          <div className="text-xl lg:text-2xl leading-none font-semibold flex flex-row gap-3 items-center text-gray-800">
             <span className="text-2xl lg:text-3xl">
               <FcBriefcase />
             </span>
-            <span>All Products</span>
+            <span className="">All Products</span>
           </div>
           <Link
             to="/dashboard/add-product"
-            className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 text-primaryColor flex flex-row gap-2 justify-center items-center"
+            className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
           >
             <span className="text-lg lg:text-xl">
               <HiOutlinePlusCircle />
@@ -437,7 +437,7 @@ export default function Products() {
             </div>
           </div>
         </div> */}
-        <div>
+        <div className="px-3 lg:px-0">
           <div className="flex flex-row gap-1 items-center">
             <div className="flex flex-row gap-2 items-center">
               <label>Rows:</label>
@@ -547,7 +547,7 @@ export default function Products() {
                       key={index}
                       className={`w-full text-sm font-light rounded-sm border-b border-blue-100`}
                     >
-                      <td className="py-4 ps-4 pe-3 text-start">{index + 1}</td>
+                      <td className="py-4 ps-2 pe-3 text-start">{index + 1}</td>
                       <td className="py-4 px-3">{item.product_name}</td>
                       <td className="py-4 px-3 text-xl flex flex-row gap-5 justify-center items-center">
                         <ActionsMenu
@@ -575,7 +575,7 @@ export default function Products() {
             </tbody>
           </table>
         </div>
-        <div className="flex flex-row justify-center items-center">
+        <div className="flex flex-row justify-center items-center px-3 lg:px-0">
           <Pagination
             count={totalPages}
             page={currentPage}

@@ -66,7 +66,7 @@ export default function ProductDetails() {
   }
   return (
     <div className="flex flex-col gap-10 pb-10 font-light text-sm text-gray-600">
-      <div className="w-full flex flex-col gap-5">
+      <div className="w-full flex flex-col gap-5 px-3 lg:px-0">
         <div className="w-full text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-col gap-2">
           <Link to="/dashboard/products">
             <div className="flex flex-row gap-1  rounded-xl">
@@ -80,7 +80,7 @@ export default function ProductDetails() {
           <h1>Product Details</h1>
         </div>
         <div className="flex flex-col-reverse lg:flex-row gap-7 lg:gap-20">
-          <div className="w-full lg:w-[50%] aspect-square bg-blue-100 rounded-sm">
+          <div className="w-full hidden lg:w-[50%] aspect-square bg-blue-100 rounded-sm">
             <div className="w-full h-full flex flex-col justify-center items-center p-10 gap-2">
               <div className="text-4xl">
                 <MdImageNotSupported />
@@ -100,7 +100,7 @@ export default function ProductDetails() {
           </div>
           <div className="w-full lg:w-[50%] flex flex-col gap-10 text-sm">
             <div className="flex flex-col gap-4">
-              <div className="text-lg font-medium text-gray-700 leading-none">
+              <div className="text-lg font-medium text-gray-600 leading-none">
                 General Information
               </div>
               <table>
@@ -130,7 +130,7 @@ export default function ProductDetails() {
               </table>
             </div>
             <div className="flex flex-col gap-4">
-              <div className="text-lg font-medium text-gray-700 leading-none">
+              <div className="text-lg font-medium text-gray-600 leading-none">
                 Stock Details
               </div>
               <table>
@@ -162,10 +162,10 @@ export default function ProductDetails() {
         </div>
       </div>
       <div className="w-full flex flex-col gap-5">
-        <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 py-2 lg:py-4">
+        <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 py-2 lg:py-4 px-3 lg:px-0">
           <h1>Product Ledger</h1>
         </div>
-        <div>
+        <div className="px-3 lg:px-0">
           <div className="flex flex-row gap-1 items-center">
             <div className="flex flex-row gap-2 items-center">
               <label>Rows:</label>
@@ -301,7 +301,7 @@ export default function ProductDetails() {
             </tbody>
           </table>
         </div>
-        <div className="flex flex-row justify-center items-center">
+        <div className="flex flex-row justify-center items-center px-3 lg:px-0">
           <Pagination
             count={totalPages}
             page={currentPage}

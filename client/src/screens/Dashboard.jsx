@@ -77,7 +77,7 @@ export default function Dashboard() {
               <IoMenuOutline />
             </div>
           </div>
-          <div className="mt-5 flex-1 px-3 lg:px-5">
+          <div className="mt-5 flex-1 lg:px-5">
             <Outlet />
           </div>
           <div className="px-3 py-2 text-center text-xs rounded-md text-gray-500">

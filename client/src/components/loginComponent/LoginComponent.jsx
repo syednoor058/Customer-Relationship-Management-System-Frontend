@@ -1,7 +1,5 @@
 // import React from "react";
 import { useState } from "react";
-import { FaApple, FaFacebookF } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import {
   MdInventory,
   MdMail,
@@ -175,7 +173,7 @@ export default function LoginComponent() {
               </form>
             </div>
             <div className="w-full flex flex-col gap-5">
-              <div className="w-full flex flex-col gap-3">
+              {/* <div className="w-full flex flex-col gap-3">
                 <div className="w-full flex flex-row gap-5 items-center">
                   <div className="w-full h-[1px] bg-gray-300"></div>
                   <div className="w-full text-nowrap text-gray-500">
@@ -194,7 +192,7 @@ export default function LoginComponent() {
                     <FaApple />
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="text-xs w-full text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] text-center flex flex-col gap-2 font-light">
                 <p>
                   <Link to="/forget-password">Forgot password?</Link>
