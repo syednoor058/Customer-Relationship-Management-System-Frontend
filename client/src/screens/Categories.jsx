@@ -1,95 +1,153 @@
 // import React from 'react'
 
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
-import Select from "@mui/material/Select";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FcOpenedFolder, FcPlus } from "react-icons/fc";
-import {
-  HiOutlineEye,
-  HiOutlinePencilAlt,
-  HiOutlinePlusCircle,
-  HiOutlineTrash,
-  HiSearch,
-} from "react-icons/hi";
-import { MdClose, MdDeleteOutline, MdOutlineDone } from "react-icons/md";
-import { TbFilterPlus } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { HiOutlineDotsHorizontal, HiOutlinePlusCircle } from "react-icons/hi";
+import { MdDeleteOutline, MdOutlineCancel } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   addCategory,
   deleteCategory,
-  editCategory,
   getCategory,
 } from "../components/apiServices/apiServices";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
+// eslint-disable-next-line react/prop-types
+const ActionsMenu = ({ item, onView, onEdit, onDelete }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`p-1 hover:bg-blue-100 rounded transition-colors duration-[350ms] relative z-[10] text-gray-500 ${
+          isOpen && "bg-blue-100"
+        }`}
+      >
+        <HiOutlineDotsHorizontal />
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 z-[100] rounded-sm shadow-lg border border-blue-100 text-nowrap bg-primary flex flex-col bg-primaryColor">
+          <button
+            onClick={() => {
+              onView(item);
+              setIsOpen(false);
+            }}
+            className="w-full ps-3 pe-6 py-2 text-sm text-gray-800 hover:bg-blue-100 text-left"
+          >
+            View
+          </button>
+          <button
+            onClick={() => {
+              onEdit(item);
+              setIsOpen(false);
+            }}
+            className="w-full ps-3 pe-6 py-2 text-sm text-gray-800 hover:bg-blue-100 text-left"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              onDelete(item);
+              setIsOpen(false);
+            }}
+            className="block w-full ps-3 pe-6 py-2 text-sm text-red-500 hover:bg-blue-100 text-left"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function Categories() {
-  const [editCategoryName, setEditCategoryName] = useState("");
   const [popup, setPopup] = useState({ type: "", data: null });
   const token = localStorage.getItem("shikderFoundationAuthToken");
-  const [page, setPage] = useState(10);
-  const [sort, setSort] = useState("no");
+  // const [sort, setSort] = useState("no");
   const [category, setCategory] = useState([]);
-  const [error, setError] = useState("");
-  // const [alert, setAlert] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [newCategoryName, setNewCategoryName] = useState("");
 
-  const handleChangeSort = (event) => {
-    setSort(event.target.value);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const totalItems = category.length;
+  const totalPages = Math.ceil(totalItems / rowsPerPage);
+  const indexOfLastItem = currentPage * rowsPerPage;
+  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+  const currentItems = category.slice(indexOfFirstItem, indexOfLastItem);
+  const navigate = useNavigate();
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
-  const handleChange = (event) => {
-    setPage(event.target.value);
+  const handleRowsPerPageChange = (event) => {
+    setRowsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset to first page when changing page size
   };
 
-  const handleCategoryView = (productPop) => {
-    setPopup({ type: "view", data: productPop });
+  // const handleChangeSort = (event) => {
+  //   setSort(event.target.value);
+  // };
+
+  const handleView = (item) => {
+    navigate(`/dashboard/categories/details/${item.id}`);
   };
 
-  const handleCategoryEdit = (productPop) => {
-    setPopup({ type: "edit", data: productPop });
-    setEditCategoryName(productPop.category_name);
+  const handleEdit = (item) => {
+    navigate(`/dashboard/categories/edit-category/${item.id}`);
   };
 
-  const handleCategoryDelete = (productPop) => {
-    setPopup({ type: "delete", data: productPop });
+  const handleCategoryDelete = (item) => {
+    setPopup({ type: "delete", data: item });
   };
 
-  const handleCategoryDeleteRequest = async (id) => {
+  const handleCategoryDeleteRequest = async (item) => {
+    setIsLoading(true);
     try {
-      const categoryDeleteData = await deleteCategory(id);
+      const categoryDeleteData = await deleteCategory(item.id);
       setCategory(categoryDeleteData.inventory_category);
       setPopup({ type: "", data: null });
-      toast(categoryDeleteData.message);
+      toast.success(categoryDeleteData.message);
     } catch (error) {
-      setError(error);
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleCategoryUpdate = async (id, category_name) => {
+  const handleCreateCategorySubmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
     try {
-      const editCategoryData = await editCategory(id, category_name);
-      setCategory(editCategoryData.inventory_category);
-      setEditCategoryName("");
-      toast(editCategoryData.message);
-      setPopup({ type: "", data: null });
-    } catch (error) {
-      setError(error);
-    }
-  };
-
-  const handleCreateCategorySubmit = async (category_name) => {
-    try {
-      const createCategoryData = await addCategory(category_name);
-      toast(createCategoryData.message);
+      const createCategoryData = await addCategory(newCategoryName);
+      toast.success(createCategoryData.message);
       setCategory(createCategoryData.inventory_category);
       setNewCategoryName("");
     } catch (err) {
-      setError(err);
+      toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleReset = () => {
+    setNewCategoryName("");
   };
 
   useEffect(() => {
@@ -97,8 +155,9 @@ export default function Categories() {
       try {
         const categoryData = await getCategory();
         setCategory(categoryData.inventory_category);
+        // console.log(categoryData.inventory_category);
       } catch (err) {
-        setError(err);
+        toast.error(err.message);
         // console.error(err);
       } finally {
         setIsLoading(false); // End loading after the request completes
@@ -112,90 +171,31 @@ export default function Categories() {
   }
 
   return (
-    <div className="flex flex-col gap-5 font-light text-sm text-gray-600">
+    <div className="flex flex-col gap-10 font-light text-sm text-gray-600">
       {popup.type !== "" && (
-        <div className="w-screen h-screen absolute top-0 left-0 flex justify-center items-center backdrop-blur-[2px] z-[2000] bg-gray-800 bg-opacity-50">
-          {popup.type === "view" && (
-            <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative">
-              <div
-                onClick={() => setPopup({ type: "", data: null })}
-                className="flex flex-row items-center gap-1 font-light absolute top-5 right-5 cursor-pointer hover:text-red-600 duration-500"
-              >
-                <span>
-                  <MdClose />
-                </span>{" "}
-                Close
-              </div>
-              <div className="w-full flex flex-col gap-5">
-                <div className="font-medium text-lg border-b border-gray-400 pb-1">
-                  Category Details
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div>Category Name: {popup.data?.category_name}</div>
-                  <div>Created At: {popup.data?.created_at}</div>
-                  <div>Updated At: {popup.data?.updated_at}</div>
-                </div>
-              </div>
-            </div>
-          )}
-          {popup.type === "edit" && (
-            <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative">
-              <div
-                onClick={() => setPopup({ type: "", data: null })}
-                className="flex flex-row items-center gap-1 font-light absolute top-5 right-5 cursor-pointer hover:text-red-600 duration-500"
-              >
-                <span>
-                  <MdClose />
-                </span>{" "}
-                Close
-              </div>
-              <div className="w-full flex flex-col gap-5">
-                <div className="text-lg font-semibold border-b border-gray-400 pb-1">
-                  Update Category
-                </div>
-                <div className="flex flex-col gap-2">
-                  <input
-                    className="w-full px-2 py-2 outline-none border rounded border-gray-300"
-                    value={editCategoryName}
-                    placeholder="Enter category name"
-                    onChange={(e) => setEditCategoryName(e.target.value)}
-                  />
-                </div>
-                <div className="w-full flex flex-row gap-10">
-                  <button
-                    onClick={() =>
-                      handleCategoryUpdate(popup.data.id, editCategoryName)
-                    }
-                    className="px-5 py-2 rounded bg-blue-500 text-primaryColor"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => setEditCategoryName("")}
-                    className="px-5 py-2 rounded bg-gray-300 text-gray-800"
-                  >
-                    Discard
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+        <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center backdrop-blur-[2px] z-[2000] bg-gray-800 bg-opacity-70">
           {popup.type === "delete" && (
-            <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative flex flex-col gap-5">
-              <div className="w-full text-center">
-                Confirm you want to delete this category?
+            <div className="p-10 bg-primaryColor rounded-sm relative flex flex-col gap-5 drop-shadow-2xl">
+              <div className="w-full text-center text-base font-normal">
+                Confirm to delete this category?
               </div>
-              <div className="w-full flex flex-row justify-center gap-10">
+              <div className="w-full flex flex-row justify-center gap-5">
                 <button
-                  onClick={() => handleCategoryDeleteRequest(popup.data.id)}
-                  className="px-5 py-2 rounded bg-red-600 text-primaryColor"
+                  onClick={() => handleCategoryDeleteRequest(popup.data)}
+                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-red-500 hover:bg-red-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
                 >
-                  Delete
+                  <span className="text-lg lg:text-xl text-primaryColor">
+                    <MdDeleteOutline />
+                  </span>
+                  Confirm
                 </button>
                 <button
                   onClick={() => setPopup({ type: "", data: null })}
-                  className="px-5 py-2 rounded bg-gray-300 text-gray-700"
+                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
                 >
+                  <span className="text-lg lg:text-xl text-blue-500">
+                    <MdOutlineCancel />
+                  </span>
                   Cancel
                 </button>
               </div>
@@ -203,102 +203,71 @@ export default function Categories() {
           )}
         </div>
       )}
-
-      {/* {alert && <div>{alert}</div>} */}
-      {/* <div className="grid grid-cols-4 gap-3">
-        <DashboardCards
-          title="Total Leads"
-          number="19"
-          desc="Last Month"
-          icon={<HiUsers />}
-          iconColor="bg-[#0ea5e9]/80"
-        />
-        <DashboardCards
-          title="Total Categories"
-          number="4"
-          desc="Last Month"
-          icon={<MdDashboardCustomize />}
-          iconColor="bg-[#6a0dad]/80"
-        />
-
-        <DashboardCards
-          title="Total Products"
-          number="52"
-          desc="Last Month"
-          icon={<HiArchive />}
-          iconColor="bg-[#0ea5e9]/80"
-        />
-        <DashboardCards
-          title="Total Sales"
-          number="$4487"
-          desc="Last Month"
-          icon={<HiCurrencyDollar />}
-          iconColor="bg-[#6a0dad]/80"
-        />
-      </div> */}
-      <div className="flex flex-row-reverse gap-5 pb-10">
-        <div className="w-[35%]">
-          <div className="flex flex-col gap-5 bg-primaryColor p-5 rounded drop-shadow-xl border border-gray-200">
-            <div className="text-xl font-semibold flex flex-row gap-3 items-center text-gray-900">
-              <span className="text-4xl ">
+      <div className="flex flex-col gap-10 lg:gap-20 pb-10">
+        <div className="w-full">
+          <div className="flex flex-col gap-5 bg-primaryColor rounded-sm">
+            <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 pt-5 px-3 lg:px-0">
+              <span className="text-2xl lg:text-3xl">
                 <FcPlus />
               </span>
-              Add New Category
+              <span>Add New Category</span>
             </div>
-            <div className="">
-              <div className="flex flex-col gap-3">
-                <div>Category Name</div>
-                <input
-                  className="w-full px-2 py-3 bg-transparent border rounded border-gray-300 outline-none"
-                  type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Enter category name"
-                  required
-                />
-              </div>
-              <div className="mt-3 flex flex-row gap-3">
-                <div
-                  onClick={() => handleCreateCategorySubmit(newCategoryName)}
-                  className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center cursor-pointer"
-                >
-                  <span className="text-xl">
-                    <MdOutlineDone />
-                  </span>
-                  Add Category
+            <div className="w-full lg:w-[40%] shadow-xl border border-blue-200 p-3 lg:p-5 rounded-sm">
+              <form
+                className="w-full flex flex-col gap-5"
+                onSubmit={handleCreateCategorySubmit}
+              >
+                <div className="flex flex-col gap-3">
+                  <div>Category Name</div>
+                  <input
+                    className="w-full px-2 py-3 bg-transparent border rounded-sm border-gray-300 outline-none"
+                    type="text"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    placeholder="Enter category name"
+                    required
+                  />
                 </div>
-                <div
-                  className="px-3 py-3 rounded-md bg-gray-200 text-accentColor flex flex-row gap-2 justify-center items-center cursor-pointer"
-                  onClick={() => setNewCategoryName("")}
-                >
-                  <span className="text-xl">
-                    <MdDeleteOutline />
-                  </span>
-                  Clear
+                <div className="w-full flex flex-row gap-3 justify-start items-center">
+                  <div className="flex">
+                    <button
+                      type="submit"
+                      className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
+                    >
+                      <span className="text-lg lg:text-xl">
+                        <HiOutlinePlusCircle />
+                      </span>
+                      Add Category
+                    </button>
+                  </div>
+                  <div className="flex">
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
+                    >
+                      <span className="text-lg lg:text-xl text-blue-500">
+                        <MdDeleteOutline />
+                      </span>
+                      Discard
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
-        <div className="w-[65%] h-full flex flex-col gap-5 bg-primaryColor p-5 rounded border border-gray-200 drop-shadow-xl">
+        <div className="w-full h-full flex flex-col gap-10 bg-primaryColor rounded-sm">
           <div className="flex flex-row justify-between">
-            <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
-              <span className="text-4xl">
+            <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 pt-5 px-3 lg:px-0">
+              <span className="text-2xl lg:text-3xl">
                 <FcOpenedFolder />
               </span>
               All Categories
             </div>
-            <Link
-              to="/dashboard/add-product"
-              className="px-3 py-3 rounded-md bg-accentColor text-primaryColor flex flex-row gap-2 justify-center items-center"
-            >
-              <span className="text-xl">
-                <HiOutlinePlusCircle />
-              </span>
-              Add Products
-            </Link>
           </div>
-          <div className="mt-5 flex flex-row gap-5 justify-between items-center">
+
+          {/* <div className="mt-5 flex flex-row gap-5 justify-between items-center">
             <div className="w-[350px] relative">
               <HiSearch className="text-xl absolute top-[10px] left-2 z-[10]" />
               <input
@@ -331,11 +300,94 @@ export default function Categories() {
                 </FormControl>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="flex flex-col gap-7">
-            {error && <p className="text-red-500">{error}</p>}
-            <table className="w-full border-collapse border border-gray-300">
+          <div className="flex flex-col gap-5">
+            <div className="px-3 lg:px-0">
+              <div className="flex flex-row gap-1 items-center">
+                <div className="flex flex-row gap-2 items-center">
+                  <label>Rows:</label>
+                  <select
+                    className="px-[5px] py-[2px] rounded-sm border border-blue-200 bg-primaryColor outline-none"
+                    value={rowsPerPage}
+                    onChange={handleRowsPerPageChange}
+                    required
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="border border-blue-200 shadow-xl">
+              <table className="w-full">
+                <thead className="w-full">
+                  <tr className="text-sm text-gray-800 rounded-sm font-normal bg-blue-100">
+                    <th className="w-[10%] text-start py-4 px-3 font-normal">
+                      Index
+                    </th>
+                    <th className="w-[35%] text-start py-4 px-3 font-normal">
+                      Category Name
+                    </th>
+                    <th className="w-[25%] text-center py-4 px-3 font-normal">
+                      Created
+                    </th>
+                    <th className="w-[25%] text-center py-4 px-3 font-normal">
+                      Last Update
+                    </th>
+                    <th className="w-[5%] text-center py-4 px-3 font-normal"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.length > 0 ? (
+                    <>
+                      {currentItems.map((item, index) => (
+                        <tr
+                          key={index}
+                          className={`text-sm font-light rounded-sm border-b border-blue-100`}
+                        >
+                          <td className="py-4 ps-4 pe-3 text-start">
+                            {index + 1}
+                          </td>
+                          <td className="py-4 px-3 text-start">
+                            {item.category_name}
+                          </td>
+                          <td className="py-4 px-3 text-center">
+                            {item.created_at.split(" ")[0]}
+                          </td>
+                          <td className="py-4 px-3 text-center">
+                            {item.updated_at.split(" ")[0]}
+                          </td>
+                          <td className="py-4 px-3 text-xl flex flex-row gap-5 justify-center items-center">
+                            <ActionsMenu
+                              item={item}
+                              onView={handleView}
+                              onEdit={handleEdit}
+                              onDelete={handleCategoryDelete}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      <tr>
+                        <td
+                          colSpan="6"
+                          className="text-center py-10 text-xl font-semibold text-gray-400"
+                        >
+                          <p>No category found!</p>
+                        </td>
+                      </tr>
+                    </>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* <table className="w-full border-collapse border border-blue-200 shadow-xl">
               <thead className="w-full">
                 <tr className="text-sm uppercase text--gray-700 rounded-md border-b border-gray-300">
                   <th className="w-[10%] text-center py-3 px-2">ID</th>
@@ -386,19 +438,14 @@ export default function Categories() {
                   </>
                 )}
               </tbody>
-            </table>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row gap-1 items-center">
-                <div>Rows per page:</div>
-                <FormControl sx={{ m: 1, minWidth: 80 }} size="small">
-                  <Select id="rows-select" value={page} onChange={handleChange}>
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
-                    <MenuItem value={20}>20</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              <Pagination count={10} color="primary" />
+            </table> */}
+            <div className="flex flex-row justify-center items-center px-3 lg:px-0">
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+              />
             </div>
           </div>
         </div>

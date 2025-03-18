@@ -189,7 +189,7 @@ export default function InventoryPurchase() {
   }
 
   return (
-    <div className="w-full  text-gray-500 lg:px-0">
+    <div className="w-full  text-gray-500 lg:px-0 pt-5">
       <div className="flex flex-col gap-10 pb-10">
         <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 pt-4 px-3">
           <span className="text-2xl lg:text-3xl">

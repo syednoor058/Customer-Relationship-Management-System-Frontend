@@ -65,7 +65,7 @@ export default function ProductDetails() {
     return <LoadingScreen />;
   }
   return (
-    <div className="flex flex-col gap-10 pb-10 font-light text-sm text-gray-600">
+    <div className="flex flex-col pt-5 gap-10 pb-10 font-light text-sm text-gray-600">
       <div className="w-full flex flex-col gap-5 px-3 lg:px-0">
         <div className="w-full text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-col gap-2">
           <Link to="/dashboard/products">
@@ -190,10 +190,10 @@ export default function ProductDetails() {
                 <th className="w-[10%] text-start py-4 px-3 font-normal">
                   Index
                 </th>
-                <th className="w-[17%] text-start py-4 px-3 font-normal">
+                <th className="w-[17%] text-center py-4 px-3 font-normal">
                   Quantity
                 </th>
-                <th className="w-[17%] text-start py-4 px-3 font-normal">
+                <th className="w-[17%] text-center py-4 px-3 font-normal">
                   Current Quantity
                 </th>
                 <th className="w-[17%] text-center py-4 px-3 font-normal">
@@ -216,8 +216,10 @@ export default function ProductDetails() {
                       className={`text-sm font-light rounded-sm border-b border-blue-100`}
                     >
                       <td className="py-4 ps-4 pe-3 text-start">{index + 1}</td>
-                      <td className="py-4 px-3">{item.qty}</td>
-                      <td className="py-4 px-3">{item.current_qty}</td>
+                      <td className="py-4 px-3 text-center">{item.qty}</td>
+                      <td className="py-4 px-3 text-center">
+                        {item.current_qty}
+                      </td>
                       <td className="py-4 px-3 text-center">
                         {item.previous_qty}
                       </td>
@@ -235,7 +237,7 @@ export default function ProductDetails() {
                       colSpan="6"
                       className="text-center py-10 text-xl font-semibold text-gray-400"
                     >
-                      <p>No items found!</p>
+                      <p>No ledger found!</p>
                     </td>
                   </tr>
                 </>

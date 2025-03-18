@@ -4,12 +4,11 @@ import { Pagination } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { FcBriefcase } from "react-icons/fc";
 import { HiOutlineDotsHorizontal, HiOutlinePlusCircle } from "react-icons/hi";
-import { MdClose, MdDeleteOutline, MdOutlineDone } from "react-icons/md";
+import { MdDeleteOutline, MdOutlineCancel } from "react-icons/md";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   deleteInventory,
-  editInventory,
   getCategory,
   getInventory,
 } from "../components/apiServices/apiServices";
@@ -17,7 +16,7 @@ import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
 // Add this component at the top of your file
 // eslint-disable-next-line react/prop-types
-const ActionsMenu = ({ product, onView, onEdit, onDelete }) => {
+const ActionsMenu = ({ item, onView, onEdit, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -47,7 +46,7 @@ const ActionsMenu = ({ product, onView, onEdit, onDelete }) => {
         <div className="absolute right-0 z-[100] rounded-sm shadow-lg border border-blue-100 text-nowrap bg-primary flex flex-col bg-primaryColor">
           <button
             onClick={() => {
-              onView(product);
+              onView(item);
               setIsOpen(false);
             }}
             className="w-full ps-3 pe-6 py-2 text-sm text-gray-800 hover:bg-blue-100 text-left"
@@ -56,7 +55,7 @@ const ActionsMenu = ({ product, onView, onEdit, onDelete }) => {
           </button>
           <button
             onClick={() => {
-              onEdit(product);
+              onEdit(item);
               setIsOpen(false);
             }}
             className="w-full ps-3 pe-6 py-2 text-sm text-gray-800 hover:bg-blue-100 text-left"
@@ -65,7 +64,7 @@ const ActionsMenu = ({ product, onView, onEdit, onDelete }) => {
           </button>
           <button
             onClick={() => {
-              onDelete(product);
+              onDelete(item);
               setIsOpen(false);
             }}
             className="block w-full ps-3 pe-6 py-2 text-sm text-red-500 hover:bg-blue-100 text-left"
@@ -85,10 +84,6 @@ export default function Products() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const token = localStorage.getItem("shikderFoundationAuthToken");
-  const [editProductName, setEditProductName] = useState("");
-  const [editProductCategory, setEditProductCategory] = useState(0);
-  const [editProductPrice, setEditProductPrice] = useState(0);
-  const [editProductQty, setEditProductQty] = useState(0);
   const [category, setCategory] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,37 +107,12 @@ export default function Products() {
     navigate(`/dashboard/products/details/${product.id}`);
   };
 
-  const editProductPopup = (product) => {
-    setPopup({ type: "edit", data: product });
-    setEditProductName(product.product_name);
-    setEditProductCategory(product.category_id);
-    setEditProductPrice(product.price);
-    setEditProductQty(product.quantity);
+  const editProduct = (product) => {
+    navigate(`/dashboard/products/edit-product/${product.id}`);
   };
 
   const deleteProductPopup = (product) => {
     setPopup({ type: "delete", data: product });
-  };
-
-  const handleEditProductSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const editProductData = await editInventory(
-        popup.data?.id,
-        editProductName,
-        editProductCategory,
-        editProductQty,
-        editProductPrice
-      );
-      setInventory(editProductData.inventory);
-      toast(editProductData.message);
-      setPopup({ type: "", data: null });
-    } catch (error) {
-      toast(error.message);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handleCategoryDelete = async (_id) => {
@@ -187,176 +157,29 @@ export default function Products() {
   return (
     <div className="flex flex-col gap-5 pb-10 font-light text-sm text-gray-600">
       {popup.type !== "" && (
-        <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center backdrop-blur-[2px] z-[2000] bg-gray-800 bg-opacity-50">
-          {popup.type === "view" && (
-            <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative">
-              <div
-                onClick={() => setPopup({ type: "", data: null })}
-                className="flex flex-row items-center gap-1 font-light absolute top-5 right-5 cursor-pointer hover:text-red-600 duration-500"
-              >
-                <span>
-                  <MdClose />
-                </span>{" "}
-                Close
-              </div>
-              <div className="w-full flex flex-col gap-5">
-                <div className="font-medium text-lg border-b border-gray-400 pb-1">
-                  Product Details
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div>Product Name: {popup.data?.product_name}</div>
-                  <div>Category ID: {popup.data?.category_id}</div>
-                  <div>Quantity: {popup.data?.quantity}</div>
-                  <div>Price: {popup.data?.price}</div>
-                  <div>Created At: {popup.data?.created_at}</div>
-                  <div>Updated At: {popup.data?.updated_at}</div>
-                </div>
-              </div>
-            </div>
-          )}
-          {popup.type === "edit" && (
-            <div className="p-10 bg-primaryColor w-[60%] rounded-lg relative overflow-x-hidden overflow-y-auto">
-              <div
-                onClick={() => setPopup({ type: "", data: null })}
-                className="flex flex-row items-center gap-1 font-light absolute top-5 right-5 cursor-pointer hover:text-red-600 duration-500"
-              >
-                <span>
-                  <MdClose />
-                </span>{" "}
-                Close
-              </div>
-              <div className="w-full flex flex-col gap-5">
-                <div className="font-medium text-lg border-b border-gray-400 pb-1">
-                  Update Product Details
-                </div>
-                <div className="w-full flex flex-row gap-5 justify-between">
-                  <form
-                    className="w-full flex flex-col gap-5"
-                    onSubmit={handleEditProductSubmit}
-                  >
-                    <div className="w-full flex flex-col gap-5">
-                      <div className="text-lg font-semibold text-gray-700">
-                        General Information
-                      </div>
-
-                      <div className="flex flex-col gap-1">
-                        <div>Name</div>
-                        <input
-                          className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
-                          type="text"
-                          placeholder="Enter product name"
-                          value={editProductName}
-                          onChange={(e) => setEditProductName(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <label>Category</label>
-                        <select
-                          className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
-                          value={editProductCategory}
-                          onChange={(e) =>
-                            setEditProductCategory(e.target.value)
-                          }
-                          required
-                        >
-                          <option value={0} disabled>
-                            Select a category
-                          </option>
-
-                          {category.length === 0 ? (
-                            <>
-                              <option disabled className="text-center">
-                                No categories found!
-                              </option>
-                            </>
-                          ) : (
-                            <>
-                              {category.map((item, index) => (
-                                <option
-                                  key={index}
-                                  value={item.id}
-                                  className="capitalize"
-                                >
-                                  {item.category_name}
-                                </option>
-                              ))}
-                            </>
-                          )}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="w-full flex flex-col gap-5">
-                      <div className="text-lg font-semibold text-gray-700">
-                        Stock and Value
-                      </div>
-                      <div className="flex flex-row gap-5">
-                        <div className="w-[50%] flex flex-col gap-1">
-                          <div>Initial Stock</div>
-                          <input
-                            className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
-                            type="number"
-                            value={editProductQty}
-                            onChange={(e) => setEditProductQty(e.target.value)}
-                            required
-                          />
-                        </div>
-                        <div className="w-[50%] flex flex-col gap-1">
-                          <div>Initial Value</div>
-                          <input
-                            className="px-3 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
-                            type="number"
-                            value={editProductPrice}
-                            onChange={(e) =>
-                              setEditProductPrice(e.target.value)
-                            }
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="flex flex-row gap-3 justify-start">
-                        <div className="flex">
-                          <button
-                            type="submit"
-                            className="w-36 px-3 py-4 bg-accentColor text-primaryColor rounded-md text-center flex flex-row gap-2 justify-center items-center"
-                          >
-                            <span className="text-xl">
-                              <MdOutlineDone />
-                            </span>
-                            Edit Product
-                          </button>
-                        </div>
-                        <div className="flex">
-                          <button className="w-36 px-3 py-4 bg-gray-200 text-accentColor rounded-md text-center flex flex-row gap-2 items-center justify-center">
-                            <span className="text-xl">
-                              <MdDeleteOutline />
-                            </span>
-                            Discard
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          )}
+        <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center backdrop-blur-[2px] z-[2000] bg-gray-800 bg-opacity-70">
           {popup.type === "delete" && (
-            <div className="p-10 bg-primaryColor w-[50%] rounded-lg relative flex flex-col gap-5">
-              <div className="w-full text-center">
-                Confirm you want to delete this product?
+            <div className="p-10 bg-primaryColor rounded-sm relative flex flex-col gap-5 drop-shadow-2xl">
+              <div className="w-full text-center text-base font-normal">
+                Confirm to delete this product?
               </div>
-              <div className="w-full flex flex-row justify-center gap-10">
+              <div className="w-full flex flex-row justify-center gap-5">
                 <button
                   onClick={() => handleCategoryDelete(popup.data?.id)}
-                  className="px-5 py-2 rounded bg-red-600 text-primaryColor"
+                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-red-500 hover:bg-red-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
                 >
-                  Delete
+                  <span className="text-lg lg:text-xl text-primaryColor">
+                    <MdDeleteOutline />
+                  </span>
+                  Confirm
                 </button>
                 <button
                   onClick={() => setPopup({ type: "", data: null })}
-                  className="px-5 py-2 rounded bg-gray-300 text-gray-700"
+                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
                 >
+                  <span className="text-lg lg:text-xl text-blue-500">
+                    <MdOutlineCancel />
+                  </span>
                   Cancel
                 </button>
               </div>
@@ -504,9 +327,9 @@ export default function Products() {
                       </td>
                       <td className="py-4 px-3 text-xl flex flex-row gap-5 justify-center items-center">
                         <ActionsMenu
-                          product={item}
+                          item={item}
                           onView={viewProduct}
-                          onEdit={editProductPopup}
+                          onEdit={editProduct}
                           onDelete={deleteProductPopup}
                         />
                       </td>
@@ -553,7 +376,7 @@ export default function Products() {
                         <ActionsMenu
                           product={item}
                           onView={viewProduct}
-                          onEdit={editProductPopup}
+                          onEdit={editProduct}
                           onDelete={deleteProductPopup}
                         />
                       </td>

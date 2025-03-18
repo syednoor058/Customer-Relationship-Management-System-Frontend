@@ -19,12 +19,15 @@ import BankDetails from "./screens/BankDetails";
 import CashLedger from "./screens/CashLedger";
 import CashSupply from "./screens/CashSupply";
 import Categories from "./screens/Categories";
+import CategoryDetails from "./screens/CategoryDetails";
 import CompleteInfo from "./screens/CompleteInfo";
 import CompletedProjects from "./screens/CompletedProjects";
 import CustomerDetails from "./screens/CustomerDetails";
 import Customers from "./screens/Customers";
 import Dashboard from "./screens/Dashboard";
 import EditBankDetails from "./screens/EditBankDetails";
+import EditCategory from "./screens/EditCategory";
+import EditProducts from "./screens/EditProducts";
 import EditProjectDetails from "./screens/EditProjectDetails";
 import EmployeeLedger from "./screens/EmployeeLedger";
 import EmployeeRoles from "./screens/EmployeeRoles";
@@ -51,9 +54,8 @@ function App() {
     <BrowserRouter>
       <ToastContainer autoClose={3000} transition:Slide />
       <Routes>
-
-          <Route exact path="/" element={<LoginComponent />} />
-          <Route exact path="/forget-password" element={<ForgotPassword />} />
+        <Route exact path="/" element={<LoginComponent />} />
+        <Route exact path="/forget-password" element={<ForgotPassword />} />
         <Route exact path="/dashboard" element={<Dashboard />}>
           <Route index element={<Overview />} />
           <Route exact path="categories" element={<Categories />} />
@@ -64,6 +66,21 @@ function App() {
               element={<ProductLedger />}
             />
           </Route>
+          <Route
+            exact
+            path="products/edit-product/:productId"
+            element={<EditProducts />}
+          />
+          <Route
+            exact
+            path="categories/details/:categoryId"
+            element={<CategoryDetails />}
+          />
+          <Route
+            exact
+            path="categories/edit-category/:categoryId"
+            element={<EditCategory />}
+          />
           <Route exact path="add-product" element={<AddProduct />} />
           <Route
             exact
