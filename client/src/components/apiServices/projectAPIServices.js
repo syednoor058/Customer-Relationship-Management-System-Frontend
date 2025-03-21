@@ -260,7 +260,7 @@ const getHeaders = () => {
       // console.log(response)
       return response.data;
     } catch(error) {
-      throw error.response?.data || { message: 'Failed to fetch completed projects.'};
+      throw error.response?.data || { message: 'Failed to add info!'};
     }
   }
 

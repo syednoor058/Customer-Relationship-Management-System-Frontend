@@ -79,32 +79,28 @@ export default function Overview() {
         <OverViewCard
           icon={<FcBriefcase />}
           title="Inventory"
-          forwardTo="add-product"
+          forwardTo="products"
         />
         <OverViewCard
           icon={<FcOpenedFolder />}
           title="Category"
-          forwardTo="add-product"
+          forwardTo="categories"
         />
         <OverViewCard
           icon={<FcManager />}
           title="Employees"
-          forwardTo="add-product"
+          forwardTo="all-employees"
         />
         <OverViewCard
           icon={<FcBusinessman />}
           title="Vendors"
-          forwardTo="add-product"
+          forwardTo="all-vendors"
         />
-        <OverViewCard
-          icon={<FcHome />}
-          title="Projects"
-          forwardTo="add-product"
-        />
+        <OverViewCard icon={<FcHome />} title="Projects" forwardTo="projects" />
         <OverViewCard
           icon={<FcLibrary />}
           title="Accounts"
-          forwardTo="add-product"
+          forwardTo="accounts"
         />
       </div>
     </div>

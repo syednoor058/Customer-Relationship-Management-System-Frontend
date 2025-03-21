@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { MdOutlineDelete } from "react-icons/md";
+import { MdAdd, MdClose, MdDeleteOutline, MdOutlineSave } from "react-icons/md";
 import { toast } from "react-toastify";
 import {
   getCompletedProjectInfoById,
@@ -22,6 +21,11 @@ export default function CompleteInfo() {
       unit: "",
       unitCost: 0,
       unitPrice: 0,
+      area: 0,
+      shop: "",
+      cost: 0,
+      advanced: 0,
+      rent: 0,
     },
   ]);
   const [loading, setLoading] = useState(true);
@@ -71,6 +75,11 @@ export default function CompleteInfo() {
         unit: "",
         unitCost: 0,
         unitPrice: 0,
+        area: 0,
+        shop: "",
+        cost: 0,
+        advanced: 0,
+        rent: 0,
       },
     ]);
   };
@@ -88,7 +97,16 @@ export default function CompleteInfo() {
         const update = { ...row };
 
         // Handle numeric fields
-        if (["unitCost", "unitPrice"].includes(field)) {
+        if (
+          [
+            "unitCost",
+            "unitPrice",
+            "area",
+            "cost",
+            "advanced",
+            "rent",
+          ].includes(field)
+        ) {
           const numValue = parseFloat(value) || 0;
           update[field] = numValue;
         } else {
@@ -108,13 +126,7 @@ export default function CompleteInfo() {
     e.preventDefault();
 
     // Validate form
-    if (
-      !selectedProject ||
-      rows.some(
-        (row) =>
-          !row.floor || !row.unit || row.unitCost <= 0 || row.unitPrice <= 0
-      )
-    ) {
+    if (!selectedProject || rows.some((row) => !row.floor)) {
       return toast.error("Please fill all required fields correctly");
     }
 
@@ -124,8 +136,15 @@ export default function CompleteInfo() {
         unit: row.unit,
         unit_cost: row.unitCost,
         unit_price: row.unitPrice,
+        shop: row.shop,
+        shop_cost: row.cost,
+        shop_advanced: row.advanced,
+        shop_rent: row.rent,
+        area: row.area,
       })),
     };
+
+    // console.log(payload);
 
     try {
       const purchase = await postCompletedProjectInfo(
@@ -149,6 +168,11 @@ export default function CompleteInfo() {
         unit: "",
         unitCost: 0,
         unitPrice: 0,
+        area: 0,
+        shop: "",
+        cost: 0,
+        advanced: 0,
+        rent: 0,
       },
     ]);
   };
@@ -159,7 +183,7 @@ export default function CompleteInfo() {
 
   return (
     <div className="w-full text-gray-600 pb-10 flex flex-col gap-10">
-      <div className="flex flex-col gap-10 p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200">
+      <div className="flex flex-col gap-10 p-5 rounded-sm drop-shadow-xl border bg-primaryColor border-gray-200">
         <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900 capitalize">
           <h1>Add Complete Project Info</h1>
         </div>
@@ -171,7 +195,7 @@ export default function CompleteInfo() {
             <div className="flex flex-col gap-1">
               <label>Completed Project</label>
               <select
-                className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                className="px-2 py-2 rounded-sm border border-gray-300 bg-transparent outline-none"
                 value={selectedProject}
                 onChange={(e) => setSelectedProject(Number(e.target.value))}
                 required
@@ -202,103 +226,197 @@ export default function CompleteInfo() {
               </select>
             </div>
           </div>
-          <div className="flex flex-col gap-3 py-10">
-            <div className="w-full flex flex-row gap-5 border border-gray-400 bg-gray-200 divide-x-[1px] px-5">
-              <div className="w-[20%] py-3">Floor</div>
-              <div className="w-[20%] py-3">Unit</div>
-              <div className="w-[20%] py-3">Unit Cost</div>
-              <div className="w-[20%] py-3">Unit Price</div>
-              <div className="w-[20%] py-3"></div>
-            </div>
-            <div className="flex flex-col gap-3">
-              {rows?.map((row, index) => (
-                <div key={row.id} className="w-full flex gap-5">
-                  {/* Floor input  */}
-                  <input
-                    className="w-[20%] px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                    type="text"
-                    placeholder="Enter floor"
-                    value={row.floor}
-                    onChange={(e) =>
-                      handleRowChange(row.id, "floor", e.target.value)
-                    }
-                    required
-                  />
 
-                  <input
-                    className="w-[20%] px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                    type="text"
-                    placeholder="Enter unit"
-                    value={row.unit}
-                    onChange={(e) =>
-                      handleRowChange(row.id, "unit", e.target.value)
-                    }
-                    required
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Unit cost"
-                    className="w-[20%] p-2 border rounded outline-none"
-                    min={1}
-                    value={row.unitCost}
-                    onChange={(e) =>
-                      handleRowChange(row.id, "unitCost", e.target.value)
-                    }
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Unit price"
-                    className="w-[20%] p-2 border rounded outline-none"
-                    min={1}
-                    value={row.unitPrice}
-                    onChange={(e) =>
-                      handleRowChange(row.id, "unitPrice", e.target.value)
-                    }
-                  />
-
-                  <div className="w-[20%] flex gap-2 text-xl items-center px-5">
-                    {rows.length > 1 && (
-                      <button
-                        onClick={() => handleDeleteRow(row.id)}
-                        className=" text-red-500 hover:text-red-600"
-                      >
-                        <MdOutlineDelete />
-                      </button>
-                    )}
-                    {index === rows.length - 1 && (
-                      <button onClick={handleAddRow}>
-                        <IoIosAddCircleOutline />
-                      </button>
-                    )}
+          {rows?.map((row, index) => (
+            <div key={index} className="flex flex-col gap-10 py-10 relative">
+              {rows.length > 1 && (
+                <div className="w-full flex justify-end px-5 absolute top-0  pt-5">
+                  <button
+                    onClick={() => handleDeleteRow(row.id)}
+                    className=" text-red-500 hover:text-red-600 flex flex-row gap-1 items-center"
+                  >
+                    <span className="text-xl">
+                      <MdClose />
+                    </span>
+                    <span>Delete</span>
+                  </button>
+                </div>
+              )}
+              <div className="flex flex-col gap-5">
+                <div className="text-lg font-semibold text-gray-600">
+                  Floor Information
+                </div>
+                <div className="w-full grid grid-cols-3 gap-x-14 gap-y-3">
+                  <div className="flex flex-col gap-1">
+                    <label>Floor</label>
+                    <input
+                      className="px-2 py-2 rounded-sm border border-gray-300 bg-transparent outline-none"
+                      type="text"
+                      placeholder="Enter floor"
+                      value={row.floor}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "floor", e.target.value)
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Unit</label>
+                    <input
+                      className="px-2 py-2 rounded-sm border border-gray-300 bg-transparent outline-none"
+                      type="text"
+                      placeholder="Enter unit"
+                      value={row.unit}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "unit", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Unit Cost</label>
+                    <input
+                      type="number"
+                      placeholder="Unit cost"
+                      className="p-2 border rounded-sm outline-none"
+                      min={0}
+                      value={row.unitCost}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "unitCost", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Unit Price</label>
+                    <input
+                      type="number"
+                      placeholder="Unit price"
+                      className="p-2 border rounded-sm outline-none"
+                      min={0}
+                      value={row.unitPrice}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "unitPrice", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Area</label>
+                    <input
+                      type="number"
+                      placeholder="Enter area"
+                      className="p-2 border rounded-sm outline-none"
+                      min={0}
+                      value={row.area}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "area", e.target.value)
+                      }
+                    />
                   </div>
                 </div>
-              ))}
+              </div>
+              <div className="flex flex-col gap-5">
+                <div className="text-lg font-semibold text-gray-600">
+                  Shop Information
+                </div>
+                <div className="w-full grid grid-cols-2 gap-x-14 gap-y-3">
+                  <div className="flex flex-col gap-1">
+                    <label>Shop</label>
+                    <input
+                      className="px-2 py-2 rounded-sm border border-gray-300 bg-transparent outline-none"
+                      type="text"
+                      placeholder="Enter shop"
+                      value={row.shop}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "shop", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Shop Cost</label>
+                    <input
+                      type="number"
+                      placeholder="Shop cost"
+                      className="p-2 border rounded-sm outline-none"
+                      min={0}
+                      value={row.cost}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "cost", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Shop Advanced</label>
+                    <input
+                      type="number"
+                      placeholder="Shop advanced"
+                      className="p-2 border rounded-sm outline-none"
+                      min={0}
+                      value={row.advanced}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "advanced", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Shop Rent</label>
+                    <input
+                      type="number"
+                      placeholder="Shop rent"
+                      className="p-2 border rounded-sm outline-none"
+                      min={0}
+                      value={row.rent}
+                      onChange={(e) =>
+                        handleRowChange(row.id, "rent", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              {index === rows.length - 1 && (
+                <div className="flex">
+                  <button
+                    type="button"
+                    onClick={handleAddRow}
+                    className="text-blue-500 hover:text-blue-600 flex flex-row gap-1 items-center"
+                  >
+                    <span className="text-xl">
+                      <MdAdd />
+                    </span>
+                    <span>Add More</span>
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
-          <div className="w-full flex flex-row gap-5 justify-end items-center pt-10">
+          ))}
+
+          <div className="w-full flex flex-row gap-3 justify-end items-center pt-10">
             <div className="flex">
               <button
                 type="submit"
-                className="px-5 py-2 bg-blue-600 text-primaryColor rounded"
+                className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
               >
+                <span className="text-lg lg:text-xl">
+                  <MdOutlineSave />
+                </span>
                 Save Info
               </button>
             </div>
             <div className="flex">
               <button
-                className="px-5 py-2 border border-blue-600 text-blue-600 rounded"
+                className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
                 type="button"
                 onClick={handleCancel}
               >
-                Cancel
+                <span className="text-lg lg:text-xl text-blue-500">
+                  <MdDeleteOutline />
+                </span>
+                Discard
               </button>
             </div>
           </div>
         </form>
       </div>
-      <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
+
+      <div className="w-full p-5 rounded-sm drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
         <div className="flex flex-col gap-5">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
             <h1>Check Completed Project Info</h1>
@@ -310,7 +428,7 @@ export default function CompleteInfo() {
                   <div className="flex flex-col gap-2">
                     <label>Completed Project</label>
                     <select
-                      className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                      className="px-2 py-2 rounded-sm border border-gray-300 bg-transparent outline-none"
                       value={checkProject}
                       onChange={(e) => setCheckProject(Number(e.target.value))}
                       required
@@ -344,7 +462,7 @@ export default function CompleteInfo() {
                     <div className="flex">
                       <button
                         type="submit"
-                        className="px-5 py-3 bg-blue-600 text-primaryColor rounded"
+                        className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
                       >
                         Check
                       </button>
@@ -353,7 +471,7 @@ export default function CompleteInfo() {
                       <button
                         type="button"
                         onClick={handleReset}
-                        className="px-5 py-3 border border-blue-600 text-blue-600 rounded"
+                        className="px-5 py-3 border border-blue-600 text-blue-600 rounded-sm"
                       >
                         Cancel
                       </button>
@@ -366,7 +484,7 @@ export default function CompleteInfo() {
         </div>
       </div>
       {info.length > 0 && (
-        <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
+        <div className="w-full p-5 rounded-sm drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-10">
               <h1 className="w-full text-2xl font-bold flex flex-row gap-3 items-center text-gray-900 text-center  justify-center uppercase">
