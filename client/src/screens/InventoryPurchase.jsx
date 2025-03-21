@@ -262,8 +262,8 @@ export default function InventoryPurchase() {
               <div className="w-full flex flex-row items-center gap-2 lg:gap-5 border border-blue-200 bg-blue-100 divide-x-[1px] px-1 lg:px-5 font-normal">
                 <div className="w-[20%] py-3">Category</div>
                 <div className="w-[27%] py-3">Product</div>
-                <div className="w-[20%] py-3">Quantity</div>
-                <div className="w-[10%] py-3">Total Price</div>
+                <div className="w-[15%] py-3">Quantity</div>
+                <div className="w-[15%] py-3">Total Price</div>
                 <div className="w-[15%] py-3">Unit Price</div>
                 <div className="w-[8%] py-3"></div>
               </div>
@@ -346,7 +346,7 @@ export default function InventoryPurchase() {
                     <input
                       type="number"
                       placeholder="Quantity"
-                      className="w-[20%] px-1 lg:px-2 py-1 lg:py-2 border rounded-sm outline-none"
+                      className="w-[15%] px-1 lg:px-2 py-1 lg:py-2 border rounded-sm outline-none"
                       min={1}
                       value={row.quantity || 0}
                       onChange={(e) =>
@@ -357,7 +357,7 @@ export default function InventoryPurchase() {
                     <input
                       type="number"
                       placeholder="Total Price"
-                      className="w-[10%] px-1 lg:px-2 py-1 lg:py-2 border rounded-sm outline-none"
+                      className="w-[15%] px-1 lg:px-2 py-1 lg:py-2 border rounded-sm outline-none"
                       min={1}
                       value={row.totalPrice || 0}
                       onChange={(e) =>

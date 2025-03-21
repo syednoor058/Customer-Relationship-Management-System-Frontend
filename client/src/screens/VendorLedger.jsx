@@ -11,6 +11,12 @@ export default function VendorLedger() {
   const [selectedVendor, setSelectedVendor] = useState(0);
   const [loading, setLoading] = useState(true);
   const [ledger, setLedger] = useState([]);
+  const [fromDate, setFromDate] = useState(
+    () => new Date().toISOString().split("T")[0]
+  );
+  const [toDate, setToDate] = useState(
+    () => new Date().toISOString().split("T")[0]
+  );
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,46 +59,68 @@ export default function VendorLedger() {
       <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
         <div className="flex flex-col gap-5">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
-            <h1>Check Employee Ledger</h1>
+            <h1>Check Vendor Ledger</h1>
           </div>
           <div>
             <div className="flex flex-col gap-5">
-              <div className="w-full grid grid-cols-3 gap-10">
+              <div className="w-full gap-10">
                 <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-                  <div className="flex flex-col gap-2">
-                    <label>Employee</label>
-                    <select
-                      className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                      value={selectedVendor}
-                      onChange={(e) =>
-                        setSelectedVendor(Number(e.target.value))
-                      }
-                      required
-                    >
-                      <option value={0} disabled>
-                        Select a vendor
-                      </option>
+                  <div className="grid grid-cols-3 gap-10">
+                    <div className="flex flex-col gap-1">
+                      <label>Vendor</label>
+                      <select
+                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                        value={selectedVendor}
+                        onChange={(e) =>
+                          setSelectedVendor(Number(e.target.value))
+                        }
+                        required
+                      >
+                        <option value={0} disabled>
+                          Select a vendor
+                        </option>
 
-                      {vendors.length === 0 ? (
-                        <>
-                          <option disabled className="text-center">
-                            No vendor found!
-                          </option>
-                        </>
-                      ) : (
-                        <>
-                          {vendors?.map((item) => (
-                            <option
-                              key={item.id}
-                              value={item.id}
-                              className="capitalize"
-                            >
-                              {item.vendor_name}
+                        {vendors.length === 0 ? (
+                          <>
+                            <option disabled className="text-center">
+                              No vendor found!
                             </option>
-                          ))}
-                        </>
-                      )}
-                    </select>
+                          </>
+                        ) : (
+                          <>
+                            {vendors?.map((item) => (
+                              <option
+                                key={item.id}
+                                value={item.id}
+                                className="capitalize"
+                              >
+                                {item.vendor_name}
+                              </option>
+                            ))}
+                          </>
+                        )}
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label>From:</label>
+                      <input
+                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                        type="date"
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label>To:</label>
+                      <input
+                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                        type="date"
+                        value={toDate}
+                        onChange={(e) => setToDate(e.target.value)}
+                        required
+                      />
+                    </div>
                   </div>
                   <div className="flex flex-row gap-5">
                     <div className="flex">

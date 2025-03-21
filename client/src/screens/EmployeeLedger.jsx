@@ -10,6 +10,12 @@ export default function EmployeeLedger() {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [fromDate, setFromDate] = useState(
+    () => new Date().toISOString().split("T")[0]
+  );
+  const [toDate, setToDate] = useState(
+    () => new Date().toISOString().split("T")[0]
+  );
   const [ledger, setLedger] = useState([]);
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const handleSubmit = async (e) => {
@@ -57,42 +63,64 @@ export default function EmployeeLedger() {
           </div>
           <div>
             <div className="flex flex-col gap-5">
-              <div className="w-full grid grid-cols-3 gap-10">
+              <div className="w-full gap-10">
                 <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-                  <div className="flex flex-col gap-2">
-                    <label>Employee</label>
-                    <select
-                      className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                      value={selectedEmployee}
-                      onChange={(e) =>
-                        setSelectedEmployee(Number(e.target.value))
-                      }
-                      required
-                    >
-                      <option value={0} disabled>
-                        Select an employee
-                      </option>
+                  <div className="grid grid-cols-3 gap-10">
+                    <div className="flex flex-col gap-1">
+                      <label>Employee</label>
+                      <select
+                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                        value={selectedEmployee}
+                        onChange={(e) =>
+                          setSelectedEmployee(Number(e.target.value))
+                        }
+                        required
+                      >
+                        <option value={0} disabled>
+                          Select an employee
+                        </option>
 
-                      {employees.length === 0 ? (
-                        <>
-                          <option disabled className="text-center">
-                            No employee found!
-                          </option>
-                        </>
-                      ) : (
-                        <>
-                          {employees?.map((item) => (
-                            <option
-                              key={item.id}
-                              value={item.id}
-                              className="capitalize"
-                            >
-                              {item.employee_name}
+                        {employees.length === 0 ? (
+                          <>
+                            <option disabled className="text-center">
+                              No employee found!
                             </option>
-                          ))}
-                        </>
-                      )}
-                    </select>
+                          </>
+                        ) : (
+                          <>
+                            {employees?.map((item) => (
+                              <option
+                                key={item.id}
+                                value={item.id}
+                                className="capitalize"
+                              >
+                                {item.employee_name}
+                              </option>
+                            ))}
+                          </>
+                        )}
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label>From:</label>
+                      <input
+                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                        type="date"
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label>To:</label>
+                      <input
+                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                        type="date"
+                        value={toDate}
+                        onChange={(e) => setToDate(e.target.value)}
+                        required
+                      />
+                    </div>
                   </div>
                   <div className="flex flex-row gap-5">
                     <div className="flex">
