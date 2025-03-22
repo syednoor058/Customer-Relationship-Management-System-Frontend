@@ -17,7 +17,7 @@ export default function CashLedger() {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const cashLedgerData = await getCashLedger();
+        const cashLedgerData = await getCashLedger({ fromDate, toDate });
         setLedger(cashLedgerData);
         // console.log(cashLedgerData);
       } catch (error) {
@@ -27,7 +27,7 @@ export default function CashLedger() {
       }
     };
     fetchData();
-  }, [token]);
+  }, [fromDate, toDate, token]);
 
   if (loading) {
     return <LoadingScreen />;

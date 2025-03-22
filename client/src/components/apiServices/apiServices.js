@@ -175,10 +175,14 @@ const getHeaders = () => {
   };
 
   
-  export const getSingleProductLedger = async (id) => {
+  export const getSingleProductLedger = async ({id, dateFrom, dateTo}) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/inventory/ledger/${id}`, {
         headers: getHeaders(),
+        params: {
+          dateFrom: dateFrom,
+          dateTo: dateTo
+        },
       });
       // console.log(response);
       return response.data;

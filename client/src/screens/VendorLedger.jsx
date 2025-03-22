@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdOutlineFilterAlt } from "react-icons/md";
 import { toast } from "react-toastify";
 import {
   getVendorLedgerById,
@@ -9,21 +10,43 @@ import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 export default function VendorLedger() {
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(0);
+  const [currentVendor, setCurrentVendor] = useState(0);
   const [loading, setLoading] = useState(true);
   const [ledger, setLedger] = useState([]);
-  const [fromDate, setFromDate] = useState(
-    () => new Date().toISOString().split("T")[0]
-  );
+  const [fromDate, setFromDate] = useState("2025-01-01");
   const [toDate, setToDate] = useState(
     () => new Date().toISOString().split("T")[0]
   );
   const token = localStorage.getItem("shikderFoundationAuthToken");
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const filterLedger = async () => {
     setLoading(true);
     try {
-      const getLedgerData = await getVendorLedgerById(selectedVendor);
-      setLedger(getLedgerData);
+      const filteredData = await getVendorLedgerById({
+        id: currentVendor,
+        dateFrom: fromDate,
+        dateTo: toDate,
+      });
+      setLedger(filteredData.data);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setCurrentVendor(selectedVendor);
+    setFromDate("2025-01-01");
+    setToDate(() => new Date().toISOString().split("T")[0]);
+    setLoading(true);
+    try {
+      const getLedgerData = await getVendorLedgerById({
+        id: selectedVendor,
+        dateFrom: fromDate,
+        dateTo: toDate,
+      });
+      setLedger(getLedgerData.data);
+      // console.log(getLedgerData.data);
       setSelectedVendor(0);
     } catch (error) {
       toast.error(error.message || "Something went wrong!");
@@ -101,26 +124,6 @@ export default function VendorLedger() {
                         )}
                       </select>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label>From:</label>
-                      <input
-                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                        type="date"
-                        value={fromDate}
-                        onChange={(e) => setFromDate(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label>To:</label>
-                      <input
-                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                        type="date"
-                        value={toDate}
-                        onChange={(e) => setToDate(e.target.value)}
-                        required
-                      />
-                    </div>
                   </div>
                   <div className="flex flex-row gap-5">
                     <div className="flex">
@@ -165,6 +168,40 @@ export default function VendorLedger() {
                   <span>Vendor ID:</span>
                   <span>{ledger[0].vendor_id}</span>
                 </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-5 gap-5">
+              <div className="flex flex-col gap-1">
+                <label>From:</label>
+                <input
+                  className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                  type="date"
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label>To:</label>
+                <input
+                  className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                  type="date"
+                  value={toDate}
+                  onChange={(e) => setToDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex items-end">
+                <button
+                  type="button"
+                  onClick={filterLedger}
+                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
+                >
+                  <span className="text-base lg:text-lg">
+                    <MdOutlineFilterAlt />
+                  </span>
+                  Filter
+                </button>
               </div>
             </div>
             <table className="w-full border-collapse border border-gray-300">

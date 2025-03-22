@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getCash } from "../apiServices/cashAPIServices";
+import { getInstituteInfo } from "../apiServices/instituteInfoAPIServices";
 import LoadingScreen from "../loadingScreen/LoadingScreen";
 
 // eslint-disable-next-line react/prop-types
@@ -35,12 +36,15 @@ export default function Overview() {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const [cash, setCash] = useState([]);
+  const [company, setCompany] = useState();
 
   useEffect(() => {
     const fetchCash = async () => {
       setLoading(true);
       try {
         const cashRes = await getCash();
+        const insData = await getInstituteInfo();
+        setCompany(insData);
         // console.log(cashRes);
         setCash(cashRes);
       } catch (err) {
@@ -58,7 +62,7 @@ export default function Overview() {
   }
   return (
     <div className="w-full h-full p-10">
-      <div className="pb-10">
+      <div className="pb-10 flex flex-col gap-10">
         <div className="w-[40%] aspect-[2/1] flex shadow-xl p-7 rounded-xl bg-gradient-to-tr from-[#7F00FF] to-[#E100FF] text-gray-300">
           <div className="w-full flex flex-col justify-between">
             <div className="text-lg font-normal ">
@@ -73,6 +77,36 @@ export default function Overview() {
               <p>{cash[0]?.updated_at.split(" ")[0] ?? ""}</p>
             </div>
           </div>
+        </div>
+        <div>
+          <table>
+            <tbody>
+              <tr>
+                <td className="pe-5">Institution Name:</td>
+                <td className="font-semibold text-gray-600">
+                  {company.institution_name}
+                </td>
+              </tr>
+              <tr>
+                <td className="pe-5">Address:</td>
+                <td className="font-semibold text-gray-600">
+                  {company.institution_address}
+                </td>
+              </tr>
+              <tr>
+                <td className="pe-5">Phone:</td>
+                <td className="font-semibold text-gray-600">
+                  {company.institution_phone}
+                </td>
+              </tr>
+              <tr>
+                <td className="pe-5">Created at:</td>
+                <td className="font-semibold text-gray-600">
+                  {company.created_at}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div className="w-full grid grid-cols-3 gap-5">

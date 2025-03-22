@@ -1,67 +1,47 @@
 import { useEffect, useState } from "react";
-import { MdOutlineFilterAlt } from "react-icons/md";
 import { toast } from "react-toastify";
 import {
-  getEmployeeLedgerById,
-  getEmployees,
-} from "../components/apiServices/employeeAPIServices";
+  getProjectLedger,
+  getProjects,
+} from "../components/apiServices/projectAPIServices";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 
-export default function EmployeeLedger() {
-  const [employees, setEmployees] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState(0);
-  const [currentEmployee, setCurrentEmployee] = useState(0);
+export default function ProjectReport() {
   const [loading, setLoading] = useState(true);
-  const [fromDate, setFromDate] = useState(
-    () => new Date().toISOString().split("T")[0]
-  );
-  const [toDate, setToDate] = useState(
-    () => new Date().toISOString().split("T")[0]
-  );
-  const [ledger, setLedger] = useState([]);
-  const token = localStorage.getItem("shikderFoundationAuthToken");
-  const filterLedger = async () => {
+  const [projects, setProjects] = useState([]);
+  // const [fromDate, setFromDate] = useState(
+  //   () => new Date().toISOString().split("T")[0]
+  // );
+  // const [toDate, setToDate] = useState(
+  //   () => new Date().toISOString().split("T")[0]
+  // );
+  const [ledger, setLedger] = useState();
+  const [selectedProject, setSelectedProject] = useState(0);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
-      const filteredData = await getEmployeeLedgerById({
-        id: currentEmployee,
-        dateFrom: fromDate,
-        dateTo: toDate,
-      });
-      setLedger(filteredData.data);
+      const data = await getProjectLedger(selectedProject);
+      setLedger(data);
+      //   console.log(data);
+      handleReset();
     } catch (error) {
       toast.error(error.message);
     } finally {
       setLoading(false);
     }
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setCurrentEmployee(selectedEmployee);
-    setFromDate("2025-01-01");
-    setToDate(() => new Date().toISOString().split("T")[0]);
-    setLoading(true);
-    try {
-      const getLedgerData = await getEmployeeLedgerById(selectedEmployee);
-      setLedger(getLedgerData.ledger_entries);
-      setSelectedEmployee(0);
-    } catch (error) {
-      toast.error(error.message || "Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleReset = () => {
-    setSelectedEmployee(0);
+    setSelectedProject(0);
   };
 
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const employeesData = await getEmployees();
-        setEmployees(employeesData);
+        const projectData = await getProjects();
+        setProjects(projectData);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -69,7 +49,7 @@ export default function EmployeeLedger() {
       }
     };
     fetchData();
-  }, [token]);
+  }, []);
 
   if (loading) {
     return <LoadingScreen />;
@@ -79,7 +59,7 @@ export default function EmployeeLedger() {
       <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
         <div className="flex flex-col gap-5">
           <div className="text-2xl font-semibold flex flex-row gap-3 items-center text-gray-900">
-            <h1>Check Employee Ledger</h1>
+            <h1>Check Project Report</h1>
           </div>
           <div>
             <div className="flex flex-col gap-5">
@@ -87,34 +67,34 @@ export default function EmployeeLedger() {
                 <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-3 gap-10">
                     <div className="flex flex-col gap-1">
-                      <label>Employee</label>
+                      <label>Project</label>
                       <select
                         className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                        value={selectedEmployee}
+                        value={selectedProject}
                         onChange={(e) =>
-                          setSelectedEmployee(Number(e.target.value))
+                          setSelectedProject(Number(e.target.value))
                         }
                         required
                       >
                         <option value={0} disabled>
-                          Select an employee
+                          Select a project
                         </option>
 
-                        {employees.length === 0 ? (
+                        {projects.length === 0 ? (
                           <>
                             <option disabled className="text-center">
-                              No employee found!
+                              No project found!
                             </option>
                           </>
                         ) : (
                           <>
-                            {employees?.map((item) => (
+                            {projects?.map((item) => (
                               <option
                                 key={item.id}
                                 value={item.id}
                                 className="capitalize"
                               >
-                                {item.employee_name}
+                                {item.project_name}
                               </option>
                             ))}
                           </>
@@ -147,66 +127,48 @@ export default function EmployeeLedger() {
           </div>
         </div>
       </div>
-      {ledger.length > 0 && (
+      {ledger && (
         <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-10">
               <h1 className="w-full text-4xl font-semibold flex flex-row gap-3 items-center text-gray-900 text-center  justify-center underline underline-offset-4 uppercase">
-                Employee Ledger
+                Project Ledger
               </h1>
-              <div className="w-full flex flex-row justify-between items-center">
+              <div className="w-full grid grid-cols-4 gap-x-7 gap-y-2">
                 <p className=" flex flex-row gap-2">
-                  <span>Name:</span>
-                  <span className="font-semibold uppercase">
-                    {ledger[0].employee_name}
+                  <span>Project Name:</span>
+                  <span className="font-semibold capitalize">
+                    {ledger.ledger_entries[0].project_name}
                   </span>
                 </p>
                 <p className=" flex flex-row gap-2">
-                  <span>ID:</span>
-                  <span>{currentEmployee}</span>
+                  <span>Project ID:</span>
+                  <span>{ledger.ledger_entries[0].project_id}</span>
                 </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-5 gap-5">
-              <div className="flex flex-col gap-1">
-                <label>From:</label>
-                <input
-                  className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                  type="date"
-                  value={fromDate}
-                  onChange={(e) => setFromDate(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label>To:</label>
-                <input
-                  className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
-                  type="date"
-                  value={toDate}
-                  onChange={(e) => setToDate(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="flex items-end">
-                <button
-                  type="button"
-                  onClick={filterLedger}
-                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
-                >
-                  <span className="text-base lg:text-lg">
-                    <MdOutlineFilterAlt />
-                  </span>
-                  Filter
-                </button>
+                <p className=" flex flex-row gap-2">
+                  <span>Total Cash Given:</span>
+                  <span>{ledger.total_cash_given}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Total Employee Wage:</span>
+                  <span>{ledger.total_employee_wage}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Total Expense:</span>
+                  <span>{ledger.total_expense}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Total Cost:</span>
+                  <span>{ledger.total_cost}</span>
+                </p>
               </div>
             </div>
             <table className="w-full border-collapse border border-gray-300">
               <thead className="w-full">
                 <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-                  <th className="w-[5%] text-center py-3 px-2">ID</th>
-                  <th className="w-[19%] text-start py-3 px-2">Amount</th>
-                  <th className="w-[19%] text-start py-3 px-2">
+                  <th className="w-[5%] text-center py-3 px-2">No.</th>
+                  <th className="w-[19%] text-center py-3 px-2">Amount</th>
+                  <th className="w-[19%] text-center py-3 px-2">
                     Previous Balance
                   </th>
                   <th className="w-[19%] text-center py-3 px-2">
@@ -217,19 +179,23 @@ export default function EmployeeLedger() {
                 </tr>
               </thead>
               <tbody>
-                {ledger?.length > 0 && (
+                {ledger?.ledger_entries?.length > 0 && (
                   <>
-                    {ledger.map((item, index) => (
+                    {ledger.ledger_entries.map((item, index) => (
                       <tr
                         key={index}
                         className={`text-sm font-light rounded-md ${
                           (index + 1) % 2 === 0 && "bg-gray-100"
                         }`}
                       >
-                        <td className="py-4 px-2 text-center">{item.id}</td>
-                        <td className="py-4 px-2">{item.amount}</td>
-                        <td className="py-4 px-2">{item.previous_balance}</td>
-                        <td className="py-4 px-2">{item.current_balance}</td>
+                        <td className="py-4 px-2 text-start">{index + 1}</td>
+                        <td className="py-4 px-2 text-center">{item.amount}</td>
+                        <td className="py-4 px-2 text-center">
+                          {item.previous_balance}
+                        </td>
+                        <td className="py-4 px-2 text-center">
+                          {item.current_balance}
+                        </td>
                         <td className="py-4 px-2 text-center">{item.type}</td>
                         <td className="py-4 px-2 text-center">
                           {item.created_at.split(" ")[0]}

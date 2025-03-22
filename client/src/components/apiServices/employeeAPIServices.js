@@ -141,11 +141,15 @@ const getHeaders = () => {
     }
   }
 
-  export const getEmployeeLedgerById = async (id) => {
+  export const getEmployeeLedgerById = async ({id, dateFrom, dateTo}) => {
     try{
       const response = await axios.get(
-        `${API_BASE_URL}/api/employee/ledger/${id}`,
-        {headers: getHeaders(),}
+        `${API_BASE_URL}/api/employee/ledger/history`,
+        {headers: getHeaders(), params: {
+          id: id,
+          dateFrom: dateFrom,
+          dateTo: dateTo
+        }}
       );
       // console.log(response)
       return response.data;

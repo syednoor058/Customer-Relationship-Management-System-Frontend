@@ -1,7 +1,7 @@
 import { Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { MdImageNotSupported } from "react-icons/md";
+import { MdImageNotSupported, MdOutlineFilterAlt } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -14,9 +14,7 @@ import { getUsers } from "./../components/apiServices/userAPIServices";
 
 export default function ProductDetails() {
   const { productId } = useParams();
-  const [fromDate, setFromDate] = useState(
-    () => new Date().toISOString().split("T")[0]
-  );
+  const [fromDate, setFromDate] = useState("2025-01-01");
   const [toDate, setToDate] = useState(
     () => new Date().toISOString().split("T")[0]
   );
@@ -35,6 +33,22 @@ export default function ProductDetails() {
   const indexOfFirstItem = indexOfLastItem - rowsPerPage;
   const currentItems = ledger.slice(indexOfFirstItem, indexOfLastItem);
 
+  const filterLedger = async () => {
+    setLoading(true);
+    try {
+      const filteredData = await getSingleProductLedger({
+        id: productId,
+        dateFrom: fromDate,
+        dateTo: toDate,
+      });
+      setLedger(filteredData);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
@@ -48,7 +62,12 @@ export default function ProductDetails() {
     const fetchData = async () => {
       try {
         const productDetails = await getInventoryById(productId);
-        const productLedger = await getSingleProductLedger(productId);
+        const productLedger = await getSingleProductLedger({
+          id: productId,
+          dateFrom: fromDate, // Use component's initial dates
+          dateTo: toDate,
+        });
+
         const categoryData = await getCategory();
         const usersData = await getUsers();
         setUsers(usersData);
@@ -66,6 +85,7 @@ export default function ProductDetails() {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId, token]);
   if (loading) {
     return <LoadingScreen />;
@@ -171,7 +191,7 @@ export default function ProductDetails() {
         <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 py-2 lg:py-4 px-3 lg:px-0">
           <h1>Product Ledger</h1>
         </div>
-        <div className="grid grid-cols-5 gap-5">
+        <div className="grid grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-5">
           <div className="flex flex-col gap-1">
             <label>From:</label>
             <input
@@ -195,9 +215,13 @@ export default function ProductDetails() {
           <div className="flex items-end">
             <button
               type="button"
+              onClick={filterLedger}
               className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
             >
-              Set Date
+              <span className="text-base lg:text-lg">
+                <MdOutlineFilterAlt />
+              </span>
+              Filter
             </button>
           </div>
         </div>
@@ -223,22 +247,23 @@ export default function ProductDetails() {
           <table className="w-full hidden lg:inline-table">
             <thead className="w-full">
               <tr className="text-sm text-gray-800 rounded-sm font-normal bg-blue-100">
-                <th className="w-[10%] text-start py-4 px-3 font-normal">
-                  Index
+                <th className="w-[5%] text-start py-4 px-3 font-normal">No.</th>
+                <th className="w-[25%] text-start py-4 px-3 font-normal">
+                  Project Name
                 </th>
-                <th className="w-[17%] text-center py-4 px-3 font-normal">
+                <th className="w-[12%] text-center py-4 px-3 font-normal">
                   Quantity
                 </th>
-                <th className="w-[17%] text-center py-4 px-3 font-normal">
+                <th className="w-[12%] text-center py-4 px-3 font-normal">
                   Current Quantity
                 </th>
-                <th className="w-[17%] text-center py-4 px-3 font-normal">
+                <th className="w-[12%] text-center py-4 px-3 font-normal">
                   Previous Quantity
                 </th>
-                <th className="w-[17%] text-center py-4 px-3 font-normal">
+                <th className="w-[12%] text-center py-4 px-3 font-normal">
                   Type
                 </th>
-                <th className="w-[22%] text-center py-4 px-3 font-normal">
+                <th className="w-[20%] text-center py-4 px-3 font-normal">
                   Date
                 </th>
               </tr>
@@ -252,6 +277,9 @@ export default function ProductDetails() {
                       className={`text-sm font-light rounded-sm border-b border-blue-100`}
                     >
                       <td className="py-4 ps-4 pe-3 text-start">{index + 1}</td>
+                      <td className="py-4 ps-4 pe-3 text-start">
+                        {item.project_name}
+                      </td>
                       <td className="py-4 px-3 text-center">{item.qty}</td>
                       <td className="py-4 px-3 text-center">
                         {item.current_qty}
@@ -280,64 +308,64 @@ export default function ProductDetails() {
               )}
             </tbody>
           </table>
-          <table className="w-full inline-table lg:hidden text-[10px] bg-primaryColor">
-            <thead className="w-full">
-              <tr className="text-sm text-gray-800 rounded-sm font-normal bg-blue-100">
-                <th className="w-[3%] text-start py-4 px-[5px] font-normal">
-                  No
-                </th>
-                <th className="w-[19%] text-start py-4 px-[5px] font-normal">
-                  Quantity
-                </th>
-                <th className="w-[19%] text-start py-4 px-[5px] font-normal">
-                  Current Quantity
-                </th>
-                <th className="w-[19%] text-center py-4 px-[5px] font-normal">
-                  Previous Quantity
-                </th>
-                <th className="w-[19%] text-center py-4 px-[5px] font-normal">
-                  Type
-                </th>
-                <th className="w-[21%] text-center py-4 px-[5px] font-normal">
-                  Date
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.length > 0 ? (
-                <>
-                  {currentItems.map((item, index) => (
-                    <tr
-                      key={index}
-                      className={`text-sm font-light rounded-sm border-b border-blue-100`}
-                    >
-                      <td className="py-4 px-[5px] text-start">{index + 1}</td>
-                      <td className="py-4 px-[5px]">{item.qty}</td>
-                      <td className="py-4 px-[5px]">{item.current_qty}</td>
-                      <td className="py-4 px-[5px] text-center">
-                        {item.previous_qty}
-                      </td>
-                      <td className="py-4 px-[5px] text-center">{item.type}</td>
-                      <td className="py-4 px-[5px] text-center">
-                        {item.created_at.split(" ")[0]}
+          <div className="w-full inline-block lg:hidden overflow-x-scroll">
+            <table className="w-full text-[10px] bg-primaryColor">
+              <thead className="w-full">
+                <tr className="text-sm text-gray-800 rounded-sm font-normal bg-blue-100">
+                  <th className="text-start py-4 px-5 font-normal">No.</th>
+                  <th className="text-start py-4 px-5 font-normal">
+                    Project Name
+                  </th>
+                  <th className="text-start py-4 px-5 font-normal">Quantity</th>
+                  <th className="text-start py-4 px-5 font-normal">
+                    Current Quantity
+                  </th>
+                  <th className="text-center py-4 px-5 font-normal">
+                    Previous Quantity
+                  </th>
+                  <th className="text-center py-4 px-5 font-normal">Type</th>
+                  <th className="text-center py-4 px-5 font-normal">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.length > 0 ? (
+                  <>
+                    {currentItems.map((item, index) => (
+                      <tr
+                        key={index}
+                        className={`text-sm font-light rounded-sm border-b border-blue-100`}
+                      >
+                        <td className="py-4 px-5 text-start">{index + 1}</td>
+                        <td className="py-4 px-5 text-start">
+                          {item.project_name}
+                        </td>
+                        <td className="py-4 px-5">{item.qty}</td>
+                        <td className="py-4 px-5">{item.current_qty}</td>
+                        <td className="py-4 px-5 text-center">
+                          {item.previous_qty}
+                        </td>
+                        <td className="py-4 px-5 text-center">{item.type}</td>
+                        <td className="py-4 px-5 text-center text-nowrap">
+                          {item.created_at.split(" ")[0]}
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <tr>
+                      <td
+                        colSpan="6"
+                        className="text-center py-10 text-xl font-semibold text-gray-400"
+                      >
+                        <p>No items found!</p>
                       </td>
                     </tr>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <tr>
-                    <td
-                      colSpan="6"
-                      className="text-center py-10 text-xl font-semibold text-gray-400"
-                    >
-                      <p>No items found!</p>
-                    </td>
-                  </tr>
-                </>
-              )}
-            </tbody>
-          </table>
+                  </>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="flex flex-row justify-center items-center px-3 lg:px-0">
           <Pagination

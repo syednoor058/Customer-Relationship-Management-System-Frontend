@@ -104,11 +104,11 @@ export default function Products() {
   };
 
   const viewProduct = (product) => {
-    navigate(`/dashboard/products/details/${product.id}`);
+    navigate(`/dashboard/products/details/${product?.id}`);
   };
 
   const editProduct = (product) => {
-    navigate(`/dashboard/products/edit-product/${product.id}`);
+    navigate(`/dashboard/products/edit-product/${product?.id}`);
   };
 
   const deleteProductPopup = (product) => {
@@ -374,7 +374,7 @@ export default function Products() {
                       <td className="py-4 px-3">{item.product_name}</td>
                       <td className="py-4 px-3 text-xl flex flex-row gap-5 justify-center items-center">
                         <ActionsMenu
-                          product={item}
+                          item={item}
                           onView={viewProduct}
                           onEdit={editProduct}
                           onDelete={deleteProductPopup}

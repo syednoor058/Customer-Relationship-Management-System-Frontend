@@ -43,6 +43,7 @@ import ProductDetails from "./screens/ProductDetails";
 import Products from "./screens/Products";
 import ProjectDetails from "./screens/ProjectDetails";
 import ProjectExpense from "./screens/ProjectExpense";
+import ProjectReport from "./screens/ProjectReport";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
 import VendorLedger from "./screens/VendorLedger";
@@ -187,6 +188,7 @@ function App() {
             path="products/details/:productId"
             element={<ProductDetails />}
           />
+          <Route exact path="projects/ledger" element={<ProjectReport />} />
         </Route>
       </Routes>
     </BrowserRouter>

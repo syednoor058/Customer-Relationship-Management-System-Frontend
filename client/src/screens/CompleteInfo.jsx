@@ -189,9 +189,9 @@ export default function CompleteInfo() {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col divide-y-[1px] divide-gray-200"
+          className="flex flex-col divide-y-[1px] divide-gray-200 divide-opacity-90"
         >
-          <div className="w-full grid grid-cols-3 gap-10 pb-10">
+          <div className="w-full grid grid-cols-3 gap-10 pb-5">
             <div className="flex flex-col gap-1">
               <label>Completed Project</label>
               <select
@@ -228,7 +228,7 @@ export default function CompleteInfo() {
           </div>
 
           {rows?.map((row, index) => (
-            <div key={index} className="flex flex-col gap-10 py-10 relative">
+            <div key={index} className="flex flex-col gap-10 py-5 relative">
               {rows.length > 1 && (
                 <div className="w-full flex justify-end px-5 absolute top-0  pt-5">
                   <button
@@ -246,7 +246,7 @@ export default function CompleteInfo() {
                 <div className="text-lg font-semibold text-gray-600">
                   Floor Information
                 </div>
-                <div className="w-full grid grid-cols-3 gap-x-14 gap-y-3">
+                <div className="w-full grid grid-cols-3 gap-x-10 gap-y-3">
                   <div className="flex flex-col gap-1">
                     <label>Floor</label>
                     <input
@@ -277,7 +277,7 @@ export default function CompleteInfo() {
                     <input
                       type="number"
                       placeholder="Unit cost"
-                      className="p-2 border rounded-sm outline-none"
+                      className="p-2 border rounded-sm outline-none border-gray-300"
                       min={0}
                       value={row.unitCost}
                       onChange={(e) =>
@@ -290,7 +290,7 @@ export default function CompleteInfo() {
                     <input
                       type="number"
                       placeholder="Unit price"
-                      className="p-2 border rounded-sm outline-none"
+                      className="p-2 border rounded-sm outline-none border-gray-300"
                       min={0}
                       value={row.unitPrice}
                       onChange={(e) =>
@@ -303,7 +303,7 @@ export default function CompleteInfo() {
                     <input
                       type="number"
                       placeholder="Enter area"
-                      className="p-2 border rounded-sm outline-none"
+                      className="p-2 border rounded-sm outline-none border-gray-300"
                       min={0}
                       value={row.area}
                       onChange={(e) =>
@@ -317,7 +317,7 @@ export default function CompleteInfo() {
                 <div className="text-lg font-semibold text-gray-600">
                   Shop Information
                 </div>
-                <div className="w-full grid grid-cols-2 gap-x-14 gap-y-3">
+                <div className="w-full grid grid-cols-3 gap-x-10 gap-y-3">
                   <div className="flex flex-col gap-1">
                     <label>Shop</label>
                     <input
@@ -335,7 +335,7 @@ export default function CompleteInfo() {
                     <input
                       type="number"
                       placeholder="Shop cost"
-                      className="p-2 border rounded-sm outline-none"
+                      className="p-2 border rounded-sm outline-none border-gray-300"
                       min={0}
                       value={row.cost}
                       onChange={(e) =>
@@ -348,7 +348,7 @@ export default function CompleteInfo() {
                     <input
                       type="number"
                       placeholder="Shop advanced"
-                      className="p-2 border rounded-sm outline-none"
+                      className="p-2 border rounded-sm outline-none border-gray-300"
                       min={0}
                       value={row.advanced}
                       onChange={(e) =>
@@ -361,7 +361,7 @@ export default function CompleteInfo() {
                     <input
                       type="number"
                       placeholder="Shop rent"
-                      className="p-2 border rounded-sm outline-none"
+                      className="p-2 border rounded-sm outline-none border-gray-300"
                       min={0}
                       value={row.rent}
                       onChange={(e) =>
@@ -388,7 +388,7 @@ export default function CompleteInfo() {
             </div>
           ))}
 
-          <div className="w-full flex flex-row gap-3 justify-end items-center pt-10">
+          <div className="w-full flex flex-row gap-3 justify-end items-center pt-5">
             <div className="flex">
               <button
                 type="submit"

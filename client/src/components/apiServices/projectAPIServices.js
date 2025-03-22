@@ -265,4 +265,15 @@ const getHeaders = () => {
   }
 
   
-
+export const getProjectLedger = async (id) => {
+  try{
+    const response = await axios.get(
+      `${API_BASE_URL}/api/supply_cash_project/ledger/${id}`, 
+      {headers: getHeaders(),}
+    );
+    // console.log(response)
+    return response.data;
+  } catch(error) {
+    throw error.response?.data || { message: 'Failed to fetch project ledger!'};
+  }
+}

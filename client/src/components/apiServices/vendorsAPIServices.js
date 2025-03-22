@@ -75,11 +75,17 @@ const getHeaders = () => {
     }
   }
 
-  export const getVendorLedgerById = async (_id) => {
+  export const getVendorLedgerById = async ({id, dateFrom, dateTo}) => {
     try{
       const response = await axios.get(
-        `${API_BASE_URL}/api/vendor/ledger/${_id}`,
-        {headers: getHeaders(),}
+        `${API_BASE_URL}/api/vendor/ledger/history`,
+        {headers: getHeaders(),
+          params: {
+            id: id,
+            dateFrom: dateFrom,
+            dateTo: dateTo
+          }
+        }
       );
       return response.data;
     } catch(error) {

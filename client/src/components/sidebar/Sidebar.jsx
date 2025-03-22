@@ -331,11 +331,6 @@ export default function Sidebar() {
               linkIcon: <MdAddBusiness />,
             },
             {
-              linkName: "Assign History",
-              linkPath: "/dashboard/projects/assign-history",
-              linkIcon: <MdHistory />,
-            },
-            {
               linkName: "Supply Cash",
               linkPath: "/dashboard/projects/supply-cash",
               linkIcon: <LuCircleDollarSign />,
@@ -349,6 +344,11 @@ export default function Sidebar() {
               linkName: "Complete Info",
               linkPath: "/dashboard/projects/completed/info",
               linkIcon: <MdInfoOutline />,
+            },
+            {
+              linkName: "Project Ledger",
+              linkPath: "/dashboard/projects/ledger",
+              linkIcon: <TbReport />,
             },
           ]}
         />

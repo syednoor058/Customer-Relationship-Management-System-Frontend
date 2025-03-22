@@ -115,11 +115,14 @@ const getHeaders = () => {
     }
   }
 
-  export const getCashLedger = async () => {
+  export const getCashLedger = async ({dateFrom, dateTo}) => {
     try{
       const response = await axios.get(
         `${API_BASE_URL}/api/cash/ledger`,
-        {headers: getHeaders(),}
+        {headers: getHeaders(), params: {
+          dateFrom: dateFrom,
+          dateTo: dateTo
+        }}
       );
       // console.log(response)
       return response.data;
