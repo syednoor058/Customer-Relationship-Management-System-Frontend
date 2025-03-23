@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdOutlineFilterAlt } from "react-icons/md";
 import { toast } from "react-toastify";
 import { getCashLedger } from "../components/apiServices/accountsAPIServices";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
@@ -7,17 +8,34 @@ export default function CashLedger() {
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const [loading, setLoading] = useState(true);
   const [ledger, setLedger] = useState([]);
-  const [fromDate, setFromDate] = useState(
-    () => new Date().toISOString().split("T")[0]
-  );
+  const [fromDate, setFromDate] = useState("2025-01-01");
   const [toDate, setToDate] = useState(
     () => new Date().toISOString().split("T")[0]
   );
+
+  const filterLedger = async () => {
+    setLoading(true);
+    try {
+      const filteredData = await getCashLedger({
+        dateFrom: fromDate,
+        dateTo: toDate,
+      });
+      setLedger(filteredData);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const cashLedgerData = await getCashLedger({ fromDate, toDate });
+        const cashLedgerData = await getCashLedger({
+          dateFrom: "2025-01-01",
+          dateTo: new Date().toISOString().split("T")[0],
+        });
         setLedger(cashLedgerData);
         // console.log(cashLedgerData);
       } catch (error) {
@@ -27,7 +45,7 @@ export default function CashLedger() {
       }
     };
     fetchData();
-  }, [fromDate, toDate, token]);
+  }, [token]);
 
   if (loading) {
     return <LoadingScreen />;
@@ -64,53 +82,72 @@ export default function CashLedger() {
           <div className="flex items-end">
             <button
               type="button"
+              onClick={filterLedger}
               className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
             >
-              Set Date
+              <span className="text-base lg:text-lg">
+                <MdOutlineFilterAlt />
+              </span>
+              Filter
             </button>
           </div>
         </div>
-        <table className="w-full border-collapse border border-gray-300">
-          <thead className="w-full">
-            <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-              <th className="w-[10%] text-center py-3 px-2">ID</th>
-              <th className="w-[18%] text-center py-3 px-2">Amount</th>
-              <th className="w-[18%] text-center py-3 px-2">
-                Previous Balance
-              </th>
-              <th className="w-[18%] text-center py-3 px-2">Current Balance</th>
-              <th className="w-[18%] text-center py-3 px-2">Type</th>
-              <th className="w-[18%] text-center py-3 px-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ledger?.length > 0 && (
-              <>
-                {ledger.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`text-sm font-light rounded-md ${
-                      (index + 1) % 2 === 0 && "bg-gray-100"
-                    }`}
-                  >
-                    <td className="py-4 px-2 text-center">{item.id}</td>
-                    <td className="py-4 px-2 text-center">{item.amount}</td>
-                    <td className="py-4 px-2 text-center">
-                      {item.previous_balance}
-                    </td>
-                    <td className="py-4 px-2 text-center">
-                      {item.current_balance}
-                    </td>
-                    <td className="py-4 px-2 text-center">{item.type}</td>
-                    <td className="py-4 px-2 text-center">
-                      {item.created_at.split(" ")[0]}
+        <div className="w-full overflow-x-scroll">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead className="w-full">
+              <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
+                <th className=" text-center py-3 px-2">ID</th>
+                <th className=" text-center py-3 px-2">Amount</th>
+                <th className=" text-center py-3 px-2">Previous Balance</th>
+                <th className=" text-center py-3 px-2">Current Balance</th>
+                <th className=" text-center py-3 px-2">TranxID</th>
+                <th className=" text-center py-3 px-2">Type</th>
+                <th className=" text-center py-3 px-2">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ledger?.length > 0 ? (
+                <>
+                  {ledger.map((item, index) => (
+                    <tr
+                      key={index}
+                      className={`text-sm font-light rounded-md ${
+                        (index + 1) % 2 === 0 && "bg-gray-100"
+                      }`}
+                    >
+                      <td className="py-4 px-2 text-center">{item.id}</td>
+                      <td className="py-4 px-2 text-center">{item.amount}</td>
+                      <td className="py-4 px-2 text-center">
+                        {item.previous_balance}
+                      </td>
+                      <td className="py-4 px-2 text-center">
+                        {item.current_balance}
+                      </td>
+                      <td className="py-4 px-2 text-center">
+                        {item.transaction_id}
+                      </td>
+                      <td className="py-4 px-2 text-center">{item.type}</td>
+                      <td className="py-4 px-2 text-center text-nowrap">
+                        {item.created_at.split(" ")[0]}
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <tr>
+                    <td
+                      colSpan="6"
+                      className="text-center py-10 text-xl font-semibold text-gray-400"
+                    >
+                      <p>No ledger found!</p>
                     </td>
                   </tr>
-                ))}
-              </>
-            )}
-          </tbody>
-        </table>
+                </>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ export default function ProjectReport() {
     try {
       const data = await getProjectLedger(selectedProject);
       setLedger(data);
-      //   console.log(data);
+      console.log(data);
       handleReset();
     } catch (error) {
       toast.error(error.message);
@@ -179,7 +179,7 @@ export default function ProjectReport() {
                 </tr>
               </thead>
               <tbody>
-                {ledger?.ledger_entries?.length > 0 && (
+                {ledger?.ledger_entries?.length > 0 ? (
                   <>
                     {ledger.ledger_entries.map((item, index) => (
                       <tr
@@ -203,9 +203,90 @@ export default function ProjectReport() {
                       </tr>
                     ))}
                   </>
+                ) : (
+                  <>
+                    <tr>
+                      <td
+                        colSpan="6"
+                        className="text-center py-10 text-xl font-semibold text-gray-400"
+                      >
+                        <p>No ledger found!</p>
+                      </td>
+                    </tr>
+                  </>
                 )}
               </tbody>
             </table>
+            <h1>Products Ledger</h1>
+            <div className="w-full overflow-x-scroll">
+              <table className="w-full border-collapse border border-gray-300">
+                <thead className="w-full">
+                  <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
+                    <th className=" text-center py-3 px-5">No.</th>
+                    <th className=" text-start py-3 px-5">Product Name</th>
+                    <th className=" text-center py-3 px-5">Quantity</th>
+                    <th className=" text-center py-3 px-5">
+                      Previous Quantity
+                    </th>
+                    <th className=" text-center py-3 px-5">Current Quantity</th>
+
+                    <th className=" text-center py-3 px-5">Type</th>
+                    <th className=" text-center py-3 px-5">Rate</th>
+                    <th className=" text-center py-3 px-5">Price</th>
+                    <th className=" text-center py-3 px-5">Total Price</th>
+                    <th className=" text-center py-3 px-5">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ledger?.product_ledger?.length > 0 ? (
+                    <>
+                      {ledger.product_ledger?.map((item, index) => (
+                        <tr
+                          key={index}
+                          className={`text-sm font-light rounded-md ${
+                            (index + 1) % 2 === 0 && "bg-gray-100"
+                          }`}
+                        >
+                          <td className="py-4 px-5 text-start">{index + 1}</td>
+                          <td className="py-4 px-5 text-start">
+                            {item.product_name}
+                          </td>
+                          <td className="py-4 px-5 text-center">{item.qty}</td>
+                          <td className="py-4 px-5 text-center">
+                            {item.previous_qty}
+                          </td>
+                          <td className="py-4 px-5 text-center">
+                            {item.current_qty}
+                          </td>
+                          <td className="py-4 px-5 text-center">{item.type}</td>
+                          <td className="py-4 px-5 text-center">{item.rate}</td>
+                          <td className="py-4 px-5 text-center">
+                            {item.price}
+                          </td>
+                          <td className="py-4 px-5 text-center">
+                            {item.total_price}
+                          </td>
+                          <td className="py-4 px-5 text-center text-nowrap">
+                            {item.created_at.split(" ")[0]}
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      <tr>
+                        <td
+                          colSpan="10"
+                          className="text-center py-10 text-xl font-semibold text-gray-400"
+                        >
+                          <p>No ledger found!</p>
+                        </td>
+                      </tr>
+                    </>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

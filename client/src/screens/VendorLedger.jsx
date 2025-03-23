@@ -17,6 +17,8 @@ export default function VendorLedger() {
   const [toDate, setToDate] = useState(
     () => new Date().toISOString().split("T")[0]
   );
+  const initialFromDate = "2025-01-01";
+  const initialToDate = new Date().toISOString().split("T")[0];
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const filterLedger = async () => {
     setLoading(true);
@@ -36,17 +38,16 @@ export default function VendorLedger() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setCurrentVendor(selectedVendor);
-    setFromDate("2025-01-01");
-    setToDate(() => new Date().toISOString().split("T")[0]);
+    setFromDate(initialFromDate);
+    setToDate(initialToDate);
     setLoading(true);
     try {
       const getLedgerData = await getVendorLedgerById({
         id: selectedVendor,
-        dateFrom: fromDate,
-        dateTo: toDate,
+        dateFrom: initialFromDate,
+        dateTo: initialToDate,
       });
       setLedger(getLedgerData.data);
-      // console.log(getLedgerData.data);
       setSelectedVendor(0);
     } catch (error) {
       toast.error(error.message || "Something went wrong!");
@@ -150,7 +151,7 @@ export default function VendorLedger() {
           </div>
         </div>
       </div>
-      {ledger.length > 0 && (
+      {(currentVendor > 0 || ledger.length > 0) && (
         <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-10">
@@ -161,12 +162,15 @@ export default function VendorLedger() {
                 <p className="flex flex-row gap-2">
                   <span>Name:</span>
                   <span className="font-semibold uppercase">
-                    {ledger[0].vendor_name}
+                    {
+                      vendors?.find((vendor) => vendor.id == currentVendor)
+                        .vendor_name
+                    }
                   </span>
                 </p>
                 <p className="flex flex-row gap-2">
                   <span>Vendor ID:</span>
-                  <span>{ledger[0].vendor_id}</span>
+                  <span>{currentVendor}</span>
                 </p>
               </div>
             </div>
@@ -221,7 +225,7 @@ export default function VendorLedger() {
                 </tr>
               </thead>
               <tbody>
-                {ledger?.length > 0 && (
+                {ledger?.length > 0 ? (
                   <>
                     {ledger.map((item, index) => (
                       <tr
@@ -247,6 +251,17 @@ export default function VendorLedger() {
                         </td>
                       </tr>
                     ))}
+                  </>
+                ) : (
+                  <>
+                    <tr>
+                      <td
+                        colSpan="7"
+                        className="text-center py-10 text-xl font-semibold text-gray-400"
+                      >
+                        <p>No ledger found!</p>
+                      </td>
+                    </tr>
                   </>
                 )}
               </tbody>

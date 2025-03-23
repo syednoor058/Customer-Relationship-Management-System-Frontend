@@ -18,7 +18,9 @@ export default function EmployeeLedger() {
   const [toDate, setToDate] = useState(
     () => new Date().toISOString().split("T")[0]
   );
-  const [ledger, setLedger] = useState([]);
+  const initialFromDate = "2025-01-01";
+  const initialToDate = new Date().toISOString().split("T")[0];
+  const [ledger, setLedger] = useState();
   const token = localStorage.getItem("shikderFoundationAuthToken");
   const filterLedger = async () => {
     setLoading(true);
@@ -38,12 +40,17 @@ export default function EmployeeLedger() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setCurrentEmployee(selectedEmployee);
-    setFromDate("2025-01-01");
-    setToDate(() => new Date().toISOString().split("T")[0]);
+    setFromDate(initialFromDate);
+    setToDate(initialToDate);
     setLoading(true);
     try {
-      const getLedgerData = await getEmployeeLedgerById(selectedEmployee);
-      setLedger(getLedgerData.ledger_entries);
+      const getLedgerData = await getEmployeeLedgerById({
+        id: selectedEmployee,
+        dateFrom: initialFromDate,
+        dateTo: initialToDate,
+      });
+      setLedger(getLedgerData);
+      // console.log(getLedgerData);
       setSelectedEmployee(0);
     } catch (error) {
       toast.error(error.message || "Something went wrong!");
@@ -147,23 +154,39 @@ export default function EmployeeLedger() {
           </div>
         </div>
       </div>
-      {ledger.length > 0 && (
+      {(currentEmployee > 0 || ledger?.ledger_entries.length > 0) && (
         <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-10">
               <h1 className="w-full text-4xl font-semibold flex flex-row gap-3 items-center text-gray-900 text-center  justify-center underline underline-offset-4 uppercase">
                 Employee Ledger
               </h1>
-              <div className="w-full flex flex-row justify-between items-center">
+              <div className="w-full grid grid-cols-4 gap-x-7 gap-y-3 items-center">
                 <p className=" flex flex-row gap-2">
-                  <span>Name:</span>
-                  <span className="font-semibold uppercase">
-                    {ledger[0].employee_name}
+                  <span>Employee Name:</span>
+                  <span className="font-semibold capitalize">
+                    {
+                      employees.find(
+                        (employee) => employee.id == currentEmployee
+                      ).employee_name
+                    }
                   </span>
                 </p>
                 <p className=" flex flex-row gap-2">
-                  <span>ID:</span>
+                  <span>Employee ID:</span>
                   <span>{currentEmployee}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Days Present:</span>
+                  <span>{ledger.totals.days_present}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Total Given:</span>
+                  <span>{ledger.totals.total_given}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Total Salary:</span>
+                  <span>{ledger.totals.total_salary}</span>
                 </p>
               </div>
             </div>
@@ -201,45 +224,72 @@ export default function EmployeeLedger() {
                 </button>
               </div>
             </div>
-            <table className="w-full border-collapse border border-gray-300">
-              <thead className="w-full">
-                <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-                  <th className="w-[5%] text-center py-3 px-2">ID</th>
-                  <th className="w-[19%] text-start py-3 px-2">Amount</th>
-                  <th className="w-[19%] text-start py-3 px-2">
-                    Previous Balance
-                  </th>
-                  <th className="w-[19%] text-center py-3 px-2">
-                    Current Balance
-                  </th>
-                  <th className="w-[19%] text-center py-3 px-2">Type</th>
-                  <th className="w-[19%] text-center py-3 px-2">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ledger?.length > 0 && (
-                  <>
-                    {ledger.map((item, index) => (
-                      <tr
-                        key={index}
-                        className={`text-sm font-light rounded-md ${
-                          (index + 1) % 2 === 0 && "bg-gray-100"
-                        }`}
-                      >
-                        <td className="py-4 px-2 text-center">{item.id}</td>
-                        <td className="py-4 px-2">{item.amount}</td>
-                        <td className="py-4 px-2">{item.previous_balance}</td>
-                        <td className="py-4 px-2">{item.current_balance}</td>
-                        <td className="py-4 px-2 text-center">{item.type}</td>
-                        <td className="py-4 px-2 text-center">
-                          {item.created_at.split(" ")[0]}
+            <div className="w-full overflow-x-scroll">
+              <table className="w-full border-collapse border border-gray-300">
+                <thead className="w-full">
+                  <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
+                    <th className=" text-center py-3 px-5">ID</th>
+                    <th className=" text-start py-3 px-5">Project Name</th>
+                    <th className=" text-center py-3 px-5">Amount</th>
+                    <th className=" text-center py-3 px-5">Previous Balance</th>
+                    <th className=" text-center py-3 px-5">Current Balance</th>
+                    <th className=" text-center py-3 px-5">Salary</th>
+                    <th className=" text-center py-3 px-5">Type</th>
+                    <th className=" text-center py-3 px-5">TrnxID</th>
+                    <th className=" text-center py-3 px-5">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ledger?.ledger_entries.length > 0 ? (
+                    <>
+                      {ledger.ledger_entries.map((item, index) => (
+                        <tr
+                          key={index}
+                          className={`text-sm font-light rounded-md ${
+                            (index + 1) % 2 === 0 && "bg-gray-100"
+                          }`}
+                        >
+                          <td className="py-4 px-5 text-center">{item.id}</td>
+                          <td className="py-4 px-5 text-start">
+                            {item.project_name}
+                          </td>
+                          <td className="py-4 px-5 text-center">
+                            {item.amount}
+                          </td>
+                          <td className="py-4 px-5 text-center">
+                            {item.previous_balance}
+                          </td>
+                          <td className="py-4 px-5 text-center">
+                            {item.current_balance}
+                          </td>
+                          <td className="py-4 px-5 text-center">
+                            {item.salary}
+                          </td>
+                          <td className="py-4 px-5 text-center">{item.type}</td>
+                          <td className="py-4 px-5 text-center">
+                            {item.transaction_id}
+                          </td>
+                          <td className="py-4 px-5 text-center text-nowrap">
+                            {item.created_at.split(" ")[0]}
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      <tr>
+                        <td
+                          colSpan="6"
+                          className="text-center py-10 text-xl font-semibold text-gray-400"
+                        >
+                          <p>No ledger found!</p>
                         </td>
                       </tr>
-                    ))}
-                  </>
-                )}
-              </tbody>
-            </table>
+                    </>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
