@@ -71,7 +71,7 @@ export default function ProjectReport() {
                     <div className="flex flex-col gap-1">
                       <label>Project</label>
                       <select
-                        className="px-2 py-2 rounded border border-gray-300 bg-transparent outline-none"
+                        className="ps-2 pe-5 py-2 rounded border border-gray-300 bg-transparent outline-none"
                         value={selectedProject}
                         onChange={(e) =>
                           setSelectedProject(Number(e.target.value))
@@ -84,7 +84,7 @@ export default function ProjectReport() {
 
                         {projects.length === 0 ? (
                           <>
-                            <option disabled className="text-center">
+                            <option disabled className="text-start">
                               No project found!
                             </option>
                           </>
@@ -130,10 +130,10 @@ export default function ProjectReport() {
         </div>
       </div>
       {ledger && (
-        <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
-          <div className="flex flex-col gap-5">
+        <div className="w-full p-5 text-gray-600">
+          <div className="flex flex-col gap-14">
             <div className="flex flex-col gap-10">
-              <h1 className="w-full text-4xl font-semibold flex flex-row gap-3 items-center text-gray-900 text-center  justify-center underline underline-offset-4 uppercase">
+              <h1 className="w-full text-4xl font-semibold flex flex-row gap-3 items-center text-gray-900 text-start  justify-center underline underline-offset-4 uppercase">
                 Project Ledger
               </h1>
               <div className="w-full grid grid-cols-4 gap-x-7 gap-y-2">
@@ -176,19 +176,27 @@ export default function ProjectReport() {
                 </p>
               </div>
             </div>
-            <table className="w-full border-collapse border border-gray-300">
+            <table className="w-full border-collapse">
               <thead className="w-full">
-                <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-                  <th className="w-[5%] text-center py-3 px-2">No.</th>
-                  <th className="w-[19%] text-center py-3 px-2">Amount</th>
-                  <th className="w-[19%] text-center py-3 px-2">
+                <tr className="text-sm uppercase text-gray-700 rounded-sm border-b border-gray-300 divide-x-[1px] divide-gray-300 ">
+                  <th className="w-[5%] text-start py-3 ps-2 pe-5 font-semibold">
+                    No.
+                  </th>
+                  <th className="w-[19%] text-start py-3 ps-2 pe-5 font-semibold">
+                    Amount
+                  </th>
+                  <th className="w-[19%] text-start py-3 ps-2 pe-5 font-semibold">
                     Previous Balance
                   </th>
-                  <th className="w-[19%] text-center py-3 px-2">
+                  <th className="w-[19%] text-start py-3 ps-2 pe-5 font-semibold">
                     Current Balance
                   </th>
-                  <th className="w-[19%] text-center py-3 px-2">Type</th>
-                  <th className="w-[19%] text-center py-3 px-2">Date</th>
+                  <th className="w-[19%] text-start py-3 ps-2 pe-5 font-semibold">
+                    Type
+                  </th>
+                  <th className="w-[19%] text-start py-3 ps-2 pe-5 font-semibold">
+                    Date
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -197,20 +205,24 @@ export default function ProjectReport() {
                     {ledger.ledger_entries.map((item, index) => (
                       <tr
                         key={index}
-                        className={`text-sm font-light rounded-md ${
-                          (index + 1) % 2 === 0 && "bg-gray-100"
-                        }`}
+                        className={`text-sm font-light rounded-sm border-b border-gray-300`}
                       >
-                        <td className="py-4 px-2 text-start">{index + 1}</td>
-                        <td className="py-4 px-2 text-center">{item.amount}</td>
-                        <td className="py-4 px-2 text-center">
+                        <td className="py-4 ps-2 pe-5 text-start">
+                          {index + 1}
+                        </td>
+                        <td className="py-4 ps-2 pe-5 text-start">
+                          {item.amount}
+                        </td>
+                        <td className="py-4 ps-2 pe-5 text-start">
                           {item.previous_balance}
                         </td>
-                        <td className="py-4 px-2 text-center">
+                        <td className="py-4 ps-2 pe-5 text-start">
                           {item.current_balance}
                         </td>
-                        <td className="py-4 px-2 text-center">{item.type}</td>
-                        <td className="py-4 px-2 text-center">
+                        <td className="py-4 ps-2 pe-5 text-start">
+                          {item.type}
+                        </td>
+                        <td className="py-4 ps-2 pe-5 text-start">
                           {item.created_at.split(" ")[0]}
                         </td>
                       </tr>
@@ -235,19 +247,17 @@ export default function ProjectReport() {
               <table className="w-full border-collapse border border-gray-300">
                 <thead className="w-full">
                   <tr className="text-sm uppercase text-gray-700 rounded-md border-b border-gray-300">
-                    <th className=" text-center py-3 px-5">No.</th>
+                    <th className=" text-start py-3 px-5">No.</th>
                     <th className=" text-start py-3 px-5">Product Name</th>
-                    <th className=" text-center py-3 px-5">Quantity</th>
-                    <th className=" text-center py-3 px-5">
-                      Previous Quantity
-                    </th>
-                    <th className=" text-center py-3 px-5">Current Quantity</th>
+                    <th className=" text-start py-3 px-5">Quantity</th>
+                    <th className=" text-start py-3 px-5">Previous Quantity</th>
+                    <th className=" text-start py-3 px-5">Current Quantity</th>
 
-                    <th className=" text-center py-3 px-5">Type</th>
-                    <th className=" text-center py-3 px-5">Rate</th>
-                    <th className=" text-center py-3 px-5">Price</th>
-                    <th className=" text-center py-3 px-5">Total Price</th>
-                    <th className=" text-center py-3 px-5">Date</th>
+                    <th className=" text-start py-3 px-5">Type</th>
+                    <th className=" text-start py-3 px-5">Rate</th>
+                    <th className=" text-start py-3 px-5">Price</th>
+                    <th className=" text-start py-3 px-5">Total Price</th>
+                    <th className=" text-start py-3 px-5">Date</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -264,22 +274,20 @@ export default function ProjectReport() {
                           <td className="py-4 px-5 text-start">
                             {item.product_name}
                           </td>
-                          <td className="py-4 px-5 text-center">{item.qty}</td>
-                          <td className="py-4 px-5 text-center">
+                          <td className="py-4 px-5 text-start">{item.qty}</td>
+                          <td className="py-4 px-5 text-start">
                             {item.previous_qty}
                           </td>
-                          <td className="py-4 px-5 text-center">
+                          <td className="py-4 px-5 text-start">
                             {item.current_qty}
                           </td>
-                          <td className="py-4 px-5 text-center">{item.type}</td>
-                          <td className="py-4 px-5 text-center">{item.rate}</td>
-                          <td className="py-4 px-5 text-center">
-                            {item.price}
-                          </td>
-                          <td className="py-4 px-5 text-center">
+                          <td className="py-4 px-5 text-start">{item.type}</td>
+                          <td className="py-4 px-5 text-start">{item.rate}</td>
+                          <td className="py-4 px-5 text-start">{item.price}</td>
+                          <td className="py-4 px-5 text-start">
                             {item.total_price}
                           </td>
-                          <td className="py-4 px-5 text-center text-nowrap">
+                          <td className="py-4 px-5 text-start text-nowrap">
                             {item.created_at.split(" ")[0]}
                           </td>
                         </tr>

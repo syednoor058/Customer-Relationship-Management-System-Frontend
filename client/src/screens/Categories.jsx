@@ -176,13 +176,13 @@ export default function Categories() {
         <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center backdrop-blur-[2px] z-[2000] bg-gray-800 bg-opacity-70">
           {popup.type === "delete" && (
             <div className="p-10 bg-primaryColor rounded-sm relative flex flex-col gap-5 drop-shadow-2xl">
-              <div className="w-full text-center text-base font-normal">
+              <div className="w-full text-start text-base font-semibold">
                 Confirm to delete this category?
               </div>
               <div className="w-full flex flex-row justify-center gap-5">
                 <button
                   onClick={() => handleCategoryDeleteRequest(popup.data)}
-                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-red-500 hover:bg-red-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
+                  className="ps-2 pe-5 lg:px-4 py-3 lg:py-3 rounded-sm bg-red-500 hover:bg-red-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
                 >
                   <span className="text-lg lg:text-xl text-primaryColor">
                     <MdDeleteOutline />
@@ -191,7 +191,7 @@ export default function Categories() {
                 </button>
                 <button
                   onClick={() => setPopup({ type: "", data: null })}
-                  className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
+                  className="ps-2 pe-5 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
                 >
                   <span className="text-lg lg:text-xl text-blue-500">
                     <MdOutlineCancel />
@@ -206,7 +206,7 @@ export default function Categories() {
       <div className="flex flex-col gap-10 lg:gap-20 pb-10">
         <div className="w-full">
           <div className="flex flex-col gap-5 bg-primaryColor rounded-sm">
-            <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 pt-5 px-3 lg:px-0">
+            <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 pt-5 ps-2 pe-5 lg:px-0">
               <span className="text-2xl lg:text-3xl">
                 <FcPlus />
               </span>
@@ -232,7 +232,7 @@ export default function Categories() {
                   <div className="flex">
                     <button
                       type="submit"
-                      className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
+                      className="ps-2 pe-5 lg:px-4 py-3 lg:py-3 rounded-sm bg-blue-500 hover:bg-blue-700 transition-colors duration-[350ms] text-primaryColor flex flex-row gap-2 justify-center items-center"
                     >
                       <span className="text-lg lg:text-xl">
                         <HiOutlinePlusCircle />
@@ -244,7 +244,7 @@ export default function Categories() {
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="px-3 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
+                      className="ps-2 pe-5 lg:px-4 py-3 lg:py-3 rounded-sm border border-blue-500 text-gray-500 hover:text-blue-500 transition-colors duration-[350ms] flex flex-row gap-2 justify-center items-center"
                     >
                       <span className="text-lg lg:text-xl text-blue-500">
                         <MdDeleteOutline />
@@ -259,7 +259,7 @@ export default function Categories() {
         </div>
         <div className="w-full h-full flex flex-col gap-10 bg-primaryColor rounded-sm">
           <div className="flex flex-row justify-between">
-            <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 pt-5 px-3 lg:px-0">
+            <div className="text-xl lg:text-2xl font-semibold flex flex-row gap-3 items-center text-gray-800 pt-5 ps-2 pe-5 lg:px-0">
               <span className="text-2xl lg:text-3xl">
                 <FcOpenedFolder />
               </span>
@@ -303,7 +303,7 @@ export default function Categories() {
           </div> */}
 
           <div className="flex flex-col gap-5">
-            <div className="px-3 lg:px-0">
+            <div className="ps-2 pe-5 lg:px-0">
               <div className="flex flex-row gap-1 items-center">
                 <div className="flex flex-row gap-2 items-center">
                   <label>Rows:</label>
@@ -321,23 +321,20 @@ export default function Categories() {
                 </div>
               </div>
             </div>
-            <div className="border border-blue-200 shadow-xl">
+            <div className="w-full">
               <table className="w-full">
                 <thead className="w-full">
-                  <tr className="text-sm text-gray-800 rounded-sm font-normal bg-blue-100">
-                    <th className="w-[10%] text-start py-4 px-3 font-normal">
-                      Index
-                    </th>
-                    <th className="w-[35%] text-start py-4 px-3 font-normal">
+                  <tr className="text-sm text-gray-800 rounded-sm font-semibold border-b border-gray-300 divide-x-[1px] divide-gray-300">
+                    <th className="lg:w-[40%] text-start py-3 ps-2 pe-5 font-semibold bg-gray-100">
                       Category Name
                     </th>
-                    <th className="w-[25%] text-center py-4 px-3 font-normal">
+                    <th className="lg:w-[25%] text-start py-3 ps-2 pe-5 font-semibold">
                       Created
                     </th>
-                    <th className="w-[25%] text-center py-4 px-3 font-normal">
+                    <th className="lg:w-[25%] text-start py-3 ps-2 pe-5 font-semibold">
                       Last Update
                     </th>
-                    <th className="w-[5%] text-center py-4 px-3 font-normal"></th>
+                    <th className="lg:w-[10%] text-start py-3 ps-2 pe-5 font-semibold"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -346,21 +343,18 @@ export default function Categories() {
                       {currentItems.map((item, index) => (
                         <tr
                           key={index}
-                          className={`text-sm font-light rounded-sm border-b border-blue-100`}
+                          className={`text-sm font-light rounded-sm border-b border-gray-300`}
                         >
-                          <td className="py-4 ps-4 pe-3 text-start">
-                            {index + 1}
-                          </td>
-                          <td className="py-4 px-3 text-start">
+                          <td className="py-3 ps-2 pe-5 text-start">
                             {item.category_name}
                           </td>
-                          <td className="py-4 px-3 text-center">
+                          <td className="py-3 ps-2 pe-5 text-start">
                             {item.created_at.split(" ")[0]}
                           </td>
-                          <td className="py-4 px-3 text-center">
+                          <td className="py-3 ps-2 pe-5 text-start">
                             {item.updated_at.split(" ")[0]}
                           </td>
-                          <td className="py-4 px-3 text-xl flex flex-row gap-5 justify-center items-center">
+                          <td className="py-3 ps-2 pe-5 text-xl flex flex-row gap-5 justify-center items-center">
                             <ActionsMenu
                               item={item}
                               onView={handleView}
@@ -376,7 +370,7 @@ export default function Categories() {
                       <tr>
                         <td
                           colSpan="6"
-                          className="text-center py-10 text-xl font-semibold text-gray-400"
+                          className="text-start py-10 text-xl font-semibold text-gray-400"
                         >
                           <p>No category found!</p>
                         </td>
@@ -390,11 +384,11 @@ export default function Categories() {
             {/* <table className="w-full border-collapse border border-blue-200 shadow-xl">
               <thead className="w-full">
                 <tr className="text-sm uppercase text--gray-700 rounded-md border-b border-gray-300">
-                  <th className="w-[10%] text-center py-3 px-2">ID</th>
+                  <th className="w-[10%] text-start py-3 px-2">ID</th>
                   <th className="w-[75%] text-start py-3 px-2">
                     Category Name
                   </th>
-                  <th className="w-[15%] text-center py-3 px-2">Actions</th>
+                  <th className="w-[15%] text-start py-3 px-2">Actions</th>
                 </tr>
               </thead>
               <tbody className="">
@@ -407,11 +401,11 @@ export default function Categories() {
                           (index + 1) % 2 === 0 && "bg-gray-200/60"
                         }`}
                       >
-                        <td className="py-4 px-2 text-center">{index + 1}</td>
-                        <td className="py-4 px-2 capitalize">
+                        <td className="py-3 px-2 text-start">{index + 1}</td>
+                        <td className="py-3 px-2 capitalize">
                           {item.category_name}
                         </td>
-                        <td className="py-4 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
+                        <td className="py-3 px-2 text-xl flex flex-row gap-5 justify-center items-center opacity-70">
                           <button onClick={() => handleCategoryView(item)}>
                             <HiOutlineEye />
                           </button>
@@ -430,7 +424,7 @@ export default function Categories() {
                     <tr>
                       <td
                         colSpan="6"
-                        className="text-center py-10 text-xl font-semibold text-gray-400"
+                        className="text-start py-10 text-xl font-semibold text-gray-400"
                       >
                         <p>No category found!</p>
                       </td>
@@ -439,7 +433,7 @@ export default function Categories() {
                 )}
               </tbody>
             </table> */}
-            <div className="flex flex-row justify-center items-center px-3 lg:px-0">
+            <div className="flex flex-row justify-center items-center ps-2 pe-5 lg:px-0">
               <Pagination
                 count={totalPages}
                 page={currentPage}

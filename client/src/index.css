@@ -11,3 +11,8 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* .react-portal-wrapper {
+  position: relative;
+  z-index: 9999;
+} */
