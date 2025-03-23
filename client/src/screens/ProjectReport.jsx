@@ -9,6 +9,7 @@ import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 export default function ProjectReport() {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
+  const [currentProject, setCurrentProject] = useState(0);
   // const [fromDate, setFromDate] = useState(
   //   () => new Date().toISOString().split("T")[0]
   // );
@@ -20,10 +21,11 @@ export default function ProjectReport() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setCurrentProject(selectedProject);
     try {
       const data = await getProjectLedger(selectedProject);
       setLedger(data);
-      console.log(data);
+      // console.log(data);
       handleReset();
     } catch (error) {
       toast.error(error.message);
@@ -136,30 +138,41 @@ export default function ProjectReport() {
               </h1>
               <div className="w-full grid grid-cols-4 gap-x-7 gap-y-2">
                 <p className=" flex flex-row gap-2">
-                  <span>Project Name:</span>
+                  <span>Project name:</span>
                   <span className="font-semibold capitalize">
-                    {ledger.ledger_entries[0].project_name}
+                    {
+                      projects.find((project) => project.id == currentProject)
+                        .project_name
+                    }
                   </span>
                 </p>
                 <p className=" flex flex-row gap-2">
                   <span>Project ID:</span>
-                  <span>{ledger.ledger_entries[0].project_id}</span>
+                  <span>{currentProject}</span>
                 </p>
                 <p className=" flex flex-row gap-2">
-                  <span>Total Cash Given:</span>
+                  <span>Total cash given:</span>
                   <span>{ledger.total_cash_given}</span>
                 </p>
                 <p className=" flex flex-row gap-2">
-                  <span>Total Employee Wage:</span>
+                  <span>Total employee wage:</span>
                   <span>{ledger.total_employee_wage}</span>
                 </p>
                 <p className=" flex flex-row gap-2">
-                  <span>Total Expense:</span>
+                  <span>Total expense:</span>
                   <span>{ledger.total_expense}</span>
                 </p>
                 <p className=" flex flex-row gap-2">
-                  <span>Total Cost:</span>
+                  <span>Total cost:</span>
                   <span>{ledger.total_cost}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Balance:</span>
+                  <span>{ledger.balance}</span>
+                </p>
+                <p className=" flex flex-row gap-2">
+                  <span>Total product given:</span>
+                  <span>{ledger.total_product_given}</span>
                 </p>
               </div>
             </div>
