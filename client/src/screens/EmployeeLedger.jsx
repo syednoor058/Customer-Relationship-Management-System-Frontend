@@ -30,7 +30,8 @@ export default function EmployeeLedger() {
         dateFrom: fromDate,
         dateTo: toDate,
       });
-      setLedger(filteredData.data);
+      setLedger(filteredData);
+      // console.log(filteredData);
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -178,15 +179,15 @@ export default function EmployeeLedger() {
                 </p>
                 <p className=" flex flex-row gap-2">
                   <span>Days Present:</span>
-                  <span>{ledger.totals.days_present}</span>
+                  <span>{ledger?.totals?.days_present}</span>
                 </p>
                 <p className=" flex flex-row gap-2">
                   <span>Total Given:</span>
-                  <span>{ledger.totals.total_given}</span>
+                  <span>{ledger?.totals?.total_given}</span>
                 </p>
                 <p className=" flex flex-row gap-2">
                   <span>Total Salary:</span>
-                  <span>{ledger.totals.total_salary}</span>
+                  <span>{ledger?.totals?.total_salary}</span>
                 </p>
               </div>
             </div>
