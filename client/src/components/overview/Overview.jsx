@@ -45,7 +45,7 @@ export default function Overview() {
         const cashRes = await getCash();
         const insData = await getInstituteInfo();
         setCompany(insData);
-        console.log(insData);
+        // console.log(insData);
         setCash(cashRes);
       } catch (err) {
         toast.error(err.message || "Something went wrong!");
@@ -62,7 +62,7 @@ export default function Overview() {
   }
   return (
     <div className="w-full h-full p-10">
-      <div className="w-full pb-20 flex flex-row-reverse gap-10 items-start justify-start">
+      <div className="w-full pb-20 flex flex-col-reverse gap-10 items-center">
         <div className="w-[40%] aspect-[2/1] flex shadow-xl p-7 rounded-xl bg-gradient-to-tr from-[#7F00FF] to-[#E100FF] text-gray-300">
           <div className="w-full flex flex-col justify-between">
             <div className="text-lg font-normal ">
@@ -78,7 +78,7 @@ export default function Overview() {
             </div>
           </div>
         </div>
-        <div className="w-[60%] flex flex-col gap-7">
+        <div className="flex flex-col items-center gap-7">
           <div>
             <img
               src={company.img_url}
@@ -87,7 +87,7 @@ export default function Overview() {
             />
           </div>
           <div className="flex text-lg">
-            <table>
+            {/* <table>
               <tbody>
                 <tr>
                   <td className="pe-10">Institution Name:</td>
@@ -108,7 +108,10 @@ export default function Overview() {
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
+            <h1 className="text-5xl font-bold text-gray-900">
+              {company.institution_name}
+            </h1>
           </div>
         </div>
       </div>
