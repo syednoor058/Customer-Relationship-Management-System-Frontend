@@ -45,7 +45,7 @@ export default function Overview() {
         const cashRes = await getCash();
         const insData = await getInstituteInfo();
         setCompany(insData);
-        // console.log(cashRes);
+        console.log(insData);
         setCash(cashRes);
       } catch (err) {
         toast.error(err.message || "Something went wrong!");
@@ -62,7 +62,7 @@ export default function Overview() {
   }
   return (
     <div className="w-full h-full p-10">
-      <div className="pb-10 flex flex-col gap-10">
+      <div className="w-full pb-20 flex flex-row-reverse gap-10 items-start justify-start">
         <div className="w-[40%] aspect-[2/1] flex shadow-xl p-7 rounded-xl bg-gradient-to-tr from-[#7F00FF] to-[#E100FF] text-gray-300">
           <div className="w-full flex flex-col justify-between">
             <div className="text-lg font-normal ">
@@ -78,35 +78,38 @@ export default function Overview() {
             </div>
           </div>
         </div>
-        <div>
-          <table>
-            <tbody>
-              <tr>
-                <td className="pe-5">Institution Name:</td>
-                <td className="font-semibold text-gray-600">
-                  {company.institution_name}
-                </td>
-              </tr>
-              <tr>
-                <td className="pe-5">Address:</td>
-                <td className="font-semibold text-gray-600">
-                  {company.institution_address}
-                </td>
-              </tr>
-              <tr>
-                <td className="pe-5">Phone:</td>
-                <td className="font-semibold text-gray-600">
-                  {company.institution_phone}
-                </td>
-              </tr>
-              <tr>
-                <td className="pe-5">Created at:</td>
-                <td className="font-semibold text-gray-600">
-                  {company.created_at}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="w-[60%] flex flex-col gap-7">
+          <div>
+            <img
+              src={company.img_url}
+              alt="Company Logo"
+              className="w-52 h-auto object-cover"
+            />
+          </div>
+          <div className="flex text-lg">
+            <table>
+              <tbody>
+                <tr>
+                  <td className="pe-10">Institution Name:</td>
+                  <td className="font-semibold text-gray-600">
+                    {company.institution_name}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="pe-10">Address:</td>
+                  <td className="font-semibold text-gray-600">
+                    {company.institution_address}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="pe-10">Phone:</td>
+                  <td className="font-semibold text-gray-600">
+                    {company.institution_phone}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div className="w-full grid grid-cols-3 gap-5">

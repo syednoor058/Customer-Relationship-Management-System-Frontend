@@ -280,7 +280,7 @@ export default function EmployeeLedger() {
                     <>
                       <tr>
                         <td
-                          colSpan="6"
+                          colSpan="9"
                           className="text-center py-10 text-xl font-semibold text-gray-400"
                         >
                           <p>No ledger found!</p>
