@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 // import React from 'react'
 import { BsCash } from "react-icons/bs";
+import { FaRegCircleUser } from "react-icons/fa6";
+
 import {
   HiOutlineArchive,
   HiOutlineClipboardList,
@@ -349,6 +351,22 @@ export default function Sidebar() {
               linkName: "Project Ledger",
               linkPath: "/dashboard/projects/ledger",
               linkIcon: <TbReport />,
+            },
+          ]}
+        />
+        <DashboardAccordionLink
+          title="Users"
+          titleIcon={<FaRegCircleUser />}
+          linkList={[
+            {
+              linkName: "All Users",
+              linkPath: "/dashboard/users",
+              linkIcon: <HiOutlineClipboardList />,
+            },
+            {
+              linkName: "Add User",
+              linkPath: "/dashboard/add-user",
+              linkIcon: <HiOutlinePlusCircle />,
             },
           ]}
         />

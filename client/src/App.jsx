@@ -14,6 +14,7 @@ import ReleaseEmployee from "./components/releaseEmployee/ReleaseEmployee";
 import AccountLedger from "./screens/AccountLedger";
 import AddBankAccount from "./screens/AddBankAccount";
 import AddCustomer from "./screens/AddCustomer";
+import AddUsers from "./screens/AddUsers";
 import BankAccounts from "./screens/BankAccounts";
 import BankDetails from "./screens/BankDetails";
 import CashLedger from "./screens/CashLedger";
@@ -46,6 +47,7 @@ import ProjectExpense from "./screens/ProjectExpense";
 import ProjectReport from "./screens/ProjectReport";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
+import Users from "./screens/Users";
 import VendorLedger from "./screens/VendorLedger";
 import Vendors from "./screens/Vendors";
 import VendorsPayment from "./screens/VendorsPayment";
@@ -60,6 +62,8 @@ function App() {
         <Route exact path="/dashboard" element={<Dashboard />}>
           <Route index element={<Overview />} />
           <Route exact path="categories" element={<Categories />} />
+          <Route exact path="users" element={<Users />} />
+          <Route exact path="add-user" element={<AddUsers />} />
           <Route exact path="products" element={<Products />}>
             <Route
               exact
