@@ -10,7 +10,7 @@ import {
   MdDeleteOutline,
   MdOutlineCancel,
 } from "react-icons/md";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   deleteUser,
@@ -200,8 +200,8 @@ function Users() {
     setIsLoading(true);
     try {
       const deleteUserData = await deleteUser(_id);
-      //   setInventory(deleteProductData.inventory);
-      console.log(deleteUserData);
+      setUsers(deleteUserData.users);
+      // console.log(deleteUserData);
       toast(deleteUserData.message);
     } catch (error) {
       toast(error.message);
@@ -217,7 +217,7 @@ function Users() {
       try {
         const usersData = await getAllUsers();
         setUsers(usersData);
-        console.log(usersData);
+        // console.log(usersData);
       } catch (err) {
         setError(err);
         toast.error(err.message);
@@ -267,7 +267,6 @@ function Users() {
           )}
         </div>
       )}
-      <Outlet />
       <div className="w-full h-full flex flex-col gap-5 bg-primaryColor">
         <div className="flex flex-row justify-between py-2 lg:py-5 ps-2 pe-5 lg:px-0">
           <div className="text-xl lg:text-2xl leading-none font-semibold flex flex-row gap-3 items-center text-gray-800">

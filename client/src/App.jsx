@@ -30,6 +30,7 @@ import EditBankDetails from "./screens/EditBankDetails";
 import EditCategory from "./screens/EditCategory";
 import EditProducts from "./screens/EditProducts";
 import EditProjectDetails from "./screens/EditProjectDetails";
+import EditUser from "./screens/EditUser";
 import EmployeeLedger from "./screens/EmployeeLedger";
 import EmployeeRoles from "./screens/EmployeeRoles";
 import EmployeeSalary from "./screens/EmployeeSalary";
@@ -47,6 +48,7 @@ import ProjectExpense from "./screens/ProjectExpense";
 import ProjectReport from "./screens/ProjectReport";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
+import UserDetails from "./screens/UserDetails";
 import Users from "./screens/Users";
 import VendorLedger from "./screens/VendorLedger";
 import Vendors from "./screens/Vendors";
@@ -63,6 +65,8 @@ function App() {
           <Route index element={<Overview />} />
           <Route exact path="categories" element={<Categories />} />
           <Route exact path="users" element={<Users />} />
+          <Route exact path="users/details/:userId" element={<UserDetails />} />
+          <Route exact path="users/edit-user/:userId" element={<EditUser />} />
           <Route exact path="add-user" element={<AddUsers />} />
           <Route exact path="products" element={<Products />}>
             <Route

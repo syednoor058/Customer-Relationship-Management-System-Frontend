@@ -36,7 +36,7 @@ const getHeaders = () => {
     }
   }
 
-  export const getSingleUser = async ({id}) => {
+  export const getSingleUser = async (id) => {
     try{
       const response = await axios.get(
         `${API_BASE_URL}/api/users/list/${id}`,
@@ -72,7 +72,7 @@ const getHeaders = () => {
     }
   }
 
-  export const editUserPassword = async ({id, password}) => {
+  export const editUserPassword = async (id, password) => {
     try{
       const response = await axios.put(
         `${API_BASE_URL}/api/users/password/${id}`, {password},
@@ -84,7 +84,7 @@ const getHeaders = () => {
     }
   }
 
-  export const deleteUser = async ({id}) => {
+  export const deleteUser = async (id) => {
     try{
       const response = await axios.delete(
         `${API_BASE_URL}/api/users/delete/${id}`,
