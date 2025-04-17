@@ -32,6 +32,7 @@ import EditProducts from "./screens/EditProducts";
 import EditProjectDetails from "./screens/EditProjectDetails";
 import EditUser from "./screens/EditUser";
 import EmployeeLedger from "./screens/EmployeeLedger";
+import EmployeeReports from "./screens/EmployeeReports";
 import EmployeeRoles from "./screens/EmployeeRoles";
 import EmployeeSalary from "./screens/EmployeeSalary";
 import EmployeeWages from "./screens/EmployeeWages";
@@ -46,6 +47,7 @@ import Products from "./screens/Products";
 import ProjectDetails from "./screens/ProjectDetails";
 import ProjectExpense from "./screens/ProjectExpense";
 import ProjectReport from "./screens/ProjectReport";
+import ProjectReport2 from "./screens/ProjectReport2";
 import ProjectStates from "./screens/ProjectStates";
 import Projects from "./screens/Projects";
 import UserDetails from "./screens/UserDetails";
@@ -197,6 +199,8 @@ function App() {
             element={<ProductDetails />}
           />
           <Route exact path="projects/ledger" element={<ProjectReport />} />
+          <Route exact path="reports/project" element={<ProjectReport2 />} />
+          <Route exact path="reports/employee" element={<EmployeeReports />} />
         </Route>
       </Routes>
     </BrowserRouter>

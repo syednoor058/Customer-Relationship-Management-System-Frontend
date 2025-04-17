@@ -422,6 +422,22 @@ export default function Sidebar() {
             },
           ]}
         />
+        <DashboardAccordionLink
+          title="Reports"
+          titleIcon={<HiOutlineClipboardList />}
+          linkList={[
+            {
+              linkName: "Project Reports",
+              linkPath: "/dashboard/reports/project",
+              linkIcon: <HiOutlineHome />,
+            },
+            {
+              linkName: "Employee Reports",
+              linkPath: "/dashboard/reports/employee",
+              linkIcon: <HiOutlineUser />,
+            },
+          ]}
+        />
         {/* {DASHBOARD_SIDEBAR_TOP_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))} */}
