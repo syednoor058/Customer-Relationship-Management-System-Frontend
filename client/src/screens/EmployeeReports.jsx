@@ -18,7 +18,7 @@ function EmployeeReports() {
     e.preventDefault(); // Prevent default form submission
     // Construct the URL with query parameters
     console.log(toDate);
-    const url = `https://estate.theabacuses.com/projectBalance?product_id=${selectedEmployees}&date_from=${fromDate}&date_to=${toDate}`;
+    const url = `https://estate.theabacuses.com/employeeReport?employee_id=${selectedEmployees}&date_from=${fromDate}&date_to=${toDate}`;
 
     // Open the report in a new tab
     window.open(url, "_blank");
