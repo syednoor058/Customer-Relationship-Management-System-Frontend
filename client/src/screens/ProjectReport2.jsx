@@ -14,11 +14,17 @@ function ProjectReport2() {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(0);
 
+  const formatDate = (dateStr) => {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}-${month}-${year}`;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
     // Construct the URL with query parameters
-    console.log(toDate);
-    const url = `https://estate.theabacuses.com/projectBalance?product_id=${selectedProject}&date_from=${fromDate}&date_to=${toDate}`;
+    const formatedFromDate = formatDate(fromDate);
+    const formatedToDate = formatDate(toDate);
+    const url = `https://estate.theabacuses.com/projectBalance?product_id=${selectedProject}&date_from=${formatedFromDate}&date_to=${formatedToDate}`;
 
     // Open the report in a new tab
     window.open(url, "_blank");

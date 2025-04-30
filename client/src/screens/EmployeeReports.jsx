@@ -14,11 +14,18 @@ function EmployeeReports() {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployees, setSelectedEmployees] = useState(0);
 
+  const formatDate = (dateStr) => {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}-${month}-${year}`;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
     // Construct the URL with query parameters
-    console.log(toDate);
-    const url = `https://estate.theabacuses.com/employeeReport?employee_id=${selectedEmployees}&date_from=${fromDate}&date_to=${toDate}`;
+    // console.log(selectedEmployees);
+    const formatedFromDate = formatDate(fromDate);
+    const formatedToDate = formatDate(toDate);
+    const url = `https://estate.theabacuses.com/employeeReport?employee_id=${selectedEmployees}&date_from=${formatedFromDate}&date_to=${formatedToDate}`;
 
     // Open the report in a new tab
     window.open(url, "_blank");
