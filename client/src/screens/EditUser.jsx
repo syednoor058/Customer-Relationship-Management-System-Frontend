@@ -147,7 +147,6 @@ function EditUser() {
                       className="px-2 py-2 rounded-sm border border-gray-300 bg-transparent outline-none"
                       value={projectId}
                       onChange={(e) => setProjectId(e.target.value)}
-                      required
                     >
                       <option value={0} disabled>
                         Select a project
