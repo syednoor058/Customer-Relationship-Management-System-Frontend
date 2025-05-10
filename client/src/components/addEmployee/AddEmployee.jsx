@@ -122,7 +122,7 @@ export default function AddEmployee() {
                 <input
                   className="px-2 py-2 rounded-md border border-gray-300 bg-transparent outline-none"
                   type="text"
-                  placeholder="Enter product name"
+                  placeholder="Enter employee name"
                   value={employeeName}
                   onChange={(e) => setEmployeeName(e.target.value)}
                   required
