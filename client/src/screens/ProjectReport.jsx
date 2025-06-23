@@ -129,7 +129,7 @@ export default function ProjectReport() {
           </div>
         </div>
       </div>
-      <div className="w-full grid grid-cols-1 lg:grid-col-3">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10">
         <div className="flex">
           <a
             href="https://estate.theabacuses.com/expenses"
