@@ -130,7 +130,7 @@ export default function ProjectReport() {
         </div>
       </div>
       <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10">
-        <div className="flex">
+        <div className="flex w-full">
           <a
             href="https://estate.theabacuses.com/expenses"
             className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
@@ -139,7 +139,7 @@ export default function ProjectReport() {
             Expense
           </a>
         </div>
-        <div className="flex">
+        <div className="flex w-full">
           <a
             href="https://estate.theabacuses.com/wages"
             className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
@@ -148,7 +148,7 @@ export default function ProjectReport() {
             Wages
           </a>
         </div>
-        <div className="flex">
+        <div className="flex w-full">
           <a
             href="https://estate.theabacuses.com/cash-supply"
             className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
