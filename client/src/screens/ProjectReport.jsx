@@ -129,6 +129,35 @@ export default function ProjectReport() {
           </div>
         </div>
       </div>
+      <div className="w-full grid grid-cols-1 lg:grid-col-3">
+        <div className="flex">
+          <a
+            href="https://estate.theabacuses.com/expenses"
+            className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            target="_blank"
+          >
+            Expense
+          </a>
+        </div>
+        <div className="flex">
+          <a
+            href="https://estate.theabacuses.com/wages"
+            className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            target="_blank"
+          >
+            Wages
+          </a>
+        </div>
+        <div className="flex">
+          <a
+            href="https://estate.theabacuses.com/cash-supply"
+            className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            target="_blank"
+          >
+            Cash Supply
+          </a>
+        </div>
+      </div>
       {ledger && (
         <div className="w-full p-5 text-gray-600">
           <div className="flex flex-col gap-14">
