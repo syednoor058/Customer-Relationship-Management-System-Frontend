@@ -133,7 +133,7 @@ export default function ProjectReport() {
         <div className="flex w-full">
           <a
             href="https://estate.theabacuses.com/expenses"
-            className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            className="w-full text-center px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
             target="_blank"
           >
             Expense
@@ -142,7 +142,7 @@ export default function ProjectReport() {
         <div className="flex w-full">
           <a
             href="https://estate.theabacuses.com/wages"
-            className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            className="w-full text-center px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
             target="_blank"
           >
             Wages
@@ -151,7 +151,7 @@ export default function ProjectReport() {
         <div className="flex w-full">
           <a
             href="https://estate.theabacuses.com/cash-supply"
-            className="px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            className="w-full text-center px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
             target="_blank"
           >
             Cash Supply
