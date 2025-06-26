@@ -93,6 +93,17 @@ export default function InventoryPurchaseHistory() {
             </table>
           </div>
         </div>
+        <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10">
+          <div className="flex w-full">
+            <a
+              href="https://estate.theabacuses.com/inventory/purchases"
+              className="w-full text-center px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+              target="_blank"
+            >
+              Purchase History Edit
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

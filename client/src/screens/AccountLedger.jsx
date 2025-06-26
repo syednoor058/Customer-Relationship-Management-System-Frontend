@@ -150,6 +150,17 @@ export default function AccountLedger() {
           </div>
         </div>
       </div>
+      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10">
+        <div className="flex w-full">
+          <a
+            href="https://estate.theabacuses.com/bank/history"
+            className="w-full text-center px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            target="_blank"
+          >
+            Ledger Edit
+          </a>
+        </div>
+      </div>
       {ledger.length > 0 && (
         <div className="w-full p-5 rounded drop-shadow-xl border bg-primaryColor border-gray-200 text-gray-600">
           <div className="flex flex-col gap-5">

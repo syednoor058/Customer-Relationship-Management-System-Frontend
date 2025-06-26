@@ -129,7 +129,7 @@ export default function ProjectReport() {
           </div>
         </div>
       </div>
-      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-10">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10">
         <div className="flex w-full">
           <a
             href="https://estate.theabacuses.com/expenses"
@@ -155,6 +155,15 @@ export default function ProjectReport() {
             target="_blank"
           >
             Cash Supply
+          </a>
+        </div>
+        <div className="flex w-full">
+          <a
+            href="https://estate.theabacuses.com/inventory/project/ledger"
+            className="w-full text-center px-5 py-3 bg-blue-600 text-primaryColor rounded-sm"
+            target="_blank"
+          >
+            Material
           </a>
         </div>
       </div>
